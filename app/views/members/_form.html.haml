@@ -1,0 +1,56 @@
+= form_with(model: @member) do |f|
+  = render "layouts/form_errors", model: f.object
+  %p
+    卒年
+    = f.select(:year_id, @years)
+  %div.mb-2
+    よみ
+    .flex.flex-wrap.gap-4
+      %div
+        = f.text_field(:family_name_phonetic, placeholder: 'みょうじ')
+      %div
+        = f.text_field(:first_name_phonetic, placeholder: 'なまえ')
+      %div
+        = f.text_field(:maiden_name_phonetic, placeholder: 'きゅうせい')
+    %span.text-sm 読み方が不明な場合は「？」を入れてください。
+  %div.mb-4
+    氏名
+    .flex.flex-wrap.gap-4
+      %div
+        = f.text_field(:family_name, placeholder: '名字')
+      %div
+        = f.text_field(:first_name, placeholder: '名前')
+      %div
+        = f.text_field(:maiden_name, placeholder: '旧姓')
+    %span.text-sm 漢字が不明な場合は「？」を入れてください。
+  %div.mb-4
+    .flex.flex-wrap.gap-4
+      %div
+        連絡
+        = f.select(:communication, @communications)
+      %div
+        退会理由
+        = f.text_field(:quit_reason, placeholder: '退会理由の補足')
+      %div
+        所属
+        = f.text_field(:occupation, placeholder: '学校や職場等')
+  %p
+    備考
+    %br
+    = f.text_area(:note, placeholder: 'その他補足', class: 'w-full max-w-xl')
+  .grid.grid-flow-col.auto-cols-auto
+    %div.col
+  %table.table.w-auto
+    %thead
+      %tr
+        %th Role
+        %th 補足
+    %tbody
+      = f.collection_check_boxes :roles, @role_options, :first, :last do |b|
+        %tr
+          %td
+            = b.check_box
+            = b.label { role_name(b.value) }
+          %td
+            = b.label
+  = f.submit '送信', class: 'btn btn-primary'

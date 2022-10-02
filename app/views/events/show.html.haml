@@ -1,0 +1,34 @@
+%h1 #{@event.event_name}詳細
+
+%p
+  = link_to '戻る', events_path
+
+%p
+  開催日：#{@event.event_date}
+  %br
+  会費　：#{@event.fee.to_fs(:delimited)}
+
+= simple_format @event.note
+
+%h2 参加者一覧
+
+%table.table.w-auto
+  %thead
+    %tr.text-center
+      %th 卒年
+      %th 氏名（旧姓）
+      %th 備考
+      %th 支払い
+      %th 詳細
+  %tbody
+    - @members.each do |rec|
+      %tr.hover
+        %td #{@years[rec.year_id].graduate_year}
+        %td
+          #{full_name(rec)[1]}
+          %br
+          #{full_name(rec)[0]}
+        %td #{@attendances[rec.id].note}
+        %td #{@attendances[rec.id].payment_date}
+        %td
+          = link_to '詳細', member_path(rec), class: 'btn btn-sm btn-info'

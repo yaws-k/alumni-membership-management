@@ -1,0 +1,7 @@
+%h1 住所編集
+
+%p
+  = link_to '戻る', member_path(@address.member_id)
+
+= form_with(model: @address) do |f|
+  = render 'form', {f: f}

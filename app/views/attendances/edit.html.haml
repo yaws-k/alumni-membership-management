@@ -1,0 +1,14 @@
+%h1 出欠に関するコメント
+
+%p
+  = link_to '戻る', member_path(@attendance.member_id, anchor: @attendance.id)
+
+= form_with(model: @attendance, data: { turbo: false }) do |f|
+  = render "layouts/form_errors", model: f.object
+  %p
+    - @application.each do |label, value|
+      = f.radio_button(:application, value, checked: (@attendance.application == value ? true : false))
+      = f.label("application_#{value}", label)
+  %p
+    = f.text_area(:note, placeholder: 'コメントがあれば入力', cols: 40)
+  = f.submit '送信', class: 'btn btn-primary'

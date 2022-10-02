@@ -1,0 +1,21 @@
+= form_with(model: @event) do |f|
+  = render 'layouts/form_errors', model: f.object
+  = f.hidden_field :payment_only
+  .mb-4
+    イベント名
+    %br
+    = f.text_field(:event_name, placeholder: 'イベント名', size: 40)
+  .mb-4
+    開催日
+    %br
+    = f.date_field(:event_date)
+  .mb-4
+    参加費
+    %br
+    = f.text_field(:fee)
+  .mb-4
+    備考
+    %br
+    = f.text_area(:note, cols: 60)
+  .mb-4
+  = f.submit '送信', class: 'btn btn-primary'

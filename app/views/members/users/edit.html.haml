@@ -1,0 +1,7 @@
+%h1 メールアドレス関連情報更新
+
+%p
+  = link_to '戻る', member_path(@user.member_id)
+
+= form_with(model: @user) do |f|
+  = render 'form', {f: f}

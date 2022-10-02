@@ -1,0 +1,3 @@
+- if model.errors.any?
+  .alert.alert-error
+    #{model.errors.full_messages.join('<br>').html_safe}

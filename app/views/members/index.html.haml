@@ -1,0 +1,33 @@
+%h1 仙台一高東京同窓会　名簿管理
+
+%p
+  = link_to '年次情報管理', years_path
+  &emsp;
+  = link_to 'イベント一覧', events_path
+  &emsp;
+  = link_to '支払い一覧', payments_path
+  &emsp;
+  = link_to 'メンバー追加', new_member_path
+
+- @members.each_value do |years|
+  .collapse.collapse-arrow.border.border-base-300.rounded-box.mb-3
+    %input{type: 'checkbox'}
+    .collapse-title.bg-secondary #{years[:year].graduate_year}（#{years[:year].anno_domini}年／#{years[:year].japanese_calendar}年3月卒）　#{years[:count]}人
+    .collapse-content
+      %table.table.w-auto
+        %thead
+          %tr.text-center
+            %th 氏名（旧姓）
+            %th よみがな
+            %th 連絡方法
+            %th 年会費
+            %th 詳細
+        %tbody
+          - years[:members].each do |m|
+            %tr.hover
+              %td #{m.family_name} #{m.first_name}
+              %td #{m.family_name_phonetic} #{m.first_name_phonetic}
+              %td.text-center #{m.communication}
+              %td 未設定
+              %td
+                = link_to '詳細', member_path(m), class: 'btn btn-sm btn-info'
