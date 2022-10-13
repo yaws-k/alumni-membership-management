@@ -82,7 +82,7 @@ class MembersController < ApplicationController
       if @roles[:admin] || @roles[:board]
         Year.all.order(anno_domini: :desc)
       else
-        current_user.member.year
+        Year.where(id: current_user.member.year_id)
       end
 
     members = {}

@@ -14,7 +14,7 @@ FactoryBot.define do
       quit_reason { Faker::String.random }
       occupation { Faker::String.random }
       note { Faker::String.random }
-      roles { %w[normal board] }
+      roles { %w[board] }
     end
   end
 end
