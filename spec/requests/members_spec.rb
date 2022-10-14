@@ -60,6 +60,7 @@ RSpec.describe 'Members', type: :request do
   # Normal user
   context 'normal user' do
     let(:member) { user.member }
+    let(:member2) { create(:member, year_id: member.year_id) }
 
     describe '#index' do
       it 'returns http redirect' do
@@ -70,10 +71,16 @@ RSpec.describe 'Members', type: :request do
     end
 
     describe '#show' do
-      it 'returns http redirect' do
+      it 'returns http success for own data' do
         sign_in user
         get "/members/#{member.id}"
         expect(response).to have_http_status(:success)
+      end
+
+      it 'returns http redirect for other data' do
+        sign_in user
+        get "/members/#{member2.id}"
+        expect(response).to redirect_to(members_path)
       end
     end
 
@@ -102,15 +109,21 @@ RSpec.describe 'Members', type: :request do
     end
 
     describe '#edit' do
-      it 'returns http redirect' do
+      it 'returns http success for own data' do
         sign_in user
-        get "/members/#{member.id}"
+        get "/members/#{member.id}/edit"
         expect(response).to have_http_status(:success)
+      end
+
+      it 'returns http redirect for other data' do
+        sign_in user
+        get "/members/#{member2.id}/edit"
+        expect(response).to redirect_to(members_path)
       end
     end
 
     describe '#update' do
-      it 'returns http redirect' do
+      it 'returns http redirect to detailed page for own data' do
         sign_in user
         patch "/members/#{member.id}", params: {
           member: {
@@ -120,6 +133,18 @@ RSpec.describe 'Members', type: :request do
           }
         }
         expect(response).to redirect_to(member_path(member))
+      end
+
+      it 'returns http redirect to members_path for other data' do
+        sign_in user
+        patch "/members/#{member2.id}", params: {
+          member: {
+            family_name_phonetic: 'こうしん',
+            family_name: '更新',
+            roles: ['']
+          }
+        }
+        expect(response).to redirect_to(members_path)
       end
     end
 

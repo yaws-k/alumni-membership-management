@@ -1,6 +1,6 @@
 class MembersController < ApplicationController
   before_action :reject_normal_members, only: %i[new create destroy]
-  before_action :check_roles, only: %i[create update destroy]
+  before_action :check_roles, only: %i[show create edit update destroy]
 
   def index
     if @roles[:admin] || @roles[:board] || @roles[:lead]
@@ -83,11 +83,13 @@ class MembersController < ApplicationController
   # Access check
   def check_roles
     # Admin and Board member can access anywhere
-    return true if @roles[:admin] || @roles[:board]
+    return if @roles[:admin] || @roles[:board]
 
+    # For show, edit, update, destroy
     member = Member.find(params[:id])
     if member.blank?
       if member_params[:year_id].present?
+        # For create
         member = Member.new(year_id: member_params[:year_id])
       else
         redirect_to(members_path)
@@ -96,10 +98,10 @@ class MembersController < ApplicationController
     end
 
     # Lead can access only when the target member is the same graduate year
-    return true if @roles[:lead] && (member.year_id == current_user.member.year_id)
+    return if @roles[:lead] && (member.year_id == @current_member_year_id)
 
     # Normal user can access only their own information
-    return true if member.id == current_user.member.id
+    return if member.id == @current_member_id
 
     # Access denied
     redirect_to(members_path)
