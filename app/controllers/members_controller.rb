@@ -86,15 +86,11 @@ class MembersController < ApplicationController
     return if @roles[:admin] || @roles[:board]
 
     # For show, edit, update, destroy
-    member = Member.find(params[:id])
-    if member.blank?
-      if member_params[:year_id].present?
-        # For create
-        member = Member.new(year_id: member_params[:year_id])
-      else
-        redirect_to(members_path)
-        return
-      end
+    if params[:id].present?
+      member = Member.find(params[:id])
+    elsif member_params[:year_id].present?
+      # For create
+      member = Member.new(year_id: member_params[:year_id])
     end
 
     # Lead can access only when the target member is the same graduate year
