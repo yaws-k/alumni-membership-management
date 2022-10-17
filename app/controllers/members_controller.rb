@@ -85,8 +85,8 @@ class MembersController < ApplicationController
     # Admin and Board member can access anywhere
     return if @roles[:admin] || @roles[:board]
 
-    # For show, edit, update, destroy
     if params[:id].present?
+      # For show, edit, update, destroy
       member = Member.find(params[:id])
     elsif member_params[:year_id].present?
       # For create

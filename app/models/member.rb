@@ -27,7 +27,7 @@ class Member
   field :family_name, type: String
   field :maiden_name, type: String
   field :first_name, type: String
-  field :communication, type: String, default: '通常'
+  field :communication, type: String, default: 'メール'
   field :quit_reason, type: String
   field :occupation, type: String
   field :note, type: String
