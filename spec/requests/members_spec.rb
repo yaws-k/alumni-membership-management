@@ -3,6 +3,24 @@ require 'rails_helper'
 RSpec.describe 'Members', type: :request do
   let(:user) { create(:user) }
 
+  let(:create_member_param) do
+    {
+      family_name_phonetic: 'しんき',
+      first_name_phonetic: 'なまえ',
+      family_name: '新規',
+      first_name: '名前',
+      roles: ['']
+    }
+  end
+
+  let(:edit_member_param) do
+    {
+      family_name_phonetic: 'こうしん',
+      family_name: '更新',
+      roles: ['']
+    }
+  end
+
   # Not logged in
   context 'not logged in' do
     let(:member) { user.member }
@@ -96,13 +114,7 @@ RSpec.describe 'Members', type: :request do
       it 'returns http redirect (reject)' do
         sign_in user
         post '/members', params: {
-          member: {
-            family_name_phonetic: 'しんき',
-            first_name_phonetic: 'なまえ',
-            family_name: '新規',
-            first_name: '名前',
-            year_id: member.year.id
-          }
+          member: create_member_param.merge(year_id: member.year_id)
         }
         expect(response).to redirect_to(member_path(member))
       end
@@ -125,25 +137,13 @@ RSpec.describe 'Members', type: :request do
     describe '#update' do
       it 'returns http redirect to detailed page for own data' do
         sign_in user
-        patch "/members/#{member.id}", params: {
-          member: {
-            family_name_phonetic: 'こうしん',
-            family_name: '更新',
-            roles: ['']
-          }
-        }
+        patch "/members/#{member.id}", params: { member: edit_member_param }
         expect(response).to redirect_to(member_path(member))
       end
 
       it 'returns http redirect to members_path for other data' do
         sign_in user
-        patch "/members/#{member2.id}", params: {
-          member: {
-            family_name_phonetic: 'こうしん',
-            family_name: '更新',
-            roles: ['']
-          }
-        }
+        patch "/members/#{member2.id}", params: { member: edit_member_param }
         expect(response).to redirect_to(members_path)
       end
     end
@@ -207,14 +207,7 @@ RSpec.describe 'Members', type: :request do
       it 'returns http redirect (succeed with same year)' do
         sign_in user
         post '/members', params: {
-          member: {
-            family_name_phonetic: 'しんき',
-            first_name_phonetic: 'なまえ',
-            family_name: '新規',
-            first_name: '名前',
-            year_id: member.year.id,
-            roles: ['']
-          }
+          member: create_member_param.merge(year_id: member.year_id)
         }
         expect(response).to redirect_to(member_path(Member.last))
       end
@@ -222,14 +215,7 @@ RSpec.describe 'Members', type: :request do
       it 'returns http redirect (rejecte with different year)' do
         sign_in user
         post '/members', params: {
-          member: {
-            family_name_phonetic: 'しんき',
-            first_name_phonetic: 'なまえ',
-            family_name: '新規',
-            first_name: '名前',
-            year_id: member3.year.id,
-            roles: ['']
-          }
+          member: create_member_param.merge(year_id: member3.year_id)
         }
         expect(response).to redirect_to(members_path)
       end
@@ -258,37 +244,19 @@ RSpec.describe 'Members', type: :request do
     describe '#update' do
       it 'returns http redirect to detailed page for own data' do
         sign_in user
-        patch "/members/#{member.id}", params: {
-          member: {
-            family_name_phonetic: 'こうしん',
-            family_name: '更新',
-            roles: ['']
-          }
-        }
+        patch "/members/#{member.id}", params: { member: edit_member_param }
         expect(response).to redirect_to(member_path(member))
       end
 
       it 'returns http redirect to detailed page for same year member data' do
         sign_in user
-        patch "/members/#{member2.id}", params: {
-          member: {
-            family_name_phonetic: 'こうしん',
-            family_name: '更新',
-            roles: ['']
-          }
-        }
+        patch "/members/#{member2.id}", params: { member: edit_member_param }
         expect(response).to redirect_to(member_path(member2))
       end
 
       it 'returns http redirect to members_path for different year member data' do
         sign_in user
-        patch "/members/#{member3.id}", params: {
-          member: {
-            family_name_phonetic: 'こうしん',
-            family_name: '更新',
-            roles: ['']
-          }
-        }
+        patch "/members/#{member3.id}", params: { member: edit_member_param }
         expect(response).to redirect_to(members_path)
       end
     end
