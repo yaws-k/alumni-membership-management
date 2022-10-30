@@ -55,7 +55,7 @@ RSpec.describe 'Members', type: :request do
 
     describe '#edit' do
       it 'returns http redirect' do
-        put "/members/#{member.id}"
+        get "/members/#{member.id}/edit"
         expect(response).to redirect_to(new_user_session_path)
       end
     end
