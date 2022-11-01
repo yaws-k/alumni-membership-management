@@ -55,9 +55,9 @@
         %td
           .flex.flex-row.gap-8
             %div
-              = link_to '編集', edit_user_path(u), class: 'btn btn-sm btn-warning'
+              = link_to '編集', edit_member_user_path(u), class: 'btn btn-sm btn-warning'
             %div
-              = button_to '削除', u, method: :delete, form: { data: { turbo_confirm: '削除しますか？' } }, class: 'btn btn-sm btn-error'
+              = button_to '削除', member_user_path(u), method: :delete, form: { data: { turbo_confirm: '削除しますか？' } }, class: 'btn btn-sm btn-error'
     %tr
       %td{colspan: 5}
         = link_to 'メールアドレス登録', new_member_user_path(@member)

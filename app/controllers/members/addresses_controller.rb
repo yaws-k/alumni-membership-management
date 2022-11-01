@@ -1,4 +1,6 @@
 class Members::AddressesController < ApplicationController
+  before_action :check_roles
+
   def new
     @member = Member.find(params[:member_id])
     @address = @member.addresses.build
@@ -16,10 +18,16 @@ class Members::AddressesController < ApplicationController
 
   def edit
     @address = Address.find(params[:id])
+    redirect_to(members_path) if @address.member_id.to_s != params[:member_id]
   end
 
   def update
     @address = Address.find(params[:id])
+    if @address.member_id.to_s != params[:member_id]
+      redirect_to(members_path)
+      return
+    end
+
     unless @address.update(address_params)
       render 'edit', status: :unprocessable_entity
       return
@@ -30,6 +38,11 @@ class Members::AddressesController < ApplicationController
 
   def destroy
     @address = Address.find(params[:id])
+    if @address.member_id.to_s != params[:member_id]
+      redirect_to(members_path)
+      return
+    end
+
     @address.destroy
     redirect_to(member_path(@address.member_id), notice: "#{@address.postal_code}　#{@address.address1}　#{@address.address2}を削除しました。")
   end
@@ -37,6 +50,7 @@ class Members::AddressesController < ApplicationController
   private
 
   def address_params
+    params[:address][:member_id] = params[:member_id]
     params.require(:address).permit(
       :postal_code,
       :address1,

@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   resources :years, except: %i[show]
-  resources :members, shallow: true do
+  resources :members do
     resources :addresses, except: %i[index show], controller: 'members/addresses'
     resources :users, except: %i[index show], controller: 'members/users'
   end
