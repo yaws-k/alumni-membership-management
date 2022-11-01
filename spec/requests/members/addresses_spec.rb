@@ -15,8 +15,7 @@ RSpec.describe 'Members::Addresses', type: :request do
     {
       postal_code: '100-0005',
       address1: '東京都千代田区丸の内1-9-1',
-      address2: '東京駅',
-      member_id: member.id
+      address2: '東京駅'
     }
   end
 
@@ -24,7 +23,7 @@ RSpec.describe 'Members::Addresses', type: :request do
     {
       postal_code: '100-0006',
       address1: '東京都千代田区有楽町2-9-17',
-      address2: '有楽町駅',
+      address2: '有楽町駅'
     }
   end
 
