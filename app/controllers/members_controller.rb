@@ -87,25 +87,24 @@ class MembersController < ApplicationController
 
     if params[:id].present?
       # For show, edit, update, destroy
-      member = Member.find(params[:id])
+      target_member = Member.find(params[:id])
     elsif member_params[:year_id].present?
       # For create
-      member = Member.new(year_id: member_params[:year_id])
+      target_member = Member.new(year_id: member_params[:year_id])
     end
 
     # Lead can access only when the target member is the same graduate year
-    return if @roles[:lead] && (member.year_id == @current_member.year_id)
+    return if @roles[:lead] && (target_member.year_id == @current_member.year_id)
 
     # Normal user can access only their own information
-    return if member.id == @current_member.id
+    return if target_member.id == @current_member.id
 
     # Access denied
     redirect_to(members_path)
   end
 
   def reject_normal_members
-    redirect_to(member_path(current_user.member)) if @roles.values.uniq == [false]
-    true
+    redirect_to(members_path) if @roles.values.uniq == [false]
   end
 
   def list_members
