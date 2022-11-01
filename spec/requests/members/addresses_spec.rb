@@ -82,22 +82,34 @@ RSpec.describe 'Members::Addresses', type: :request do
         expect(response).to have_http_status(:success)
       end
 
-      it 'returns http redirect to others data' do
+      it "returns http redirect to same year member's data" do
         get "/members/#{member2.id}/addresses/new"
+        expect(response).to redirect_to(members_path)
+      end
+
+      it "returns http redirect to other member's data" do
+        get "/members/#{member3.id}/addresses/new"
         expect(response).to redirect_to(members_path)
       end
     end
 
     describe '#create' do
-      it 'returns http redirect to own data (success)' do
+      it 'returns http redirect (success) to own data' do
         post "/members/#{member.id}/addresses", params: {
           address: create_address_param
         }
         expect(response).to redirect_to(member_path(member))
       end
 
-      it 'returns http redirect to own data (reject)' do
+      it 'returns http redirect (reject) to same year member data' do
         post "/members/#{member2.id}/addresses", params: {
+          address: create_address_param
+        }
+        expect(response).to redirect_to(members_path)
+      end
+
+      it "returns http redirect (reject) to other member's data" do
+        post "/members/#{member3.id}/addresses", params: {
           address: create_address_param
         }
         expect(response).to redirect_to(members_path)
@@ -110,34 +122,46 @@ RSpec.describe 'Members::Addresses', type: :request do
         expect(response).to have_http_status(:success)
       end
 
-      it "returns http redirect to other member's data" do
+      it 'returns http redirect to inconsistent url' do
         get "/members/#{member2.id}/addresses/#{address.id}/edit"
         expect(response).to redirect_to(members_path)
       end
 
-      it "returns http redirect to other member's address data" do
-        get "/members/#{member.id}/addresses/#{address2.id}/edit"
+      it "returns http redirect to same year member's data" do
+        get "/members/#{member2.id}/addresses/#{address2.id}/edit"
+        expect(response).to redirect_to(members_path)
+      end
+
+      it "returns http redirect to other member's data" do
+        get "/members/#{member3.id}/addresses/#{address3.id}/edit"
         expect(response).to redirect_to(members_path)
       end
     end
 
     describe '#update' do
-      it 'retuns http redirect to own data (success)' do
+      it 'retuns http redirect (success) to own data' do
         patch "/members/#{member.id}/addresses/#{address.id}", params: {
           address: edit_address_param
         }
         expect(response).to redirect_to(member_path(member))
       end
 
-      it "returns http redirect to other member's data" do
+      it 'returns http redirect to inconsistent url' do
         patch "/members/#{member2.id}/addresses/#{address.id}", params: {
           address: edit_address_param
         }
         expect(response).to redirect_to(members_path)
       end
 
-      it "returns http redirect to other member's address data" do
-        patch "/members/#{member.id}/addresses/#{address2.id}", params: {
+      it "returns http redirect (reject) to same year member's data" do
+        patch "/members/#{member2.id}/addresses/#{address2.id}", params: {
+          address: edit_address_param
+        }
+        expect(response).to redirect_to(members_path)
+      end
+
+      it "returns http redirect (reject) to other member's data" do
+        patch "/members/#{member3.id}/addresses/#{address3.id}", params: {
           address: edit_address_param
         }
         expect(response).to redirect_to(members_path)
@@ -145,18 +169,23 @@ RSpec.describe 'Members::Addresses', type: :request do
     end
 
     describe '#destroy' do
-      it 'retuns http redirect to own data (success)' do
+      it 'retuns http redirect (success) to own data' do
         delete "/members/#{member.id}/addresses/#{address.id}"
         expect(response).to redirect_to(member_path(member))
       end
 
-      it "returns http redirect to other member's data" do
+      it 'returns http redirect (reject) to inconsistent url' do
         delete "/members/#{member2.id}/addresses/#{address.id}"
         expect(response).to redirect_to(members_path)
       end
 
-      it "returns http redirect to other member's address data" do
-        delete "/members/#{member.id}/addresses/#{address2.id}"
+      it "returns http redirect (reject) to same year member's data" do
+        delete "/members/#{member2.id}/addresses/#{address2.id}"
+        expect(response).to redirect_to(members_path)
+      end
+
+      it "returns http redirect (reject) to other member's data" do
+        delete "/members/#{member3.id}/addresses/#{address3.id}"
         expect(response).to redirect_to(members_path)
       end
     end
@@ -180,28 +209,28 @@ RSpec.describe 'Members::Addresses', type: :request do
         expect(response).to have_http_status(:success)
       end
 
-      it 'returns http redirect to others data' do
+      it "returns http redirect to other member's data" do
         get "/members/#{member3.id}/addresses/new"
         expect(response).to redirect_to(members_path)
       end
     end
 
     describe '#create' do
-      it 'returns http redirect to own data (success)' do
+      it 'returns http redirect (success) to own data' do
         post "/members/#{member.id}/addresses", params: {
           address: create_address_param
         }
         expect(response).to redirect_to(member_path(member))
       end
 
-      it "returns http redirect to same year member's data (success)" do
+      it 'returns http redirect (success) to same year member data' do
         post "/members/#{member2.id}/addresses", params: {
           address: create_address_param
         }
         expect(response).to redirect_to(member_path(member2))
       end
 
-      it 'returns http redirect (reject) to others data' do
+      it "returns http redirect (reject) to other member's data" do
         post "/members/#{member3.id}/addresses", params: {
           address: create_address_param
         }
@@ -215,23 +244,35 @@ RSpec.describe 'Members::Addresses', type: :request do
         expect(response).to have_http_status(:success)
       end
 
+      it 'returns http redirect to inconsistent url' do
+        get "/members/#{member2.id}/addresses/#{address.id}/edit"
+        expect(response).to redirect_to(members_path)
+      end
+
       it "returns http success to same year member's data" do
         get "/members/#{member2.id}/addresses/#{address2.id}/edit"
         expect(response).to have_http_status(:success)
       end
 
-      it "returns http redirect to other member's address data" do
+      it "returns http redirect to other member's data" do
         get "/members/#{member3.id}/addresses/#{address3.id}/edit"
         expect(response).to redirect_to(members_path)
       end
     end
 
     describe '#update' do
-      it 'retuns http redirect to own data (success)' do
+      it 'retuns http redirect (success) to own data' do
         patch "/members/#{member.id}/addresses/#{address.id}", params: {
           address: edit_address_param
         }
         expect(response).to redirect_to(member_path(member))
+      end
+
+      it 'returns http redirect to inconsistent url' do
+        patch "/members/#{member2.id}/addresses/#{address.id}", params: {
+          address: edit_address_param
+        }
+        expect(response).to redirect_to(members_path)
       end
 
       it "returns http redirect (success) to same year member's data" do
@@ -241,7 +282,7 @@ RSpec.describe 'Members::Addresses', type: :request do
         expect(response).to redirect_to(member_path(member2))
       end
 
-      it "returns http redirect (reject) to other member's address data" do
+      it "returns http redirect (reject) to other member's data" do
         patch "/members/#{member3.id}/addresses/#{address3.id}", params: {
           address: edit_address_param
         }
@@ -250,9 +291,14 @@ RSpec.describe 'Members::Addresses', type: :request do
     end
 
     describe '#destroy' do
-      it 'retuns http redirect to own data (success)' do
+      it 'retuns http redirect (success) to own data' do
         delete "/members/#{member.id}/addresses/#{address.id}"
         expect(response).to redirect_to(member_path(member))
+      end
+
+      it 'returns http redirect (reject) to inconsistent url' do
+        delete "/members/#{member2.id}/addresses/#{address.id}"
+        expect(response).to redirect_to(members_path)
       end
 
       it "returns http redirect (success) to same year member's data" do
@@ -260,7 +306,7 @@ RSpec.describe 'Members::Addresses', type: :request do
         expect(response).to redirect_to(member_path(member2))
       end
 
-      it "returns http redirect (reject) to other member's address data" do
+      it "returns http redirect (reject) to other member's data" do
         delete "/members/#{member3.id}/addresses/#{address3.id}"
         expect(response).to redirect_to(members_path)
       end
@@ -272,6 +318,120 @@ RSpec.describe 'Members::Addresses', type: :request do
     before do
       member.update(roles: %w[board])
       sign_in user
+    end
+
+    describe '#new' do
+      it 'returns http success to own data' do
+        get "/members/#{member.id}/addresses/new"
+        expect(response).to have_http_status(:success)
+      end
+
+      it "returns http succss to same year member's data" do
+        get "/members/#{member2.id}/addresses/new"
+        expect(response).to have_http_status(:success)
+      end
+
+      it "returns http succss to other member's data" do
+        get "/members/#{member3.id}/addresses/new"
+        expect(response).to have_http_status(:success)
+      end
+    end
+
+    describe '#create' do
+      it 'returns http redirect (success) to own data' do
+        post "/members/#{member.id}/addresses", params: {
+          address: create_address_param
+        }
+        expect(response).to redirect_to(member_path(member))
+      end
+
+      it 'returns http redirect (success) to same year member data' do
+        post "/members/#{member2.id}/addresses", params: {
+          address: create_address_param
+        }
+        expect(response).to redirect_to(member_path(member2))
+      end
+
+      it "returns http redirect (success) to other member's data" do
+        post "/members/#{member3.id}/addresses", params: {
+          address: create_address_param
+        }
+        expect(response).to redirect_to(member_path(member3))
+      end
+    end
+
+    describe '#edit' do
+      it 'returns http success to own data' do
+        get "/members/#{member.id}/addresses/#{address.id}/edit"
+        expect(response).to have_http_status(:success)
+      end
+
+      it 'returns http redirect to inconsistent url' do
+        get "/members/#{member2.id}/addresses/#{address.id}/edit"
+        expect(response).to redirect_to(members_path)
+      end
+
+      it "returns http success to same year member's data" do
+        get "/members/#{member2.id}/addresses/#{address2.id}/edit"
+        expect(response).to have_http_status(:success)
+      end
+
+      it "returns http redirect to other member's data" do
+        get "/members/#{member3.id}/addresses/#{address3.id}/edit"
+        expect(response).to have_http_status(:success)
+      end
+    end
+
+    describe '#update' do
+      it 'retuns http redirect (success) to own data' do
+        patch "/members/#{member.id}/addresses/#{address.id}", params: {
+          address: edit_address_param
+        }
+        expect(response).to redirect_to(member_path(member))
+      end
+
+      it 'returns http redirect to inconsistent url' do
+        patch "/members/#{member2.id}/addresses/#{address.id}", params: {
+          address: edit_address_param
+        }
+        expect(response).to redirect_to(members_path)
+      end
+
+      it "returns http redirect (success) to same year member's data" do
+        patch "/members/#{member2.id}/addresses/#{address2.id}", params: {
+          address: edit_address_param
+        }
+        expect(response).to redirect_to(member_path(member2))
+      end
+
+      it "returns http redirect (success) to other member's data" do
+        patch "/members/#{member3.id}/addresses/#{address3.id}", params: {
+          address: edit_address_param
+        }
+        expect(response).to redirect_to(member_path(member3))
+      end
+    end
+
+    describe '#destroy' do
+      it 'retuns http redirect (success) to own data' do
+        delete "/members/#{member.id}/addresses/#{address.id}"
+        expect(response).to redirect_to(member_path(member))
+      end
+
+      it 'returns http redirect (reject) to inconsistent url' do
+        delete "/members/#{member2.id}/addresses/#{address.id}"
+        expect(response).to redirect_to(members_path)
+      end
+
+      it "returns http redirect (success) to same year member's data" do
+        delete "/members/#{member2.id}/addresses/#{address2.id}"
+        expect(response).to redirect_to(member_path(member2))
+      end
+
+      it "returns http redirect (success) to other member's data" do
+        delete "/members/#{member3.id}/addresses/#{address3.id}"
+        expect(response).to redirect_to(member_path(member3))
+      end
     end
   end
 
