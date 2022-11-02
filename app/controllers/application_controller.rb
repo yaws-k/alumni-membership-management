@@ -3,18 +3,18 @@ class ApplicationController < ActionController::Base
   before_action :user_roles
 
   # Access check
-  def check_roles
+  def check_roles(member_id: params[:member_id])
     # Admin and Board member can access anywhere
-    return if @roles[:admin] || @roles[:board]
+    return true if @roles[:admin] || @roles[:board]
 
-    if params[:member_id].present?
-      target_member = Member.find(params[:member_id])
+    if member_id.present?
+      target_member = Member.find(member_id)
 
       # Lead can access only when the target member is the same graduate year
-      return if @roles[:lead] && (target_member.year_id == @current_member.year_id)
+      return true if @roles[:lead] && (target_member.year_id == @current_member.year_id)
 
       # Normal user can access only their own information
-      return if target_member.id == @current_member.id
+      return true if target_member.id == @current_member.id
     end
 
     # Access denied

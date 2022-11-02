@@ -26,8 +26,6 @@ RSpec.describe 'Members', type: :request do
 
   # Not logged in
   context 'not logged in' do
-    let(:member) { user.member }
-
     describe '#index' do
       it 'returns http redirect' do
         get '/members'
