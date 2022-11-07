@@ -1,4 +1,6 @@
 class PaymentsController < ApplicationController
+  before_action :check_roles_payments
+
   def index
     @payments = Event.sorted(payment_only: true)
   end
@@ -52,5 +54,13 @@ class PaymentsController < ApplicationController
       :payment_only,
       :note
     )
+  end
+
+  def check_roles_payments
+    # Admin and Board member can access anywhere
+    return true if @roles[:admin] || @roles[:board]
+
+    # Access denied
+    redirect_to(members_path)
   end
 end
