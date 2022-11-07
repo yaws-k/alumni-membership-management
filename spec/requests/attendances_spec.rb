@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Attendances", type: :request do
+RSpec.describe 'Attendances', type: :request do
   let(:user) { create(:user) }
   let(:member) { user.member }
   let(:attendance) { create(:attendance, member_id: member.id) }
