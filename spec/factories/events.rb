@@ -5,8 +5,12 @@ FactoryBot.define do
     fee { Faker::Number.number(digits: 4) }
 
     trait :full_fields do
-      payment_only { true }
+      payment_only { false }
       note { Faker::String.random(length: 40) }
+    end
+
+    trait :payment do
+      payment_only { true }
     end
   end
 end
