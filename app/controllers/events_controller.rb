@@ -1,4 +1,6 @@
 class EventsController < ApplicationController
+  before_action :check_roles_events, except: %w[index show]
+
   def index
     @events = Event.sorted(payment_only: false)
   end
@@ -52,5 +54,13 @@ class EventsController < ApplicationController
       :payment_only,
       :note
     )
+  end
+
+  def check_roles_events
+    # Admin and Board member can access anywhere
+    return true if @roles[:admin] || @roles[:board]
+
+    # Access denied
+    redirect_to(members_path)
   end
 end
