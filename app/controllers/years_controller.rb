@@ -1,4 +1,6 @@
 class YearsController < ApplicationController
+  before_action :check_roles_years
+
   def index
     @years = Year.all.sort(anno_domini: :desc)
   end
@@ -51,5 +53,13 @@ class YearsController < ApplicationController
       :anno_domini,
       :japanese_calendar
     )
+  end
+
+  def check_roles_years
+    # Admin only
+    return true if @roles[:admin]
+
+    # Access denied
+    redirect_to(members_path)
   end
 end

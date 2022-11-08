@@ -24,7 +24,7 @@ RSpec.describe Member, type: :model do
     end
 
     it 'has default values' do
-      # None
+      expect(Member.new.communication).to eq('メール')
     end
   end
 

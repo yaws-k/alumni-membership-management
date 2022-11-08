@@ -1,11 +1,19 @@
 class AttendancesController < ApplicationController
   def edit
     @attendance = Attendance.find(params[:id])
+
+    check_roles(member_id: @attendance.member_id)
+    return if performed?
+
     @application = { '出席' => true, '欠席' => false }
   end
 
   def update
     attendance = Attendance.find(params[:id])
+
+    check_roles(member_id: attendance.member_id)
+    return if performed?
+
     attendance.update!(attendance_params)
     redirect_to member_path(attendance.member_id, anchor: attendance.id)
   end
@@ -16,7 +24,7 @@ class AttendancesController < ApplicationController
     params.require(:attendance).permit(
       :application,
       :presence,
-      :payment,
+      :payment_date,
       :amount,
       :note
     )
