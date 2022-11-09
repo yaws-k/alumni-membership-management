@@ -2,17 +2,14 @@ name: Run RSpec
 
 on:
   push:
+    branches:
+      - develop
   workflow_dispatch:
 
 jobs:
   rspec:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    #services:
-    #  mongo:
-    #    image: mongo:latest
-    #    ports:
-    #      - 27018:27018
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -33,7 +30,6 @@ jobs:
           mongodb-version: 6.0
           mongodb-username: ${{ secrets.MONGODB_USER }}
           mongodb-password: ${{ secrets.MONGODB_PASSWORD }}
-          mongodb-db: ${{secrets. MONGODB_DB }}
 
       - name: Cache node modules
         uses: actions/setup-node@v3
