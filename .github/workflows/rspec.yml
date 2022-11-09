@@ -1,0 +1,42 @@
+name: Run RSpec
+
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
+
+jobs:
+  rspec:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Swap mongoid.yml
+        run: cp config/mongoid.yml.ci config/mongoid.yml
+
+      - name: master.key
+        env:
+          MASTER_KEY: ${{ secrets.MASTER_KEY }}
+        run: echo "$MASTER_KEY" > config/master.key && chmod 600 config/master.key
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.8.0
+
+      - name: Cache node modules
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Yarn install
+        run: yarn install
+
+      - name: Run rspec
+        run: bin/rails assets:precompile && bin/rspec
