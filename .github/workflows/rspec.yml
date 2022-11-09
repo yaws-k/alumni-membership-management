@@ -14,6 +14,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Swap mongoid.yml
+        run: cp config/mongoid.yml.ci config/mongoid.yml
+
       - name: master.key
         env:
           MASTER_KEY: ${{ secrets.MASTER_KEY }}
@@ -26,9 +29,6 @@ jobs:
 
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.8.0
-        with:
-          mongodb-username: ${{ secrets.MONGODB_USER }}
-          mongodb-password: ${{ secrets.MONGODB_PASSWORD }}
 
       - name: Cache node modules
         uses: actions/setup-node@v3
