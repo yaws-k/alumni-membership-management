@@ -27,7 +27,6 @@ jobs:
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.8.0
         with:
-          mongodb-version: 6.0
           mongodb-username: ${{ secrets.MONGODB_USER }}
           mongodb-password: ${{ secrets.MONGODB_PASSWORD }}
 
