@@ -8,7 +8,7 @@ RSpec.describe "001s", type: :system do
   let(:user) { create(:user) }
   let(:member) { user.member }
 
-  def login(user: nil)
+  def login_check(user: nil)
     visit new_user_session_path
     expect(page).to have_text('Log in')
 
@@ -22,28 +22,28 @@ RSpec.describe "001s", type: :system do
 
   context 'normal user' do
     it 'is possible to login' do
-      login(user:)
+      login_check(user:)
     end
   end
 
   context 'lead' do
     it 'is possible to login' do
       member.update(roles: %w[lead])
-      login(user:)
+      login_check(user:)
     end
   end
 
   context 'board' do
     it 'is possible to login' do
       member.update(roles: %w[board])
-      login(user:)
+      login_check(user:)
     end
   end
 
   context 'admin' do
     it 'is possible to login' do
       member.update(roles: %w[admin])
-      login(user:)
+      login_check(user:)
     end
   end
 end
