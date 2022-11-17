@@ -5,8 +5,7 @@ RSpec.describe "001s", type: :system do
     driven_by(:rack_test)
   end
 
-  let(:user) { create(:user) }
-  let(:member) { user.member }
+  include_context 'base user'
 
   def login_check(user: nil)
     visit new_user_session_path

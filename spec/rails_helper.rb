@@ -69,7 +69,4 @@ RSpec.configure do |config|
 
   # Enable Devise login
   config.include Devise::Test::IntegrationHelpers, type: :request
-
-  # Support modules
-  config.include SystemHelper, type: :system
 end
