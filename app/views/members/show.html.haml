@@ -5,10 +5,10 @@
 %p
   = link_to '基本情報編集・削除', edit_member_path(@member), class: 'btn btn-warning'
 
-.card.bg-secondary
+.card.bg-secondary#basicData
   .card-body
     %p
-      #{@member.year.graduate_year}（#{@member.year.anno_domini}年／#{@member.year.japanese_calendar}年3月卒）
+      #{@member.year.graduate_year}回卒（#{@member.year.anno_domini}年／#{@member.year.japanese_calendar}年3月卒）
       %br
       = full_name(@member)[1]
       %br

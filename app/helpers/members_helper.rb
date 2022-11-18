@@ -24,8 +24,6 @@ module MembersHelper
 
   def role_name(role)
     case role
-    when 'normal'
-      '一般'
     when 'lead'
       '世話役'
     when 'board'
