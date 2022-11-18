@@ -35,7 +35,7 @@
   %li メールアドレスはログインIDも兼ねています
   %li パスワードはメールアドレスごとに設定されます
 
-%table.table.w-auto
+%table.table.w-auto#mailAddress
   %thead
     %tr.text-center
       %th 状態
@@ -64,7 +64,7 @@
 
 %h2 住所
 
-%table.table.w-auto
+%table.table.w-auto#postalAddress
   %thead
     %tr.text-center
       %th 状態
@@ -82,10 +82,10 @@
         %td #{a.address2}
         %td
           .flex.flex-row.gap-8
-            %div
-              = link_to '編集', edit_address_path(a), class: 'btn btn-sm btn-warning'
-            %div
-              = button_to '削除', a, method: :delete, form: { data: { turbo_confirm: '削除しますか？' } }, class: 'btn btn-sm btn-error'
+            -#%div
+            -#  = link_to '編集', edit_address_path(a), class: 'btn btn-sm btn-warning'
+            -#%div
+            -#  = button_to '削除', a, method: :delete, form: { data: { turbo_confirm: '削除しますか？' } }, class: 'btn btn-sm btn-error'
     %tr
       %td{cols: 5}
         = link_to '住所登録', new_member_address_path(@member)

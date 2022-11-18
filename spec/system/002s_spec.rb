@@ -43,12 +43,31 @@ RSpec.describe '002s', type: :system do
       end
     end
 
-    it 'shows other data' do
+    it 'shows other basic data' do
       member.update(occupation: 'work or university')
       visit member_path(member)
       within(id: 'basicData') do
         expect(page).to have_text(member.communication)
         expect(page).to have_text('work or university')
+      end
+    end
+
+    it 'shows mail address' do
+      visit member_path(member)
+      within(id: 'mailAddress') do
+        expect(page).to have_text('有効')
+        expect(page).to have_text(user.email)
+      end
+    end
+
+    it 'shows postal address' do
+      address = create(:address, :full_fields, member_id: member.id)
+      visit member_path(member)
+      within(id: 'postalAddress') do
+        expect(page).to have_text('不達')
+        expect(page).to have_text(address.postal_code)
+        expect(page).to have_text(address.address1)
+        expect(page).to have_text(address.address2)
       end
     end
   end
