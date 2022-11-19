@@ -10,6 +10,11 @@ RSpec.describe '002s', type: :system do
 
   RSpec.shared_examples 'check contents' do
     context 'basic data' do
+      it 'shows base data edit link' do
+        visit member_path(member)
+        expect(page).to have_link('基本情報編集・削除', href: edit_member_path(member))
+      end
+
       it 'shows graduate year' do
         visit member_path(member)
         within(id: 'basicData') do
