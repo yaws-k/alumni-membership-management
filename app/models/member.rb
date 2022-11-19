@@ -8,6 +8,10 @@ class Member
   has_many :attendances, dependent: :destroy
   has_many :users, dependent: :destroy
 
+  # Before validation
+  before_validation  \
+    :generate_search_key
+
   # Validations
   validates \
     :family_name_phonetic,
@@ -18,7 +22,13 @@ class Member
     :search_key,
     presence: true
 
-  before_validation :generate_search_key
+  validate \
+    :phonetic_valid?,
+    :name_valid?
+
+  before_save \
+    :normalize_phonetics,
+    :normalize_names
 
   # Fields
   field :family_name_phonetic, type: String
@@ -48,5 +58,66 @@ class Member
       family_name +
       maiden_name.to_s +
       first_name
+  end
+
+  # Custom validation
+  def phonetic_valid?
+    errors.add(:family_name_phonetic, '名字の読み仮名に漢字や記号が入っています。') if phonetic_check(str: family_name_phonetic)
+    errors.add(:first_name_phonetic,  '名前の読み仮名に漢字や記号が入っています。') if phonetic_check(str: first_name_phonetic)
+    errors.add(:maiden_name_phonetic, '旧姓の読み仮名に漢字や記号が入っています。') if phonetic_check(str: maiden_name_phonetic)
+  end
+
+  def name_valid?
+    errors.add(:family_name, '名字に記号など不正な文字が入っています。') if name_check(str: family_name)
+    errors.add(:first_name,  '名前に記号など不正な文字が入っています。') if name_check(str: first_name)
+    errors.add(:maiden_name, '旧姓に記号など不正な文字が入っています。') if name_check(str: maiden_name)
+  end
+
+  def phonetic_check(str: nil)
+    return false if str.blank?
+    return true if str.match(/\p{Han}/)
+
+    name_check(str:)
+  end
+
+  def name_check(str: nil)
+    return false if str.blank?
+    return true if str.strip.unicode_normalize(:nfkc).match(/[ 　‐‑–—―−ｰ,.\/（）\(\)]/)
+
+    false
+  end
+
+  def normalize_phonetics
+    self.family_name_phonetic = phonetic_conv(str: family_name_phonetic)
+    self.first_name_phonetic = phonetic_conv(str: first_name_phonetic)
+    self.maiden_name_phonetic = phonetic_conv(str: maiden_name_phonetic)
+  end
+
+  def phonetic_conv(str: nil)
+    return '' if str.blank?
+
+    normalized = str.strip.unicode_normalize(:nfkc)
+    if normalized.include?('?')
+      '？？？？？'
+    else
+      normalized.tr('ァ-ン', 'ぁ-ん')
+    end
+  end
+
+  def normalize_names
+    self.family_name = name_conv(str: family_name)
+    self.first_name = name_conv(str: first_name)
+    self.maiden_name = name_conv(str: maiden_name)
+  end
+
+  def name_conv(str: nil)
+    return '' if str.blank?
+
+    normalized = str.strip.unicode_normalize(:nfkc)
+    if normalized.include?('?')
+      '？？？？？'
+    else
+      normalized
+    end
   end
 end
