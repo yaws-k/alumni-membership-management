@@ -27,7 +27,7 @@ class Event
   # Class methods
   class << self
     # Scopes
-    def sorted(payment_only)
+    def sorted(payment_only: false)
       case payment_only
       when 'true', true
         where(payment_only: true).sort(event_date: :desc)
@@ -35,7 +35,7 @@ class Event
         where(payment_only: false).sort(event_date: :desc)
       else
         # Return no record
-        where(payment_only: nil)
+        []
       end
     end
   end
