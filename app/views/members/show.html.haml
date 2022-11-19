@@ -92,9 +92,27 @@
 
 %h2 会費および寄付履歴
 
+%table.table.w-auto#payment
+  %thead
+    %tr.text-center
+      %th 種別
+      %th 締日
+      %th 支払日
+      %th 金額
+      %th 備考
+  %tbody
+    - @payments.each do |rec|
+      - next if @payment_dates[rec.id].blank?
+      %tr.hover{id: rec.id}
+        %td #{rec.event_name}
+        %td #{rec.event_date}
+        %td #{@payment_dates[rec.id].payment_date}
+        %td #{rec.fee.to_fs(:delimited)}
+        %td #{@payment_dates[rec.id].note}
+
 %h2 イベント参加申し込み・履歴
 
-%table.table.w-auto
+%table.table.w-auto#event
   %thead
     %tr.text-center
       %th イベント
@@ -114,20 +132,23 @@
         %td.text-center
           = event_presence(@attendances[rec.id].application)
         %td #{@attendances[rec.id].note}
-        %td
-          .flex.flex-wrap.gap-4
-            %div
-              = form_with(model: @attendances[rec.id], data: { turbo: false }) do |f|
-                = f.hidden_field :application, value: true
-                = f.hidden_field :member_id, value: @member.id
-                = f.hidden_field :event_id, value: rec.id
-                = f.submit '出席', class: 'btn btn-sm btn-primary'
-            %div
-              = form_with(model: @attendances[rec.id], data: { turbo: false }) do |f|
-                = f.hidden_field :application, value: false
-                = f.hidden_field :member_id, value: @member.id
-                = f.hidden_field :event_id, value: rec.id
-                = f.submit '欠席', class: 'btn btn-sm btn-accent'
-            - unless @attendances[rec.id].nil?
+        %td.text-center
+          - if rec.event_date > Date.today
+            .flex.flex-wrap.gap-4
               %div
-                = link_to '備考', edit_attendance_path(@attendances[rec.id]), class: 'btn btn-sm btn-info'
+                = form_with(model: @attendances[rec.id], data: { turbo: false }) do |f|
+                  = f.hidden_field :application, value: true
+                  = f.hidden_field :member_id, value: @member.id
+                  = f.hidden_field :event_id, value: rec.id
+                  = f.submit '出席', class: 'btn btn-sm btn-primary'
+              %div
+                = form_with(model: @attendances[rec.id], data: { turbo: false }) do |f|
+                  = f.hidden_field :application, value: false
+                  = f.hidden_field :member_id, value: @member.id
+                  = f.hidden_field :event_id, value: rec.id
+                  = f.submit '欠席', class: 'btn btn-sm btn-accent'
+              - unless @attendances[rec.id].nil?
+                %div
+                  = link_to '備考', edit_attendance_path(@attendances[rec.id]), class: 'btn btn-sm btn-info'
+          - else
+            \-

@@ -8,7 +8,7 @@ FactoryBot.define do
       presence { false }
       payment_date { Date.today - 3 }
       amount { 3000 }
-      note { Faker::String.random(length: 20) }
+      note { Faker::Alphanumeric.alphanumeric(number: 20) }
     end
   end
 end
