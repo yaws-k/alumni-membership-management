@@ -6,7 +6,7 @@ FactoryBot.define do
 
     trait :full_fields do
       payment_only { false }
-      note { Faker::String.random(length: 40) }
+      note { Faker::Alphanumeric.alphanumeric(number: 40) }
     end
 
     trait :payment do
