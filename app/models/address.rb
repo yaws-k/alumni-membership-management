@@ -31,8 +31,8 @@ class Address
   # Custom filters
   def normalize
     postal_code.unicode_normalize!(:nfkc).tr!('ー', '-') if postal_code.present?
-    address1.unicode_normalize!(:nfkc) if address1.present?
-    address2.unicode_normalize!(:nfkc) if address2.present?
+    address1.unicode_normalize!(:nfkc).tr!('ー', '-') if address1.present?
+    address2.unicode_normalize!(:nfkc).tr!('ー', '-') if address2.present?
   end
 
   # Custom validations

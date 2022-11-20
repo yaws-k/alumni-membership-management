@@ -83,10 +83,31 @@ RSpec.describe '003-3s', type: :system do
         end
       end
     end
+
+    context 'convert input' do
+      it 'converts postal code (1)' do
+        fill_in('address_postal_code', with: '１００ー0005')
+        click_button('送信')
+        expect(page).to have_text('100-0005')
+      end
+
+      it 'converts postal code (2)' do
+        fill_in('address_postal_code', with: '１００0005')
+        click_button('送信')
+        expect(page).to have_text('100-0005')
+      end
+
+      it 'converts address' do
+        fill_in('address_address1', with: '東京都千代田区有楽町２ー9-17')
+        click_button('送信')
+        expect(page).to have_text('東京都千代田区有楽町2-9-17')
+      end
+    end
   end
 
   RSpec.shared_examples 'delete address' do
-    before { visit visit member_path(member) }
+    let!(:address) { create(:address, :full_fields, member_id: member.id) }
+    before { visit member_path(member) }
 
     it 'deletes email' do
       expect(Address.where(id: address.id).size).to eq(1)
@@ -94,7 +115,7 @@ RSpec.describe '003-3s', type: :system do
       within(id: address.id.to_s) { click_button('削除') }
 
       expect(current_path).to eq(member_path(member))
-      expect(page).to have_text("#{@address.postal_code}　#{@address.address1}　#{@address.address2}を削除しました。")
+      expect(page).to have_text("#{address.postal_code}　#{address.address1}　#{address.address2}を削除しました。")
       expect(Address.where(id: address.id).size).to eq(0)
     end
   end
@@ -102,6 +123,7 @@ RSpec.describe '003-3s', type: :system do
   context 'normal user' do
     it_behaves_like 'new address'
     it_behaves_like 'edit address'
+    it_behaves_like 'delete address'
   end
 
   context 'lead' do
@@ -109,6 +131,7 @@ RSpec.describe '003-3s', type: :system do
 
     it_behaves_like 'new address'
     it_behaves_like 'edit address'
+    it_behaves_like 'delete address'
   end
 
   context 'board' do
@@ -116,6 +139,7 @@ RSpec.describe '003-3s', type: :system do
 
     it_behaves_like 'new address'
     it_behaves_like 'edit address'
+    it_behaves_like 'delete address'
   end
 
   context 'admin' do
@@ -123,5 +147,6 @@ RSpec.describe '003-3s', type: :system do
 
     it_behaves_like 'new address'
     it_behaves_like 'edit address'
+    it_behaves_like 'delete address'
   end
 end
