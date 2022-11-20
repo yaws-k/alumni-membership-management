@@ -10,7 +10,10 @@ RSpec.describe '003-2s', type: :system do
   include_context 'login'
 
   RSpec.shared_examples 'new user' do
-    before { visit new_member_user_path(member) }
+    before do
+      visit member_path(member)
+      click_link('メールアドレス登録', href: new_member_user_path(member))
+    end
 
     context 'check fields' do
       it 'shows new user link' do
@@ -65,7 +68,10 @@ RSpec.describe '003-2s', type: :system do
 
   RSpec.shared_examples 'edit user' do
     context 'check fields' do
-      before { visit edit_member_user_path(member, user) }
+      before do
+        visit member_path(member)
+        click_link('編集', href: edit_member_user_path(member, user))
+      end
 
       it 'shows edit user link' do
         visit member_path(member)
@@ -82,7 +88,10 @@ RSpec.describe '003-2s', type: :system do
 
     context 'update' do
       context 'current email' do
-        before { visit edit_member_user_path(member, user) }
+        before do
+          visit member_path(member)
+          click_link('編集', href: edit_member_user_path(member, user))
+        end
 
         context 'email change only' do
           before do
@@ -133,9 +142,10 @@ RSpec.describe '003-2s', type: :system do
       end
 
       context 'another email' do
-        let(:user2) { create(:user, member_id: member.id) }
+        let!(:user2) { create(:user, member_id: member.id) }
         before do
-          visit edit_member_user_path(member, user2)
+          visit member_path(member)
+          within(id: user2.id.to_s) { click_link('編集', href: edit_member_user_path(member, user2)) }
           fill_in('user_email', with: 'edit_mail@example.com')
           fill_in('user_password', with: 'editPassword')
           fill_in('user_password_confirmation', with: 'editPassword')

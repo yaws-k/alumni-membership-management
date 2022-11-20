@@ -9,7 +9,10 @@ RSpec.describe '003-1s', type: :system do
   include_context 'login'
 
   RSpec.shared_examples 'edit member' do
-    before { visit edit_member_path(member) }
+    before do
+      visit member_path(member)
+      click_link('基本情報編集・削除', href: edit_member_path(member))
+    end
 
     context 'check fields' do
       it 'shows member edit link' do

@@ -7,10 +7,13 @@ RSpec.describe '003-3s', type: :system do
 
   include_context 'base user'
   include_context 'login'
-  let(:address) { create(:address, :full_fields, member_id: member.id) }
+  let!(:address) { create(:address, :full_fields, member_id: member.id) }
 
   RSpec.shared_examples 'new address' do
-    before { visit new_member_address_path(member) }
+    before do
+      visit member_path(member)
+      click_link('住所登録', href: new_member_address_path(member))
+    end
 
     context 'check fields' do
       it 'shows new address link' do
@@ -50,7 +53,10 @@ RSpec.describe '003-3s', type: :system do
   end
 
   RSpec.shared_examples 'edit address' do
-    before { visit edit_member_address_path(member, address) }
+    before do
+      visit member_path(member)
+      click_link('編集', href: edit_member_address_path(member, address))
+    end
 
     context 'check fields' do
       it 'shows edit address link' do
