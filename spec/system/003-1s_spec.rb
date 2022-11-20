@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe '003s', type: :system do
+RSpec.describe '003-1s', type: :system do
   before do
     driven_by(:rack_test)
   end
@@ -67,7 +67,6 @@ RSpec.describe '003s', type: :system do
         fill_in('member_maiden_name_phonetic', with: ' ナマエＡＢＣ')
         click_button('送信')
 
-        member.reload
         expect(page).to have_text('？？？？？')
         expect(page).to have_text('きゅうせい')
         expect(page).to have_text('なまえABC')
