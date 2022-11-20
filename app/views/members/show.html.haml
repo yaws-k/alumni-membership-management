@@ -45,7 +45,7 @@
       %th 操作
   %tbody
     - @users.each do |u|
-      %tr.hover
+      %tr.hover{id: u.id}
         %td
           = reachability(u)
         %td #{u.email}
@@ -74,7 +74,7 @@
       %th 操作
   %tbody
     - @addresses.each do |a|
-      %tr.hover
+      %tr.hover{id: a.id}
         %td
           = reachability(a)
         %td #{a.postal_code}
@@ -83,9 +83,9 @@
         %td
           .flex.flex-row.gap-8
             %div
-              = link_to '編集', edit_member_address_path(a), class: 'btn btn-sm btn-warning'
+              = link_to '編集', edit_member_address_path(@member, a), class: 'btn btn-sm btn-warning'
             %div
-              = button_to '削除', member_address_path(a), method: :delete, form: { data: { turbo_confirm: '削除しますか？' } }, class: 'btn btn-sm btn-error'
+              = button_to '削除', member_address_path(@member, a), method: :delete, form: { data: { turbo_confirm: '削除しますか？' } }, class: 'btn btn-sm btn-error'
     %tr
       %td{cols: 5}
         = link_to '住所登録', new_member_address_path(@member)

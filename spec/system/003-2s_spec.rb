@@ -27,21 +27,18 @@ RSpec.describe '003-2s', type: :system do
     end
 
     context 'create' do
-      it 'redirects to member detail page' do
+      before do
         fill_in('user_email', with: 'new_mail@example.com')
         fill_in('user_password', with: 'difficultPassword')
         fill_in('user_password_confirmation', with: 'difficultPassword')
         click_button('送信')
+      end
 
+      it 'redirects to member detail page' do
         expect(current_path).to eq(member_path(member))
       end
 
       it 'shows created email' do
-        fill_in('user_email', with: 'new_mail@example.com')
-        fill_in('user_password', with: 'difficultPassword')
-        fill_in('user_password_confirmation', with: 'difficultPassword')
-        click_button('送信')
-
         within(id: 'mailAddress') do
           expect(page).to have_text('new_mail@example.com')
         end
@@ -88,10 +85,12 @@ RSpec.describe '003-2s', type: :system do
         before { visit edit_member_user_path(member, user) }
 
         context 'email change only' do
-          it 'redirects to member detail page' do
+          before do
             fill_in('user_email', with: 'edit_mail@example.com')
             click_button('送信')
+          end
 
+          it 'redirects to member detail page' do
             expect(current_path).to eq(member_path(member))
             within(id: 'mailAddress') do
               expect(page).to have_text('edit_mail@example.com')
@@ -99,8 +98,6 @@ RSpec.describe '003-2s', type: :system do
           end
 
           it 'preserves old password' do
-            fill_in('user_email', with: 'edit_mail@example.com')
-            click_button('送信')
             click_button('Logout')
 
             visit new_user_session_path
@@ -113,21 +110,18 @@ RSpec.describe '003-2s', type: :system do
         end
 
         context 'password change' do
-          it 'redirects to login page' do
+          before do
             fill_in('user_email', with: 'edit_mail@example.com')
             fill_in('user_password', with: 'editPassword')
             fill_in('user_password_confirmation', with: 'editPassword')
             click_button('送信')
+          end
 
+          it 'redirects to login page' do
             expect(current_path).to eq(new_user_session_path)
           end
 
           it 'updates password' do
-            fill_in('user_email', with: 'edit_mail@example.com')
-            fill_in('user_password', with: 'editPassword')
-            fill_in('user_password_confirmation', with: 'editPassword')
-            click_button('送信')
-
             visit new_user_session_path
             fill_in 'user_email', with: 'edit_mail@example.com'
             fill_in 'user_password', with: 'editPassword'
@@ -140,15 +134,16 @@ RSpec.describe '003-2s', type: :system do
 
       context 'another email' do
         let(:user2) { create(:user, member_id: member.id) }
-        before { visit edit_member_user_path(member, user2) }
-
-        it 'redirects to member detail page' do
+        before do
+          visit edit_member_user_path(member, user2)
           fill_in('user_email', with: 'edit_mail@example.com')
           fill_in('user_password', with: 'editPassword')
           fill_in('user_password_confirmation', with: 'editPassword')
           check('user_unreachable')
           click_button('送信')
+        end
 
+        it 'redirects to member detail page' do
           expect(current_path).to eq(member_path(member))
           within(id: 'mailAddress') do
             expect(page).to have_text('不達')
@@ -157,10 +152,6 @@ RSpec.describe '003-2s', type: :system do
         end
 
         it 'updates password' do
-          fill_in('user_email', with: 'edit_mail@example.com')
-          fill_in('user_password', with: 'editPassword')
-          fill_in('user_password_confirmation', with: 'editPassword')
-          click_button('送信')
           click_button('Logout')
 
           visit new_user_session_path
@@ -174,9 +165,25 @@ RSpec.describe '003-2s', type: :system do
     end
   end
 
+  RSpec.shared_examples 'delete user' do
+    let!(:user2) { create(:user, member_id: member.id) }
+    before { visit member_path(member) }
+
+    it 'deletes email' do
+      expect(User.where(id: user2.id).size).to eq(1)
+
+      within(id: user2.id.to_s) { click_button('削除') }
+
+      expect(current_path).to eq(member_path(member))
+      expect(page).to have_text("#{user2.email}を削除しました。")
+      expect(User.where(id: user2.id).size).to eq(0)
+    end
+  end
+
   context 'normal user' do
     it_behaves_like 'new user'
     it_behaves_like 'edit user'
+    it_behaves_like 'delete user'
   end
 
   context 'lead' do
@@ -184,6 +191,7 @@ RSpec.describe '003-2s', type: :system do
 
     it_behaves_like 'new user'
     it_behaves_like 'edit user'
+    it_behaves_like 'delete user'
   end
 
   context 'board' do
@@ -191,6 +199,7 @@ RSpec.describe '003-2s', type: :system do
 
     it_behaves_like 'new user'
     it_behaves_like 'edit user'
+    it_behaves_like 'delete user'
   end
 
   context 'admin' do
@@ -198,5 +207,6 @@ RSpec.describe '003-2s', type: :system do
 
     it_behaves_like 'new user'
     it_behaves_like 'edit user'
+    it_behaves_like 'delete user'
   end
 end
