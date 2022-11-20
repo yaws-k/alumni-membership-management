@@ -7,7 +7,8 @@ RSpec.describe '005s', type: :system do
 
   include_context 'base user'
   include_context 'login'
-  let!(:event) { create(:event, :full_fields) }
+  let!(:event) { create(:event, :full_fields, event_date: Date.today + 10) }
+  let!(:event2) { create(:event, :full_fields, event_date: Date.today + 20) }
 
   RSpec.shared_examples 'event list' do
     before do
@@ -21,6 +22,13 @@ RSpec.describe '005s', type: :system do
       expect(page).to have_text(event.fee.to_fs(:delimited))
       expect(page).to have_text(event.note)
       expect(page).to have_link('詳細', href: event_path(event))
+    end
+
+    it 'sorts events by event date' do
+      array = []
+      [event2, event].each { |e| array << "id='#{e.id}'" }
+      regexp = Regexp.new(array.join('.*'), Regexp::MULTILINE)
+      expect(page.source).to match(regexp)
     end
   end
 
