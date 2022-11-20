@@ -165,25 +165,9 @@ RSpec.describe '003-2s', type: :system do
     end
   end
 
-  RSpec.shared_examples 'delete user' do
-    let!(:user2) { create(:user, member_id: member.id) }
-    before { visit member_path(member) }
-
-    it 'deletes email' do
-      expect(User.where(id: user2.id).size).to eq(1)
-
-      within(id: user2.id.to_s) { click_button('削除') }
-
-      expect(current_path).to eq(member_path(member))
-      expect(page).to have_text("#{user2.email}を削除しました。")
-      expect(User.where(id: user2.id).size).to eq(0)
-    end
-  end
-
   context 'normal user' do
     it_behaves_like 'new user'
     it_behaves_like 'edit user'
-    it_behaves_like 'delete user'
   end
 
   context 'lead' do
@@ -191,7 +175,6 @@ RSpec.describe '003-2s', type: :system do
 
     it_behaves_like 'new user'
     it_behaves_like 'edit user'
-    it_behaves_like 'delete user'
   end
 
   context 'board' do
@@ -199,7 +182,6 @@ RSpec.describe '003-2s', type: :system do
 
     it_behaves_like 'new user'
     it_behaves_like 'edit user'
-    it_behaves_like 'delete user'
   end
 
   context 'admin' do
@@ -207,6 +189,5 @@ RSpec.describe '003-2s', type: :system do
 
     it_behaves_like 'new user'
     it_behaves_like 'edit user'
-    it_behaves_like 'delete user'
   end
 end

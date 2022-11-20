@@ -105,25 +105,9 @@ RSpec.describe '003-3s', type: :system do
     end
   end
 
-  RSpec.shared_examples 'delete address' do
-    let!(:address) { create(:address, :full_fields, member_id: member.id) }
-    before { visit member_path(member) }
-
-    it 'deletes email' do
-      expect(Address.where(id: address.id).size).to eq(1)
-
-      within(id: address.id.to_s) { click_button('削除') }
-
-      expect(current_path).to eq(member_path(member))
-      expect(page).to have_text("#{address.postal_code}　#{address.address1}　#{address.address2}を削除しました。")
-      expect(Address.where(id: address.id).size).to eq(0)
-    end
-  end
-
   context 'normal user' do
     it_behaves_like 'new address'
     it_behaves_like 'edit address'
-    it_behaves_like 'delete address'
   end
 
   context 'lead' do
@@ -131,7 +115,6 @@ RSpec.describe '003-3s', type: :system do
 
     it_behaves_like 'new address'
     it_behaves_like 'edit address'
-    it_behaves_like 'delete address'
   end
 
   context 'board' do
@@ -139,7 +122,6 @@ RSpec.describe '003-3s', type: :system do
 
     it_behaves_like 'new address'
     it_behaves_like 'edit address'
-    it_behaves_like 'delete address'
   end
 
   context 'admin' do
@@ -147,6 +129,5 @@ RSpec.describe '003-3s', type: :system do
 
     it_behaves_like 'new address'
     it_behaves_like 'edit address'
-    it_behaves_like 'delete address'
   end
 end
