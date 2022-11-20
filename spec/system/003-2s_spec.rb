@@ -22,6 +22,7 @@ RSpec.describe '003-2s', type: :system do
         expect(page).to have_field('user_email')
         expect(page).to have_field('user_password')
         expect(page).to have_field('user_password_confirmation')
+        expect(page).to have_field('user_unreachable')
       end
     end
 
@@ -78,6 +79,7 @@ RSpec.describe '003-2s', type: :system do
         expect(page).to have_field('user_email')
         expect(page).to have_field('user_password')
         expect(page).to have_field('user_password_confirmation')
+        expect(page).to have_field('user_unreachable')
       end
     end
 
@@ -144,10 +146,12 @@ RSpec.describe '003-2s', type: :system do
           fill_in('user_email', with: 'edit_mail@example.com')
           fill_in('user_password', with: 'editPassword')
           fill_in('user_password_confirmation', with: 'editPassword')
+          check('user_unreachable')
           click_button('送信')
 
           expect(current_path).to eq(member_path(member))
           within(id: 'mailAddress') do
+            expect(page).to have_text('不達')
             expect(page).to have_text('edit_mail@example.com')
           end
         end
