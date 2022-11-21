@@ -62,6 +62,29 @@ RSpec.describe Member, type: :model do
     end
   end
 
+  describe 'Class method' do
+    describe 'year_sort' do
+      let(:rec1) { create(:member) }
+      let(:rec2) { create(:member) }
+      let(:member_ids) { [rec1.id, rec2.id] }
+
+      before do
+        rec1.year.update(anno_domini: 2000)
+        rec2.year.update(anno_domini: 2010)
+      end
+
+      it 'sorts members by year asc' do
+        recs = Member.year_sort(id: member_ids, order: :asc)
+        expect(recs.pluck(:id)).to eq([rec1.id, rec2.id])
+      end
+
+      it 'sorts members by year desc' do
+        recs = Member.year_sort(id: member_ids, order: :desc)
+        expect(recs.pluck(:id)).to eq([rec2.id, rec1.id])
+      end
+    end
+  end
+
   describe 'private method' do
     describe 'generate_search_key' do
       context 'without mainden name' do

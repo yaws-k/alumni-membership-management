@@ -42,11 +42,11 @@ RSpec.describe '006s', type: :system do
     end
 
     it 'sorts participants by guraduate year and phonetics' do
-      # member3 -> member2 -> member1
-      member3.update(family_name_phonetic: 'あああ')
+      member1.update(family_name_phonetic: 'あああ')
+      member1.year.update(graduate_year: '高20', anno_domini: 2020)
       member2.update(family_name_phonetic: 'いいい', year_id: member3.year_id)
-      member2.year.update(graduate_year: '高20', anno_domini: 2020)
-      member1.year.update(graduate_year: '高10', anno_domini: 2010)
+      member3.year.update(graduate_year: '高10', anno_domini: 2010)
+      visit event_path(event)
 
       array = []
       [member3, member2, member1].each { |m| array << "id='#{m.id}'" }

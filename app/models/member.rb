@@ -47,6 +47,25 @@ class Member
 
   field :roles, type: Array, default: []
 
+  # Class methods
+  class << self
+    def year_sort(id: [], order: :desc)
+      # Group members by year_id
+      member_h = {}
+      self.in(id:).order(search_key: :asc).each do |rec|
+        member_h[rec.year_id] ||= []
+        member_h[rec.year_id] << rec
+      end
+
+      # Pick members
+      members = []
+      Year.in(id: member_h.keys).order(anno_domini: order).pluck(:id).each do |year_id|
+        members.concat(member_h[year_id])
+      end
+      members
+    end
+  end
+
   private
 
   # Callback
