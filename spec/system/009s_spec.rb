@@ -20,9 +20,11 @@ RSpec.describe '009s', type: :system do
       fill_in('member_maiden_name_phonetic', with: 'きゅう　せい')
       click_button('送信')
 
-      expect(page).to have_text('名字の読み仮名に漢字や記号が入っています。')
-      expect(page).to have_text('名前の読み仮名に漢字や記号が入っています。')
-      expect(page).to have_text('旧姓の読み仮名に漢字や記号が入っています。')
+      within(class: 'alert alert-error') do
+        expect(page).to have_text('名字の読み仮名に漢字や記号が入っています。')
+        expect(page).to have_text('名前の読み仮名に漢字や記号が入っています。')
+        expect(page).to have_text('旧姓の読み仮名に漢字や記号が入っています。')
+      end
     end
 
     it 'converts phonetics before save' do
@@ -31,9 +33,11 @@ RSpec.describe '009s', type: :system do
       fill_in('member_maiden_name_phonetic', with: ' ナマエＡＢＣﾅﾏｴ')
       click_button('送信')
 
-      expect(page).to have_text('？？？？？')
-      expect(page).to have_text('？？？？？')
-      expect(page).to have_text('なまえABCなまえ')
+      within(id: 'basicData') do
+        expect(page).to have_text('？？？？？')
+        expect(page).to have_text('？？？？？')
+        expect(page).to have_text('なまえABCなまえ')
+      end
     end
   end
 
