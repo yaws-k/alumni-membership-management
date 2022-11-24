@@ -10,12 +10,13 @@ RSpec.describe '004s', type: :system do
 
   RSpec.shared_examples 'delete user' do
     let!(:user2) { create(:user, member_id: member.id) }
+
     before { visit member_path(member) }
 
     it 'deletes email' do
       expect(User.where(id: user2.id).size).to eq(1)
 
-      within(id: user2.id.to_s) { click_button('削除') }
+      within(id: dom_id(user2)) { click_button('削除') }
 
       expect(current_path).to eq(member_path(member))
       expect(page).to have_text("#{user2.email}を削除しました。")
@@ -25,12 +26,13 @@ RSpec.describe '004s', type: :system do
 
   RSpec.shared_examples 'delete address' do
     let!(:address) { create(:address, :full_fields, member_id: member.id) }
+
     before { visit member_path(member) }
 
     it 'deletes email' do
       expect(Address.where(id: address.id).size).to eq(1)
 
-      within(id: address.id.to_s) { click_button('削除') }
+      within(id: dom_id(address)) { click_button('削除') }
 
       expect(current_path).to eq(member_path(member))
       expect(page).to have_text("#{address.postal_code}　#{address.address1}　#{address.address2}を削除しました。")
