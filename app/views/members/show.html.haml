@@ -45,7 +45,7 @@
       %th 操作
   %tbody
     - @users.each do |u|
-      %tr.hover{id: u.id}
+      %tr.hover{id: dom_id(u)}
         %td
           = reachability(u)
         %td #{u.email}
@@ -74,7 +74,7 @@
       %th 操作
   %tbody
     - @addresses.each do |a|
-      %tr.hover{id: a.id}
+      %tr.hover{id: dom_id(a)}
         %td
           = reachability(a)
         %td #{a.postal_code}
@@ -103,7 +103,7 @@
   %tbody
     - @payments.each do |rec|
       - next if @payment_dates[rec.id].blank?
-      %tr.hover{id: rec.id}
+      %tr.hover{id: dom_id(rec)}
         %td #{rec.event_name}
         %td #{rec.event_date}
         %td #{@payment_dates[rec.id].payment_date}
@@ -124,7 +124,7 @@
       %th 編集
   %tbody
     - @events.each do |rec|
-      %tr.hover{id: @attendances[rec.id].id}
+      %tr.hover{id: dom_id(@attendances[rec.id])}
         %td #{rec.event_name}
         %td #{rec.event_date}
         %td #{rec.fee.to_fs(:delimited)}

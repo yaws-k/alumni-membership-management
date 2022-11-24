@@ -69,4 +69,7 @@ RSpec.configure do |config|
 
   # Enable Devise login
   config.include Devise::Test::IntegrationHelpers, type: :request
+
+  # Enable dom_id
+  config.include ActionView::RecordIdentifier, type: :system
 end

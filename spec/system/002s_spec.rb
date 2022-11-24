@@ -111,7 +111,7 @@ RSpec.describe '002s', type: :system do
 
         within(id: 'event') do
           [attendance1, attendance2, attendance3].each do |attendance|
-            within(id: attendance.id.to_s) do
+            within(id: dom_id(attendance)) do
               expect(page).to have_text(attendance.event.event_name)
               expect(page).to have_text(attendance.event.event_date)
               expect(page).to have_text(attendance.event.fee.to_fs(:delimited))
@@ -127,12 +127,12 @@ RSpec.describe '002s', type: :system do
               end
             end
           end
-          within(id: attendance1.id.to_s) { expect(page).to have_text('未回答') }
-          within(id: attendance2.id.to_s) do
+          within(id: dom_id(attendance1)) { expect(page).to have_text('未回答') }
+          within(id: dom_id(attendance2)) do
             expect(page).to have_text(attendance2.payment_date)
             expect(page).to have_text('出席')
           end
-          within(id: attendance3.id.to_s) { expect(page).to have_text('欠席') }
+          within(id: dom_id(attendance3)) { expect(page).to have_text('欠席') }
         end
       end
     end
