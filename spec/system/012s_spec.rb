@@ -20,7 +20,7 @@ RSpec.describe '012s', type: :system do
       click_button('送信')
 
       within(id: 'postalAddress') do
-        expect(page).to have_text('100-0005')
+        within(id: dom_id(address)) { expect(page).to have_text('100-0005') }
       end
     end
 
@@ -29,7 +29,7 @@ RSpec.describe '012s', type: :system do
       click_button('送信')
 
       within(id: 'postalAddress') do
-        expect(page).to have_text('100-0005')
+        within(id: dom_id(address)) { expect(page).to have_text('100-0005') }
       end
     end
   end
