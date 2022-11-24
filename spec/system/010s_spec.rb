@@ -21,8 +21,10 @@ RSpec.describe '010s', type: :system do
       click_button('送信')
 
       within(id: 'postalAddress') do
-        expect(page).to have_text('東京都千代田区有楽町2-9-17')
-        expect(page).to have_text('カーサなんとか')
+        within(id: dom_id(address)) do
+          expect(page).to have_text('東京都千代田区有楽町2-9-17')
+          expect(page).to have_text('カーサなんとか')
+        end
       end
     end
   end
