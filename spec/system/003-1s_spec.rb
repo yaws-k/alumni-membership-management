@@ -52,30 +52,6 @@ RSpec.describe '003-1s', type: :system do
       end
     end
 
-    context 'phonetic fields' do
-      it 'accepts only Hiragana for phonetics' do
-        fill_in('member_family_name_phonetic', with: '漢字')
-        fill_in('member_first_name_phonetic', with: 'なまえ）')
-        fill_in('member_maiden_name_phonetic', with: 'きゅう　せい')
-        click_button('送信')
-
-        expect(page).to have_text('名字の読み仮名に漢字や記号が入っています。')
-        expect(page).to have_text('名前の読み仮名に漢字や記号が入っています。')
-        expect(page).to have_text('旧姓の読み仮名に漢字や記号が入っています。')
-      end
-
-      it 'converts phonetics before save' do
-        fill_in('member_family_name_phonetic', with: '？')
-        fill_in('member_first_name_phonetic', with: 'ｷｭｳｾｲ')
-        fill_in('member_maiden_name_phonetic', with: ' ナマエＡＢＣ')
-        click_button('送信')
-
-        expect(page).to have_text('？？？？？')
-        expect(page).to have_text('きゅうせい')
-        expect(page).to have_text('なまえABC')
-      end
-    end
-
     context 'name fields' do
       it 'rejects special characters' do
         fill_in('member_family_name', with: '名字(')
