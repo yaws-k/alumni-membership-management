@@ -89,26 +89,6 @@ RSpec.describe '003-3s', type: :system do
         end
       end
     end
-
-    context 'convert input' do
-      it 'converts postal code (1)' do
-        fill_in('address_postal_code', with: '１００ー0005')
-        click_button('送信')
-        expect(page).to have_text('100-0005')
-      end
-
-      it 'converts postal code (2)' do
-        fill_in('address_postal_code', with: '１００0005')
-        click_button('送信')
-        expect(page).to have_text('100-0005')
-      end
-
-      it 'converts address' do
-        fill_in('address_address1', with: '東京都千代田区有楽町２ー9-17')
-        click_button('送信')
-        expect(page).to have_text('東京都千代田区有楽町2-9-17')
-      end
-    end
   end
 
   context 'normal user' do

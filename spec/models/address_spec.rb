@@ -29,12 +29,12 @@ RSpec.describe Address, type: :model do
       it 'normalize input' do
         rec.postal_code = '１２３ー４５６７'
         rec.address1 = '住所全角数字１ー２３'
-        rec.address2 = '部屋番号全角数字４５６'
+        rec.address2 = '部屋番号全角数字４５６なーんとかかんとか'
 
         rec.valid?
         expect(rec.postal_code).to eq('123-4567')
         expect(rec.address1).to eq('住所全角数字1-23')
-        expect(rec.address2).to eq('部屋番号全角数字456')
+        expect(rec.address2).to eq('部屋番号全角数字456なーんとかかんとか')
       end
     end
 
