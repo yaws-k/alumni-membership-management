@@ -17,16 +17,18 @@ RSpec.describe '005s', type: :system do
     end
 
     it 'shows list of events' do
-      expect(page).to have_text(event.event_name)
-      expect(page).to have_text(event.event_date)
-      expect(page).to have_text(event.fee.to_fs(:delimited))
-      expect(page).to have_text(event.note)
-      expect(page).to have_link('詳細', href: event_path(event))
+      within(id: dom_id(event)) do
+        expect(page).to have_text(event.event_name)
+        expect(page).to have_text(event.event_date)
+        expect(page).to have_text(event.fee.to_fs(:delimited))
+        expect(page).to have_text(event.note)
+        expect(page).to have_link('詳細', href: event_path(event))
+      end
     end
 
     it 'sorts events by event date' do
       array = []
-      [event2, event].each { |e| array << "id='#{e.id}'" }
+      [event2, event].each { |e| array << "id='#{dom_id(e)}'" }
       regexp = Regexp.new(array.join('.*'), Regexp::MULTILINE)
       expect(page.source).to match(regexp)
     end
@@ -38,7 +40,7 @@ RSpec.describe '005s', type: :system do
       visit member_path(member)
       click_link('イベント一覧', href: events_path)
 
-      within(id: event.id.to_s) do
+      within(id: dom_id(event)) do
         expect(page).to_not have_link('編集', href: edit_event_path(event))
         expect(page).to_not have_button('削除')
       end
@@ -53,7 +55,7 @@ RSpec.describe '005s', type: :system do
       visit member_path(member)
       click_link('イベント一覧', href: events_path)
 
-      within(id: event.id.to_s) do
+      within(id: dom_id(event)) do
         expect(page).to_not have_link('編集', href: edit_event_path(event))
         expect(page).to_not have_button('削除')
       end
@@ -68,7 +70,7 @@ RSpec.describe '005s', type: :system do
       visit member_path(member)
       click_link('イベント一覧', href: events_path)
 
-      within(id: event.id.to_s) do
+      within(id: dom_id(event)) do
         expect(page).to have_link('編集', href: edit_event_path(event))
         expect(page).to have_button('削除')
       end
@@ -83,7 +85,7 @@ RSpec.describe '005s', type: :system do
       visit member_path(member)
       click_link('イベント一覧', href: events_path)
 
-      within(id: event.id.to_s) do
+      within(id: dom_id(event)) do
         expect(page).to have_link('編集', href: edit_event_path(event))
         expect(page).to have_button('削除')
       end

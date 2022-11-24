@@ -16,7 +16,7 @@
       %th 操作
   %tbody
     - @events.each do |rec|
-      %tr.hover{id: rec.id}
+      %tr.hover{id: dom_id(rec)}
         %td #{rec.event_name}
         %td #{rec.event_date}
         %td.text-end #{rec.fee.to_fs(:delimited)}
