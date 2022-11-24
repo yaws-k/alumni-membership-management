@@ -18,6 +18,8 @@
         .grid.grid-flow-col.auto-cols-auto.mb-3
           %div
             = link_to 'top', members_path
+          %div
+            = link_to 'イベント一覧', events_path
           %div.text-right
             = button_to 'Logout', destroy_user_session_path, method: :delete, data: {turbo: false}, class: 'link'
       = yield

@@ -63,6 +63,15 @@ RSpec.describe MembersHelper, type: :helper do
     end
   end
 
+  describe 'role_name' do
+    it 'returns translated name' do
+      expect(helper.role_name('lead')).to eq('世話役')
+      expect(helper.role_name('board')).to eq('幹事')
+      expect(helper.role_name('admin')).to eq('システム管理者')
+      expect(helper.role_name('other')).to eq('エラー')
+    end
+  end
+
   describe 'sign_in_info' do
     let(:rec) { create(:user) }
 

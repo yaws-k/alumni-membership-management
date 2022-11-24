@@ -8,8 +8,8 @@ class EventsController < ApplicationController
   def show
     @event = Event.find(params[:id])
     @attendances = @event.attendances.index_by(&:member_id)
-    @members = Member.in(id: @attendances.keys)
-    @years = Year.all.index_by(&:id)
+    @members = Member.year_sort(id: @attendances.keys, order: :asc)
+    @years = Year.order(anno_domini: :desc).index_by(&:id)
   end
 
   def new

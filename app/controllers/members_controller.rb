@@ -14,8 +14,9 @@ class MembersController < ApplicationController
     @member = Member.find(params[:id])
     @users = @member.users
     @addresses = @member.addresses
-    @events = Event.sorted(false)
-    @payments = Event.sorted(true)
+    @payments = Event.sorted(payment_only: true)
+    @payment_dates = Attendance.in(event_id: @payments.pluck(:id), member_id: @member.id).index_by(&:event_id)
+    @events = Event.sorted(payment_only: false)
     @attendances = Attendance.in(event_id: @events.pluck(:id)).index_by(&:event_id)
     @events.each do |event|
       @attendances[event.id] = @member.attendances.create(event_id: event.id) if @attendances[event.id].blank?
