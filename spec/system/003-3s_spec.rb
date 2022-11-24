@@ -82,10 +82,12 @@ RSpec.describe '003-3s', type: :system do
 
         expect(current_path).to eq(member_path(member))
         within(id: 'postalAddress') do
-          expect(page).to have_text('不達')
-          expect(page).to have_text('100-0006')
-          expect(page).to have_text('東京都千代田区有楽町2-9-17')
-          expect(page).to have_text('有楽町駅')
+          within(id: dom_id(address)) do
+            expect(page).to have_text('不達')
+            expect(page).to have_text('100-0006')
+            expect(page).to have_text('東京都千代田区有楽町2-9-17')
+            expect(page).to have_text('有楽町駅')
+          end
         end
       end
     end
