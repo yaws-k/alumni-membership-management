@@ -22,7 +22,7 @@
       %th 詳細
   %tbody
     - @members.each do |rec|
-      %tr.hover{id: rec.id}
+      %tr.hover{id: dom_id(rec)}
         %td #{@years[rec.year_id].graduate_year}
         %td
           #{full_name(rec)[1]}

@@ -31,7 +31,7 @@ RSpec.describe '006s', type: :system do
     it 'is possible to see participants' do
       Attendance.all.each do |attendance|
         member = attendance.member
-        within(id: member.id.to_s) do
+        within(id: dom_id(member)) do
           expect(page).to have_text(member.year.graduate_year)
           expect(page).to have_text(member.family_name_phonetic)
           expect(page).to have_text(member.first_name_phonetic)
@@ -49,7 +49,7 @@ RSpec.describe '006s', type: :system do
       visit event_path(event)
 
       array = []
-      [member3, member2, member1].each { |m| array << "id='#{m.id}'" }
+      [member3, member2, member1].each { |m| array << "id='#{dom_id(m)}'" }
       regexp = Regexp.new(array.join('.*'), Regexp::MULTILINE)
       expect(page.source).to match(regexp)
     end
