@@ -145,7 +145,7 @@ RSpec.describe '003-2s', type: :system do
         let!(:user2) { create(:user, member_id: member.id) }
         before do
           visit member_path(member)
-          within(id: user2.id.to_s) { click_link('編集', href: edit_member_user_path(member, user2)) }
+          within(id: dom_id(user2)) { click_link('編集', href: edit_member_user_path(member, user2)) }
           fill_in('user_email', with: 'edit_mail@example.com')
           fill_in('user_password', with: 'editPassword')
           fill_in('user_password_confirmation', with: 'editPassword')
