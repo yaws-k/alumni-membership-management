@@ -51,30 +51,6 @@ RSpec.describe '003-1s', type: :system do
         expect(current_path).to eq(member_path(member))
       end
     end
-
-    context 'name fields' do
-      it 'rejects special characters' do
-        fill_in('member_family_name', with: '名字(')
-        fill_in('member_first_name', with: '名　前')
-        fill_in('member_maiden_name', with: '（旧姓）')
-        click_button('送信')
-
-        expect(page).to have_text('名字に記号など不正な文字が入っています。')
-        expect(page).to have_text('名前に記号など不正な文字が入っています。')
-        expect(page).to have_text('旧姓に記号など不正な文字が入っています。')
-      end
-
-      it 'converts names before save' do
-        fill_in('member_family_name', with: '名字?')
-        fill_in('member_first_name', with: 'ｶﾀｶﾅ')
-        fill_in('member_maiden_name', with: ' 旧姓 ')
-        click_button('送信')
-
-        expect(page).to have_text('？？？？？')
-        expect(page).to have_text('カタカナ')
-        expect(page).to have_text('旧姓')
-      end
-    end
   end
 
   context 'normal user' do
