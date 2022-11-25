@@ -5,11 +5,11 @@ RSpec.describe '014s', type: :system do
     driven_by(:rack_test)
   end
 
+  include_context 'base user'
+
   let!(:member1) { create(:member, :full_fields, year_id: member.year_id) }
   let!(:member2) { create(:member) }
   let!(:payment) { create(:event, :payment, event_name: '年会費') }
-
-  include_context 'base user'
 
   RSpec.shared_examples 'normal user' do
     it 'skips members_path' do
@@ -30,9 +30,21 @@ RSpec.describe '014s', type: :system do
         expect(page).to have_text(member.first_name)
         expect(page).to have_text(member.family_name_phonetic)
         expect(page).to have_text(member.first_name_phonetic)
-        expect(page).to have_text(member.communication)
-        expect(page).to have_text('未済')
+        expect(page).to have_selector('td.text-success', text: member.communication)
+        expect(page).to have_selector('td.text-warning', text: '未済')
         expect(page).to have_link('詳細', href: member_path(member))
+      end
+
+      within(id: dom_id(member1)) do
+        expect(page).to have_text(member1.family_name)
+        expect(page).to have_text(member1.first_name)
+        expect(page).to have_text(member1.maiden_name)
+        expect(page).to have_text(member1.family_name_phonetic)
+        expect(page).to have_text(member1.first_name_phonetic)
+        expect(page).to have_text(member1.maiden_name_phonetic)
+        expect(page).to have_selector('td.text-success', text: member1.communication)
+        expect(page).to have_selector('td.text-warning', text: '未済')
+        expect(page).to have_link('詳細', href: member_path(member1))
       end
     end
   end
