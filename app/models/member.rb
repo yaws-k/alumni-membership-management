@@ -49,6 +49,29 @@ class Member
 
   # Class methods
   class << self
+    def payment_status
+      annual_fee = nil
+      Event.sorted(payment_only: true).each do |rec|
+        if rec.event_name.end_with?('年会費')
+          annual_fee = rec
+          break
+        end
+      end
+      payments = Attendance.where(event_id: annual_fee.id).pluck(:member_id, :payment_date).to_h
+      status = {}
+      Member.all.only(:id, :communication).each do |m|
+        status[m.id] =
+          if m.communication == '退会'
+            '-'
+          elsif payments[m.id].present?
+            payments[m.id]
+          else
+            '未済'
+          end
+      end
+      status
+    end
+
     def year_sort(id: [], order: :desc)
       # Group members by year_id
       member_h = {}

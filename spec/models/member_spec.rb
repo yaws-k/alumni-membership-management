@@ -63,6 +63,26 @@ RSpec.describe Member, type: :model do
   end
 
   describe 'Class method' do
+    describe 'payment_status' do
+      let!(:payment) { create(:event, :payment, event_name: '年会費') }
+      let!(:event) { create(:event) }
+
+      let!(:member1) { create(:member) }
+      let!(:attendance1) { create(:attendance, :full_fields, event_id: payment.id, member_id: member1.id) }
+
+      let!(:member2) { create(:member, communication: '退会') }
+      let!(:attendance2) { create(:attendance, event_id: payment.id, member_id: member2.id) }
+
+      let!(:member3) { create(:member) }
+
+      it 'returns annual fee payment status list' do
+        status = Member.payment_status
+        expect(status[member1.id]).to eq(attendance1.payment_date)
+        expect(status[member2.id]).to eq('-')
+        expect(status[member3.id]).to eq('未済')
+      end
+    end
+
     describe 'year_sort' do
       let(:rec1) { create(:member) }
       let(:rec2) { create(:member) }
