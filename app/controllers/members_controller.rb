@@ -5,6 +5,7 @@ class MembersController < ApplicationController
   def index
     if @roles[:admin] || @roles[:board] || @roles[:lead]
       @members = list_members
+      @payments = Member.payment_status
     else
       redirect_to member_path(current_user.member)
     end
