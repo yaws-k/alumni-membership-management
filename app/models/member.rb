@@ -61,7 +61,7 @@ class Member
       status = {}
       Member.all.only(:id, :communication).each do |m|
         status[m.id] =
-          if m.communication == '退会'
+          if m.communication == '退会' || m.communication == '逝去'
             '-'
           elsif payments[m.id].present?
             payments[m.id]
