@@ -9,7 +9,6 @@ RSpec.describe '014s', type: :system do
 
   let!(:member1) { create(:member, :full_fields, year_id: member.year_id) }
   let!(:member2) { create(:member) }
-  let!(:payment) { create(:event, :payment, event_name: '年会費') }
 
   RSpec.shared_examples 'normal user' do
     it 'skips members_path' do
