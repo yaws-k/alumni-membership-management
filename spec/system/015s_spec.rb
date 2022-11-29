@@ -11,8 +11,13 @@ RSpec.describe '015s', type: :system do
   let!(:member2) { create(:member) }
 
   RSpec.shared_examples 'normal user' do
-    it 'rejects access to member details other than themselves' do
+    it 'rejects access to the same year member details' do
       visit "/members/#{member1.id}"
+      expect(current_path).to eq(member_path(member))
+    end
+
+    it 'rejects access to other year member details' do
+      visit "/members/#{member2.id}"
       expect(current_path).to eq(member_path(member))
     end
   end
