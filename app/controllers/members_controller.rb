@@ -65,7 +65,7 @@ class MembersController < ApplicationController
   private
 
   def member_params
-    params[:member][:roles] = params[:member][:roles].reject(&:blank?)
+    params[:member][:roles] = params[:member][:roles].reject(&:blank?) if params[:member][:roles].present?
     params.require(:member).permit(
       :year_id,
       :family_name_phonetic,
