@@ -8,7 +8,7 @@ RSpec.describe '003-1s', type: :system do
   include_context 'base user'
   include_context 'login'
 
-  RSpec.shared_examples 'edit member' do
+  RSpec.shared_examples '003-1 edit member' do
     before do
       visit member_path(member)
       click_link('基本情報編集・削除', href: edit_member_path(member))
@@ -54,24 +54,24 @@ RSpec.describe '003-1s', type: :system do
   end
 
   context 'normal user' do
-    it_behaves_like 'edit member'
+    it_behaves_like '003-1 edit member'
   end
 
   context 'lead' do
     before { member.update(roles: %w[lead]) }
 
-    it_behaves_like 'edit member'
+    it_behaves_like '003-1 edit member'
   end
 
   context 'board' do
     before { member.update(roles: %w[board]) }
 
-    it_behaves_like 'edit member'
+    it_behaves_like '003-1 edit member'
   end
 
   context 'admin' do
     before { member.update(roles: %w[admin]) }
 
-    it_behaves_like 'edit member'
+    it_behaves_like '003-1 edit member'
   end
 end

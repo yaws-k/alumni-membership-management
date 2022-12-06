@@ -16,7 +16,7 @@ RSpec.describe '006s', type: :system do
   let(:member2) { attendance2.member }
   let(:member3) { attendance3.member }
 
-  RSpec.shared_examples 'event detail' do
+  RSpec.shared_examples '006 event detail' do
     before do
       visit members_path
       click_link('イベント一覧', href: events_path)
@@ -56,18 +56,21 @@ RSpec.describe '006s', type: :system do
   end
 
   context 'normal user' do
-    it_behaves_like 'event detail'
+    it_behaves_like '006 event detail'
   end
 
   context 'lead' do
     before { member.update(roles: %w[lead]) }
+    it_behaves_like '006 event detail'
   end
 
   context 'board' do
     before { member.update(roles: %w[board]) }
+    it_behaves_like '006 event detail'
   end
 
   context 'admin' do
     before { member.update(roles: %w[admin]) }
+    it_behaves_like '006 event detail'
   end
 end

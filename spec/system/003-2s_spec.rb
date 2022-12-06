@@ -9,14 +9,14 @@ RSpec.describe '003-2s', type: :system do
   include_context 'base user'
   include_context 'login'
 
-  RSpec.shared_examples 'new user' do
+  RSpec.shared_examples '003-2 new user' do
     before do
       visit member_path(member)
       click_link('メールアドレス登録', href: new_member_user_path(member))
     end
 
     context 'check fields' do
-      it 'shows new user link' do
+      it 'shows 003-2 new user link' do
         visit member_path(member)
         expect(page).to have_link('メールアドレス登録', href: new_member_user_path(member))
       end
@@ -66,7 +66,7 @@ RSpec.describe '003-2s', type: :system do
     end
   end
 
-  RSpec.shared_examples 'edit user' do
+  RSpec.shared_examples '003-2 edit user' do
     context 'check fields' do
       before do
         visit member_path(member)
@@ -179,28 +179,28 @@ RSpec.describe '003-2s', type: :system do
   end
 
   context 'normal user' do
-    it_behaves_like 'new user'
-    it_behaves_like 'edit user'
+    it_behaves_like '003-2 new user'
+    it_behaves_like '003-2 edit user'
   end
 
   context 'lead' do
     before { member.update(roles: %w[lead]) }
 
-    it_behaves_like 'new user'
-    it_behaves_like 'edit user'
+    it_behaves_like '003-2 new user'
+    it_behaves_like '003-2 edit user'
   end
 
   context 'board' do
     before { member.update(roles: %w[board]) }
 
-    it_behaves_like 'new user'
-    it_behaves_like 'edit user'
+    it_behaves_like '003-2 new user'
+    it_behaves_like '003-2 edit user'
   end
 
   context 'admin' do
     before { member.update(roles: %w[admin]) }
 
-    it_behaves_like 'new user'
-    it_behaves_like 'edit user'
+    it_behaves_like '003-2 new user'
+    it_behaves_like '003-2 edit user'
   end
 end

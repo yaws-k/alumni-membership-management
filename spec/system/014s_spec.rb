@@ -10,13 +10,13 @@ RSpec.describe '014s', type: :system do
   let!(:member1) { create(:member, :full_fields, year_id: member.year_id) }
   let!(:member2) { create(:member) }
 
-  RSpec.shared_examples 'normal user' do
+  RSpec.shared_examples '014 normal user' do
     it 'skips members_path' do
       expect(current_path).to eq(member_path(member))
     end
   end
 
-  RSpec.shared_examples 'lead' do
+  RSpec.shared_examples '014 lead' do
     it 'shows same year members' do
       within(id: dom_id(member)) { expect(page).to have_text(member.family_name) }
       within(id: dom_id(member1)) { expect(page).to have_text(member1.family_name) }
@@ -52,12 +52,12 @@ RSpec.describe '014s', type: :system do
     include_context 'login'
 
     context 'root_path' do
-      it_behaves_like 'normal user'
+      it_behaves_like '014 normal user'
     end
 
     context 'members_path' do
       before { visit members_path }
-      it_behaves_like 'normal user'
+      it_behaves_like '014 normal user'
     end
   end
 
@@ -69,7 +69,7 @@ RSpec.describe '014s', type: :system do
       it 'redirects to root_path' do
         expect(current_path).to eq(root_path)
       end
-      it_behaves_like 'lead'
+      it_behaves_like '014 lead'
     end
 
     context 'members_path' do
@@ -80,7 +80,7 @@ RSpec.describe '014s', type: :system do
         visit members_path
         expect(current_path).to eq(members_path)
       end
-      it_behaves_like 'lead'
+      it_behaves_like '014 lead'
     end
   end
 end

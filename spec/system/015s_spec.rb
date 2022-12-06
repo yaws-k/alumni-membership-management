@@ -10,7 +10,7 @@ RSpec.describe '015s', type: :system do
   let!(:member1) { create(:member, :full_fields, year_id: member.year_id) }
   let!(:member2) { create(:member) }
 
-  RSpec.shared_examples 'normal user' do
+  RSpec.shared_examples '015 normal user' do
     it 'rejects access to the same year member details' do
       visit "/members/#{member1.id}"
       expect(current_path).to eq(member_path(member))
@@ -22,7 +22,7 @@ RSpec.describe '015s', type: :system do
     end
   end
 
-  RSpec.shared_examples 'lead' do
+  RSpec.shared_examples '015 lead' do
     it 'accepts access to the same year member details' do
       expect(current_path).to eq(root_path)
       click_link('詳細', href: member_path(member1))
@@ -46,12 +46,12 @@ RSpec.describe '015s', type: :system do
 
   context 'normal user' do
     include_context 'login'
-    it_behaves_like 'normal user'
+    it_behaves_like '015 normal user'
   end
 
   context 'lead' do
     before { member.update(roles: %w[lead]) }
     include_context 'login'
-    it_behaves_like 'lead'
+    it_behaves_like '015 lead'
   end
 end

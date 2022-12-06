@@ -10,7 +10,7 @@ RSpec.describe '005s', type: :system do
   let!(:event) { create(:event, :full_fields, event_date: Date.today + 10) }
   let!(:event2) { create(:event, :full_fields, event_date: Date.today + 20) }
 
-  RSpec.shared_examples 'event list' do
+  RSpec.shared_examples '005 event list' do
     before do
       visit member_path(member)
       click_link('イベント一覧', href: events_path)
@@ -35,7 +35,7 @@ RSpec.describe '005s', type: :system do
   end
 
   context 'normal user' do
-    it_behaves_like 'event list'
+    it_behaves_like '005 event list'
     it 'is not possible to edit events' do
       visit member_path(member)
       click_link('イベント一覧', href: events_path)
@@ -50,7 +50,7 @@ RSpec.describe '005s', type: :system do
   context 'lead' do
     before { member.update(roles: %w[lead]) }
 
-    it_behaves_like 'event list'
+    it_behaves_like '005 event list'
     it 'is not possible to edit events' do
       visit member_path(member)
       click_link('イベント一覧', href: events_path)
@@ -65,7 +65,7 @@ RSpec.describe '005s', type: :system do
   context 'board' do
     before { member.update(roles: %w[board]) }
 
-    it_behaves_like 'event list'
+    it_behaves_like '005 event list'
     it 'is not possible to edit events' do
       visit member_path(member)
       click_link('イベント一覧', href: events_path)
@@ -80,7 +80,7 @@ RSpec.describe '005s', type: :system do
   context 'admin' do
     before { member.update(roles: %w[admin]) }
 
-    it_behaves_like 'event list'
+    it_behaves_like '005 event list'
     it 'is not possible to edit events' do
       visit member_path(member)
       click_link('イベント一覧', href: events_path)

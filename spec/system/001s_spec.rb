@@ -1,13 +1,13 @@
 require 'rails_helper'
 
-RSpec.describe "001s", type: :system do
+RSpec.describe '001s', type: :system do
   before do
     driven_by(:rack_test)
   end
 
   include_context 'base user'
 
-  RSpec.shared_examples 'login check' do
+  RSpec.shared_examples '001 login check' do
     it 'is possible to login' do
       visit new_user_session_path
       expect(page).to have_text('Log in')
@@ -22,21 +22,21 @@ RSpec.describe "001s", type: :system do
   end
 
   context 'normal user' do
-    it_behaves_like 'login check'
+    it_behaves_like '001 login check'
   end
 
   context 'lead' do
     before { member.update(roles: %w[lead]) }
-    it_behaves_like 'login check'
+    it_behaves_like '001 login check'
   end
 
   context 'board' do
     before { member.update(roles: %w[board]) }
-    it_behaves_like 'login check'
+    it_behaves_like '001 login check'
   end
 
   context 'admin' do
     before { member.update(roles: %w[admin]) }
-    it_behaves_like 'login check'
+    it_behaves_like '001 login check'
   end
 end
