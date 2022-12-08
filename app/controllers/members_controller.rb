@@ -134,7 +134,12 @@ class MembersController < ApplicationController
   end
 
   def prepare_options
-    @years = Year.all.sort(anno_domini: :desc).pluck(:graduate_year, :id).to_h
+    @years =
+      if @roles[:board] || @roles[:admin]
+        Year.all.sort(anno_domini: :desc).pluck(:graduate_year, :id).to_h
+      else
+        Year.where(id: @current_member.year_id).pluck(:graduate_year, :id).to_h
+      end
     @communications = %w[メール 郵便 退会 逝去]
     @role_options = [
       %w[lead 同学年全員の情報へアクセス可能],
