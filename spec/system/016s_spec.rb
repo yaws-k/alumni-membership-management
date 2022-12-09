@@ -9,10 +9,10 @@ RSpec.describe '016s', type: :system do
 
   let!(:member1) { create(:member, :full_fields, year_id: member.year_id) }
   let!(:user1) { create(:user, member_id: member1.id) }
-  let!(:address1) { create(:address, member_id: member1.id)}
+  let!(:address1) { create(:address, member_id: member1.id) }
   let!(:member2) { create(:member) }
   let!(:user2) { create(:user, member_id: member2.id) }
-  let!(:address2) { create(:address, member_id: member2.id)}
+  let!(:address2) { create(:address, member_id: member2.id) }
 
   RSpec.shared_examples '016 normal user' do
     it 'rejects access to the same member information' do
