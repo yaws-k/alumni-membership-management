@@ -1,4 +1,15 @@
 module MembersHelper
+  def communication(status)
+    case status
+    when '通常'
+      'text-success'
+    when '郵便'
+      'text-warning'
+    when '退会'
+      'text-error-content'
+    end
+  end
+
   def event_presence(presence)
     case presence
     when true
@@ -20,6 +31,17 @@ module MembersHelper
     end
 
     [name, phonetic]
+  end
+
+  def payment(status)
+    case status
+    when '未済'
+      'text-warning'
+    when '-'
+      ''
+    else
+      'text-success'
+    end
   end
 
   def role_name(role)

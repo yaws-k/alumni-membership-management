@@ -22,10 +22,10 @@
             %th 詳細
         %tbody
           - years[:members].each do |m|
-            %tr.hover
-              %td #{m.family_name} #{m.first_name}
-              %td #{m.family_name_phonetic} #{m.first_name_phonetic}
-              %td.text-center #{m.communication}
-              %td 未設定
+            %tr.hover{id: dom_id(m)}
+              %td #{full_name(m)[0]}
+              %td #{full_name(m)[1]}
+              %td.text-center{class: communication(m.communication)} #{m.communication}
+              %td.text-center{class: payment(@payments[m.id])} #{@payments[m.id]}
               %td
                 = link_to '詳細', member_path(m), class: 'btn btn-sm btn-info'

@@ -19,8 +19,12 @@ RSpec.describe MembersHelper, type: :helper do
     end
   end
 
+  describe 'communication' do
+    # Skip (too simple)
+  end
+
   describe 'full_name' do
-    let(:rec) {
+    let(:rec) do
       create(
         :member,
         family_name: '名字',
@@ -28,7 +32,7 @@ RSpec.describe MembersHelper, type: :helper do
         first_name: '名前',
         first_name_phonetic: 'なまえ'
       )
-    }
+    end
 
     context 'with maiden name' do
       it 'returns full name' do
@@ -71,6 +75,11 @@ RSpec.describe MembersHelper, type: :helper do
       expect(helper.role_name('other')).to eq('エラー')
     end
   end
+
+  describe 'payment' do
+    # Skip (too simple)
+  end
+
 
   describe 'sign_in_info' do
     let(:rec) { create(:user) }

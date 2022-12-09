@@ -14,7 +14,9 @@ class Members::UsersController < ApplicationController
     end
 
     @user = User.new(user_params)
+    @user.member_id = params[:member_id]
     unless @user.save
+      @member = Member.find(params[:member_id])
       render 'new', status: :unprocessable_entity
       return
     end
@@ -24,7 +26,7 @@ class Members::UsersController < ApplicationController
 
   def edit
     @user = User.find(params[:id])
-    redirect_to(members_path) if @user.member_id.to_s != params[:member_id]
+    @member = @user.member
   end
 
   def update
@@ -34,12 +36,8 @@ class Members::UsersController < ApplicationController
     end
 
     @user = User.find(params[:id])
-    if @user.member_id.to_s != params[:member_id]
-      redirect_to(members_path)
-      return
-    end
-
     unless @user.update(user_params)
+      @member = @user.member
       render 'edit', status: :unprocessable_entity
       return
     end
@@ -61,13 +59,11 @@ class Members::UsersController < ApplicationController
   private
 
   def user_params
-    params[:user][:member_id] = params[:member_id]
     params.require(:user).permit(
       :email,
       :password,
       :password_confirmation,
-      :unreachable,
-      :member_id
+      :unreachable
     )
   end
 end

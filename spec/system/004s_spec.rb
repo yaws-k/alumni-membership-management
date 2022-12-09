@@ -8,7 +8,7 @@ RSpec.describe '004s', type: :system do
   include_context 'base user'
   include_context 'login'
 
-  RSpec.shared_examples 'delete user' do
+  RSpec.shared_examples '004 delete user' do
     let!(:user2) { create(:user, member_id: member.id) }
 
     before { visit member_path(member) }
@@ -24,7 +24,7 @@ RSpec.describe '004s', type: :system do
     end
   end
 
-  RSpec.shared_examples 'delete address' do
+  RSpec.shared_examples '004 delete address' do
     let!(:address) { create(:address, :full_fields, member_id: member.id) }
 
     before { visit member_path(member) }
@@ -41,28 +41,28 @@ RSpec.describe '004s', type: :system do
   end
 
   context 'normal user' do
-    it_behaves_like 'delete user'
-    it_behaves_like 'delete address'
+    it_behaves_like '004 delete user'
+    it_behaves_like '004 delete address'
   end
 
   context 'lead' do
     before { member.update(roles: %w[lead]) }
 
-    it_behaves_like 'delete user'
-    it_behaves_like 'delete address'
+    it_behaves_like '004 delete user'
+    it_behaves_like '004 delete address'
   end
 
   context 'board' do
     before { member.update(roles: %w[board]) }
 
-    it_behaves_like 'delete user'
-    it_behaves_like 'delete address'
+    it_behaves_like '004 delete user'
+    it_behaves_like '004 delete address'
   end
 
   context 'admin' do
     before { member.update(roles: %w[admin]) }
 
-    it_behaves_like 'delete user'
-    it_behaves_like 'delete address'
+    it_behaves_like '004 delete user'
+    it_behaves_like '004 delete address'
   end
 end

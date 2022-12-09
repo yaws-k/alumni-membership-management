@@ -8,7 +8,7 @@ RSpec.describe '002s', type: :system do
   include_context 'base user'
   include_context 'login'
 
-  RSpec.shared_examples 'check contents' do
+  RSpec.shared_examples '002 check contents' do
     context 'basic data' do
       it 'shows graduate year' do
         visit member_path(member)
@@ -139,7 +139,7 @@ RSpec.describe '002s', type: :system do
   end
 
   context 'normal user' do
-    it_behaves_like 'check contents'
+    it_behaves_like '002 check contents'
     it 'shows roles' do
       visit member_path(member)
       within(id: 'basicData') do
@@ -153,7 +153,7 @@ RSpec.describe '002s', type: :system do
   context 'lead' do
     before { member.update(roles: %w[lead]) }
 
-    it_behaves_like 'check contents'
+    it_behaves_like '002 check contents'
     it 'shows roles' do
       visit member_path(member)
       within(id: 'basicData') do
@@ -165,7 +165,7 @@ RSpec.describe '002s', type: :system do
   context 'board' do
     before { member.update(roles: %w[board]) }
 
-    it_behaves_like 'check contents'
+    it_behaves_like '002 check contents'
     it 'shows roles' do
       visit member_path(member)
       within(id: 'basicData') do
@@ -177,7 +177,7 @@ RSpec.describe '002s', type: :system do
   context 'admin' do
     before { member.update(roles: %w[admin]) }
 
-    it_behaves_like 'check contents'
+    it_behaves_like '002 check contents'
     it 'shows roles' do
       visit member_path(member)
       within(id: 'basicData') do

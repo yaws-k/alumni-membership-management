@@ -5,6 +5,7 @@ RSpec.describe 'Members', type: :request do
   let(:member) { user.member }
   let(:member2) { create(:member, year_id: member.year_id) }
   let(:member3) { create(:member) }
+  let!(:payment) { create(:event, :payment, event_name: '年会費') }
 
   let(:create_member_param) do
     {

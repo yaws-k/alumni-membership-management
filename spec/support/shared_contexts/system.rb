@@ -12,4 +12,5 @@ RSpec.shared_context 'base user' do
   let(:user) { create(:user) }
   let(:member) { user.member }
   let(:year) { member.year }
+  let!(:payment) { create(:event, :payment, event_name: '年会費') }
 end

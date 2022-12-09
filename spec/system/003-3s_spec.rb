@@ -52,7 +52,7 @@ RSpec.describe '003-3s', type: :system do
     end
   end
 
-  RSpec.shared_examples 'edit address' do
+  RSpec.shared_examples '003-3 edit address' do
     before do
       visit member_path(member)
       click_link('編集', href: edit_member_address_path(member, address))
@@ -95,27 +95,27 @@ RSpec.describe '003-3s', type: :system do
 
   context 'normal user' do
     it_behaves_like 'new address'
-    it_behaves_like 'edit address'
+    it_behaves_like '003-3 edit address'
   end
 
   context 'lead' do
     before { member.update(roles: %w[lead]) }
 
     it_behaves_like 'new address'
-    it_behaves_like 'edit address'
+    it_behaves_like '003-3 edit address'
   end
 
   context 'board' do
     before { member.update(roles: %w[board]) }
 
     it_behaves_like 'new address'
-    it_behaves_like 'edit address'
+    it_behaves_like '003-3 edit address'
   end
 
   context 'admin' do
     before { member.update(roles: %w[admin]) }
 
     it_behaves_like 'new address'
-    it_behaves_like 'edit address'
+    it_behaves_like '003-3 edit address'
   end
 end

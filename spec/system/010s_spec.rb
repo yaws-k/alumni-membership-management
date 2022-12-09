@@ -9,7 +9,7 @@ RSpec.describe '010s', type: :system do
   include_context 'login'
   let!(:address) { create(:address, :full_fields, member_id: member.id) }
 
-  RSpec.shared_examples 'address' do
+  RSpec.shared_examples '010 address' do
     before do
       visit member_path(member)
       click_link('編集', href: edit_member_address_path(member, address))
@@ -30,24 +30,24 @@ RSpec.describe '010s', type: :system do
   end
 
   context 'normal user' do
-    it_behaves_like 'address'
+    it_behaves_like '010 address'
   end
 
   context 'lead' do
     before { member.update(roles: %w[lead]) }
 
-    it_behaves_like 'address'
+    it_behaves_like '010 address'
   end
 
   context 'board' do
     before { member.update(roles: %w[board]) }
 
-    it_behaves_like 'address'
+    it_behaves_like '010 address'
   end
 
   context 'admin' do
     before { member.update(roles: %w[admin]) }
 
-    it_behaves_like 'address'
+    it_behaves_like '010 address'
   end
 end

@@ -38,19 +38,18 @@
     備考
     %br
     = f.text_area(:note, placeholder: 'その他補足', class: 'w-full max-w-xl')
-  .grid.grid-flow-col.auto-cols-auto
-    %div.col
-  %table.table.w-auto
-    %thead
-      %tr
-        %th Role
-        %th 補足
-    %tbody
-      = f.collection_check_boxes :roles, @role_options, :first, :last do |b|
+  - if @roles[:admin]
+    %table.table.w-auto#roles
+      %thead
         %tr
-          %td
-            = b.check_box
-            = b.label { role_name(b.value) }
-          %td
-            = b.label
+          %th Role
+          %th 補足
+      %tbody
+        = f.collection_check_boxes :roles, @role_options, :first, :last do |b|
+          %tr
+            %td
+              = b.check_box
+              = b.label { role_name(b.value) }
+            %td
+              = b.label
   = f.submit '送信', class: 'btn btn-primary'

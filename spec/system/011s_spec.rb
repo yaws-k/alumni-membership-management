@@ -8,7 +8,7 @@ RSpec.describe '011s', type: :system do
   include_context 'base user'
   include_context 'login'
 
-  RSpec.shared_examples 'name conversion' do
+  RSpec.shared_examples '011 name conversion' do
     before do
       visit member_path(member)
       click_link('基本情報編集・削除', href: edit_member_path(member))
@@ -42,24 +42,24 @@ RSpec.describe '011s', type: :system do
   end
 
   context 'normal user' do
-    it_behaves_like 'name conversion'
+    it_behaves_like '011 name conversion'
   end
 
   context 'lead' do
     before { member.update(roles: %w[lead]) }
 
-    it_behaves_like 'name conversion'
+    it_behaves_like '011 name conversion'
   end
 
   context 'board' do
     before { member.update(roles: %w[board]) }
 
-    it_behaves_like 'name conversion'
+    it_behaves_like '011 name conversion'
   end
 
   context 'admin' do
     before { member.update(roles: %w[admin]) }
 
-    it_behaves_like 'name conversion'
+    it_behaves_like '011 name conversion'
   end
 end
