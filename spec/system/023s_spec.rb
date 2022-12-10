@@ -14,8 +14,11 @@ RSpec.describe '023s', type: :system do
   let!(:user2) { create(:user, member_id: member2.id) }
   let!(:address2) { create(:address, member_id: member2.id) }
 
-  RSpec.shared_examples '023 board' do
-    before { expect(current_path).to eq(root_path) }
+  context 'board' do
+    before do
+      member.update(roles: %w[board])
+    end
+    include_context 'login'
 
     context 'the same year member' do
       before { click_link('詳細', href: member_path(member1)) }
@@ -188,12 +191,5 @@ RSpec.describe '023s', type: :system do
         end
       end
     end
-  end
-
-  context 'board' do
-    before { member.update(roles: %w[board]) }
-    include_context 'login'
-
-    it_behaves_like '023 board'
   end
 end
