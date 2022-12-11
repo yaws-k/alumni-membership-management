@@ -8,9 +8,19 @@ RSpec.shared_context 'login' do
   end
 end
 
+RSpec.shared_context 'login as lead' do
+  before { user.member.update(roles: %w[lead]) }
+  include_context 'login'
+end
+
+RSpec.shared_context 'login as board' do
+  before { user.member.update(roles: %w[board]) }
+  include_context 'login'
+end
+
 RSpec.shared_context 'base user' do
-  let(:user) { create(:user) }
-  let(:member) { user.member }
-  let(:year) { member.year }
+  let!(:user) { create(:user) }
+  let!(:member) { user.member }
+  let!(:year) { member.year }
   let!(:payment) { create(:event, :payment, event_name: '年会費') }
 end
