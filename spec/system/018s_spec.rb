@@ -13,7 +13,9 @@ RSpec.describe '018s', type: :system do
   let!(:member2) { create(:member) }
   let!(:user2) { create(:user, member_id: member2.id) }
 
-  RSpec.shared_examples '018 normal user' do
+  context 'normal user' do
+    include_context 'login'
+
     it 'rejects to access the same year member edit page' do
       visit edit_member_path(member1)
       expect(current_path).to eq(member_path(member))
@@ -25,7 +27,9 @@ RSpec.describe '018s', type: :system do
     end
   end
 
-  RSpec.shared_examples '018 lead' do
+  context 'lead' do
+    include_context 'login as lead'
+
     before do
       click_link('詳細', href: member_path(member1))
       expect(current_path).to eq(member_path(member1))
@@ -57,16 +61,5 @@ RSpec.describe '018s', type: :system do
       expect(Member.where(id: member1.id).size).to eq(0)
       expect(page).to_not have_selector(id: dom_id(member1))
     end
-  end
-
-  context 'normal user' do
-    include_context 'login'
-    it_behaves_like '018 normal user'
-  end
-
-  context 'lead' do
-    before { member.update(roles: %w[lead]) }
-    include_context 'login'
-    it_behaves_like '018 lead'
   end
 end

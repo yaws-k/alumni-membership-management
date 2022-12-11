@@ -12,15 +12,17 @@ RSpec.describe '017s', type: :system do
   let!(:member2) { create(:member) }
   let!(:user2) { create(:user, member_id: member2.id) }
 
-  RSpec.shared_examples '017 normal user' do
+  context 'normal user' do
+    include_context 'login'
+
     it 'rejects access to new member page' do
       visit new_member_path
       expect(current_path).to eq(member_path(member))
     end
   end
 
-  RSpec.shared_examples '017 lead' do
-    before { expect(current_path).to eq(root_path) }
+  context 'lead' do
+    include_context 'login as lead'
 
     context 'the same year member' do
       it 'shows new member create link' do
@@ -61,16 +63,5 @@ RSpec.describe '017s', type: :system do
         expect(current_path).to eq(members_path)
       end
     end
-  end
-
-  context 'normal user' do
-    include_context 'login'
-    it_behaves_like '017 normal user'
-  end
-
-  context 'lead' do
-    before { member.update(roles: %w[lead]) }
-    include_context 'login'
-    it_behaves_like '017 lead'
   end
 end

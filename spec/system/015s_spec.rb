@@ -10,7 +10,9 @@ RSpec.describe '015s', type: :system do
   let!(:member1) { create(:member, :full_fields, year_id: member.year_id) }
   let!(:member2) { create(:member) }
 
-  RSpec.shared_examples '015 normal user' do
+  context 'normal user' do
+    include_context 'login'
+
     it 'rejects access to the same year member details' do
       visit "/members/#{member1.id}"
       expect(current_path).to eq(member_path(member))
@@ -22,7 +24,9 @@ RSpec.describe '015s', type: :system do
     end
   end
 
-  RSpec.shared_examples '015 lead' do
+  context 'lead' do
+    include_context 'login as lead'
+
     it 'accepts access to the same year member details' do
       expect(current_path).to eq(root_path)
       click_link('詳細', href: member_path(member1))
@@ -42,16 +46,5 @@ RSpec.describe '015s', type: :system do
     it 'does not show the link to add payment history'
 
     it 'does not show links to edit and delete for payment history'
-  end
-
-  context 'normal user' do
-    include_context 'login'
-    it_behaves_like '015 normal user'
-  end
-
-  context 'lead' do
-    before { member.update(roles: %w[lead]) }
-    include_context 'login'
-    it_behaves_like '015 lead'
   end
 end
