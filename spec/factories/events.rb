@@ -5,8 +5,9 @@ FactoryBot.define do
     fee { Faker::Number.number(digits: 4) }
 
     trait :full_fields do
-      payment_only { false }
+      payment_only { true }
       note { Faker::Alphanumeric.alphanumeric(number: 40) }
+      annual_fee { true }
     end
 
     trait :payment do

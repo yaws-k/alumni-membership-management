@@ -13,12 +13,14 @@ RSpec.describe Event, type: :model do
       rec.event_date = nil
       rec.fee = ''
       rec.payment_only = nil
+      rec.annual_fee = nil
 
       expect(rec).to_not be_valid
       expect(rec.errors[:event_name]).to include("can't be blank")
       expect(rec.errors[:event_date]).to include("can't be blank")
       expect(rec.errors[:fee]).to include("can't be blank")
       expect(rec.errors[:payment_only]).to include('is not included in the list')
+      expect(rec.errors[:annual_fee]).to include('is not included in the list')
     end
 
     it 'has default values' do
