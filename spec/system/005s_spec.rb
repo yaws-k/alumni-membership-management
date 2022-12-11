@@ -6,7 +6,6 @@ RSpec.describe '005s', type: :system do
   end
 
   include_context 'base user'
-  include_context 'login'
   let!(:event) { create(:event, :full_fields, event_date: Date.today + 10) }
   let!(:event2) { create(:event, :full_fields, event_date: Date.today + 20) }
 
@@ -35,7 +34,10 @@ RSpec.describe '005s', type: :system do
   end
 
   context 'normal user' do
+    include_context 'login'
+
     it_behaves_like '005 event list'
+
     it 'is not possible to edit events' do
       visit member_path(member)
       click_link('イベント一覧', href: events_path)
@@ -48,9 +50,10 @@ RSpec.describe '005s', type: :system do
   end
 
   context 'lead' do
-    before { member.update(roles: %w[lead]) }
+    include_context 'login as lead'
 
     it_behaves_like '005 event list'
+
     it 'is not possible to edit events' do
       visit member_path(member)
       click_link('イベント一覧', href: events_path)
@@ -63,9 +66,10 @@ RSpec.describe '005s', type: :system do
   end
 
   context 'board' do
-    before { member.update(roles: %w[board]) }
+    include_context 'login as board'
 
     it_behaves_like '005 event list'
+
     it 'is not possible to edit events' do
       visit member_path(member)
       click_link('イベント一覧', href: events_path)
@@ -78,9 +82,10 @@ RSpec.describe '005s', type: :system do
   end
 
   context 'admin' do
-    before { member.update(roles: %w[admin]) }
+    include_context 'login as admin'
 
     it_behaves_like '005 event list'
+
     it 'is not possible to edit events' do
       visit member_path(member)
       click_link('イベント一覧', href: events_path)

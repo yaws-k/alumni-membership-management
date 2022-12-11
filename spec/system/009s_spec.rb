@@ -6,7 +6,6 @@ RSpec.describe '009s', type: :system do
   end
 
   include_context 'base user'
-  include_context 'login'
 
   RSpec.shared_examples '009 phonetics' do
     before do
@@ -42,23 +41,25 @@ RSpec.describe '009s', type: :system do
   end
 
   context 'normal user' do
+    include_context 'login'
+
     it_behaves_like '009 phonetics'
   end
 
   context 'lead' do
-    before { member.update(roles: %w[lead]) }
+    include_context 'login as lead'
 
     it_behaves_like '009 phonetics'
   end
 
   context 'board' do
-    before { member.update(roles: %w[board]) }
+    include_context 'login as board'
 
     it_behaves_like '009 phonetics'
   end
 
   context 'admin' do
-    before { member.update(roles: %w[admin]) }
+    include_context 'login as admin'
 
     it_behaves_like '009 phonetics'
   end

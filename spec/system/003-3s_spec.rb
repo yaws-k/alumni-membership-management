@@ -6,7 +6,6 @@ RSpec.describe '003-3s', type: :system do
   end
 
   include_context 'base user'
-  include_context 'login'
   let!(:address) { create(:address, :full_fields, member_id: member.id) }
 
   RSpec.shared_examples 'new address' do
@@ -94,26 +93,28 @@ RSpec.describe '003-3s', type: :system do
   end
 
   context 'normal user' do
+    include_context 'login'
+
     it_behaves_like 'new address'
     it_behaves_like '003-3 edit address'
   end
 
   context 'lead' do
-    before { member.update(roles: %w[lead]) }
+    include_context 'login as lead'
 
     it_behaves_like 'new address'
     it_behaves_like '003-3 edit address'
   end
 
   context 'board' do
-    before { member.update(roles: %w[board]) }
+    include_context 'login as board'
 
     it_behaves_like 'new address'
     it_behaves_like '003-3 edit address'
   end
 
   context 'admin' do
-    before { member.update(roles: %w[admin]) }
+    include_context 'login as admin'
 
     it_behaves_like 'new address'
     it_behaves_like '003-3 edit address'
