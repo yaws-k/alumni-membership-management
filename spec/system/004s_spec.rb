@@ -6,7 +6,6 @@ RSpec.describe '004s', type: :system do
   end
 
   include_context 'base user'
-  include_context 'login'
 
   RSpec.shared_examples '004 delete user' do
     let!(:user2) { create(:user, member_id: member.id) }
@@ -41,26 +40,28 @@ RSpec.describe '004s', type: :system do
   end
 
   context 'normal user' do
+    include_context 'login'
+
     it_behaves_like '004 delete user'
     it_behaves_like '004 delete address'
   end
 
   context 'lead' do
-    before { member.update(roles: %w[lead]) }
+    include_context 'login as lead'
 
     it_behaves_like '004 delete user'
     it_behaves_like '004 delete address'
   end
 
   context 'board' do
-    before { member.update(roles: %w[board]) }
+    include_context 'login as board'
 
     it_behaves_like '004 delete user'
     it_behaves_like '004 delete address'
   end
 
   context 'admin' do
-    before { member.update(roles: %w[admin]) }
+    include_context 'login as admin'
 
     it_behaves_like '004 delete user'
     it_behaves_like '004 delete address'

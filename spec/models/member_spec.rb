@@ -64,7 +64,7 @@ RSpec.describe Member, type: :model do
 
   describe 'Class method' do
     describe 'payment_status' do
-      let!(:payment) { create(:event, :payment, event_name: '年会費') }
+      let!(:payment) { create(:event, :annual_fee, event_name: '年会費') }
       let!(:event) { create(:event) }
 
       let!(:member1) { create(:member) }

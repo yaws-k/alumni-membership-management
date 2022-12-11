@@ -6,7 +6,6 @@ RSpec.describe '011s', type: :system do
   end
 
   include_context 'base user'
-  include_context 'login'
 
   RSpec.shared_examples '011 name conversion' do
     before do
@@ -42,23 +41,25 @@ RSpec.describe '011s', type: :system do
   end
 
   context 'normal user' do
+    include_context 'login'
+
     it_behaves_like '011 name conversion'
   end
 
   context 'lead' do
-    before { member.update(roles: %w[lead]) }
+    include_context 'login as lead'
 
     it_behaves_like '011 name conversion'
   end
 
   context 'board' do
-    before { member.update(roles: %w[board]) }
+    include_context 'login as board'
 
     it_behaves_like '011 name conversion'
   end
 
   context 'admin' do
-    before { member.update(roles: %w[admin]) }
+    include_context 'login as admin'
 
     it_behaves_like '011 name conversion'
   end
