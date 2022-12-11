@@ -29,7 +29,7 @@ RSpec.describe '004s', type: :system do
 
     before { visit member_path(member) }
 
-    it 'deletes email' do
+    it 'deletes address' do
       expect(Address.where(id: address.id).size).to eq(1)
 
       within(id: dom_id(address)) { click_button('削除') }
