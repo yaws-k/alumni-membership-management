@@ -10,6 +10,7 @@
   %thead
     %tr.text-center
       %th 支払い区分
+      %th 年会費
       %th 締め日
       %th 費用
       %th 補足
@@ -18,6 +19,7 @@
     - @payments.each do |rec|
       %tr.hover
         %td #{rec.event_name}
+        %td #{true_check(rec.annual_fee)}
         %td #{rec.event_date}
         %td.text-end #{rec.fee.to_fs(:delimited)}
         %td #{rec.note}

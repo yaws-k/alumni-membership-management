@@ -50,13 +50,8 @@ class Member
   # Class methods
   class << self
     def payment_status
-      annual_fee = nil
-      Event.sorted(payment_only: true).each do |rec|
-        if rec.event_name.end_with?('年会費')
-          annual_fee = rec
-          break
-        end
-      end
+      # The annual fee with the nearest future event_date is the current status of annual fee payment
+      annual_fee = Event.where(payment_only: true, annual_fee: true).where(:event_date.gte => Date.today).order(event_date: :asc).first
       payments = Attendance.where(event_id: annual_fee.id).pluck(:member_id, :payment_date).to_h
       status = {}
       Member.all.only(:id, :communication).each do |m|

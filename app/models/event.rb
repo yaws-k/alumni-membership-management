@@ -14,6 +14,7 @@ class Event
 
   validates \
     :payment_only,
+    :annual_fee,
     inclusion: { in: [true, false] }
 
   # Fields
@@ -22,6 +23,7 @@ class Event
   index({ event_date: 1 }, { sparse: false, unique: false })
   field :fee, type: Integer, default: 0
   field :payment_only, type: Boolean, default: false
+  field :annual_fee, type: Boolean, default: false
   field :note, type: String
 
   # Class methods
