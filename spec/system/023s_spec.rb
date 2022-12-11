@@ -16,7 +16,7 @@ RSpec.describe '023s', type: :system do
 
   include_context 'login as board'
 
-  context 'the same year member' do
+  context 'same year member' do
     before { click_link('詳細', href: member_path(member1)) }
 
     context 'basic member information' do
