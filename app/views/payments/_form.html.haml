@@ -4,6 +4,9 @@
   支払い区分
   %br
   = f.text_field(:event_name, placeholder: '2022-2025年会費', size: 40)
+  %br
+  = f.check_box(:annual_fee)
+  = f.label(:annual_fee, '年会費の場合はチェック')
 .mb-4
   締め日
   %br

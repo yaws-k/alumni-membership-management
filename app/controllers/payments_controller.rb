@@ -52,6 +52,7 @@ class PaymentsController < ApplicationController
       :event_date,
       :fee,
       :payment_only,
+      :annual_fee,
       :note
     )
   end
