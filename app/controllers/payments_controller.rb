@@ -62,6 +62,6 @@ class PaymentsController < ApplicationController
     return true if @roles[:admin] || @roles[:board]
 
     # Access denied
-    redirect_to(members_path)
+    redirect_to(members_path, alert: 'Access denied')
   end
 end

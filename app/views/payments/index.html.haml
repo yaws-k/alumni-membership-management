@@ -17,7 +17,7 @@
       %th 操作
   %tbody
     - @payments.each do |rec|
-      %tr.hover
+      %tr.hover{id: dom_id(rec)}
         %td #{rec.event_name}
         %td #{true_check(rec.annual_fee)}
         %td #{rec.event_date}
