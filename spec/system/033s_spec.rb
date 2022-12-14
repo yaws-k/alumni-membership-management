@@ -29,10 +29,28 @@ RSpec.describe '033s', type: :system do
       fill_in('event_note', with: 'event note')
       click_button('送信')
 
-      expect(current_path).to eq(payments_path)
-      expect(page).to have_text('2023寄付')
-      expect(page).to have_text('2024-08-31')
-      expect(page).to have_text('event note')
+      within(id: dom_id(Event.find_by(event_name: '2023寄付'))) do
+        expect(current_path).to eq(payments_path)
+        expect(page).to have_text('2023寄付')
+        expect(page).to have_text('2024-08-31')
+        expect(page).to have_text('event note')
+      end
+    end
+
+    it 'is possible to create new annual fee' do
+      fill_in('event_event_name', with: '2023年会費')
+      check('event_annual_fee')
+      fill_in('event_event_date', with: '2024-08-31')
+      fill_in('event_note', with: 'event note')
+      click_button('送信')
+
+      within(id: dom_id(Event.find_by(event_name: '2023年会費'))) do
+        expect(current_path).to eq(payments_path)
+        expect(page).to have_text('2023年会費')
+        expect(page).to have_text('✔')
+        expect(page).to have_text('2024-08-31')
+        expect(page).to have_text('event note')
+      end
     end
   end
 end
