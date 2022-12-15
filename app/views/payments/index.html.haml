@@ -24,7 +24,7 @@
         %td.text-end #{rec.fee.to_fs(:delimited)}
         %td #{rec.note}
         %td
-          .flex.flex-wrap.gap-4
+          .flex.flex-nowrap.gap-4
             %div
               = link_to '詳細', payment_path(rec), class: 'btn btn-sm btn-info'
             %div
