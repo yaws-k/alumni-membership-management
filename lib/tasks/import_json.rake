@@ -25,6 +25,7 @@ namespace :import_json do
           event_date: e['event_date'],
           fee: e['fee'],
           payment_only: e['payment_only'],
+          annual_fee: e['event_name'].end_with?('年会費') ? true : false,
           note: e['note']
         )
         logger.info { "#{event.event_date}: #{event.event_name}" }
