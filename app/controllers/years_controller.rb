@@ -35,14 +35,12 @@ class YearsController < ApplicationController
 
   def destroy
     @year = Year.find(params[:id])
-    if @year.members.first.present?
-      # Year must not have any members when deleted
-      redirect_to years_path, alert: '紐付くメンバーが存在する年次は消せません。'
-      return
+    if @year.members.blank?
+      @year.destroy
+      redirect_to(years_path, notice: "#{@year.graduate_year}を削除しました。")
+    else
+      redirect_to(years_path, alert: '紐付くメンバーが存在する年次は消せません。')
     end
-
-    @year.destroy
-    redirect_to years_path
   end
 
   private
