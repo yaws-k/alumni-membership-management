@@ -1,8 +1,9 @@
 = form_with(model: @year) do |f|
   = render 'layouts/form_errors', model: f.object
   .mb-2
-    回
-    = f.text_field(:graduate_year, placeholder: '高xx回卒')
+    卒年（中高の別と数字だけ入れてください）
+    = f.text_field(:graduate_year, placeholder: '高xx')
+    回卒
   .mb-2
     西暦（数字だけ入れてください）
     = f.text_field(:anno_domini, placeholder: '20xx')
