@@ -60,6 +60,6 @@ class YearsController < ApplicationController
     return true if @roles[:admin]
 
     # Access denied
-    redirect_to(members_path)
+    redirect_to(members_path, alert: 'Access denied')
   end
 end
