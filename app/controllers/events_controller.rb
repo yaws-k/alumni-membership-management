@@ -40,8 +40,13 @@ class EventsController < ApplicationController
 
   def destroy
     @event = Event.find(params[:id])
-    @event.destroy
-    redirect_to(events_path, notice: "#{@event.event_name}を削除しました。")
+
+    if @event.attendances.blank?
+      @event.destroy
+      redirect_to(events_path, notice: "#{@event.event_name}を削除しました。")
+    else
+      redirect_to(events_path, alert: "参加者がいるため、#{@event.event_name}を削除できませんでした。")
+    end
   end
 
   private
