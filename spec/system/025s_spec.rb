@@ -31,8 +31,8 @@ RSpec.describe '025s', type: :system do
         expect(current_path).to eq(member_path(member1))
         expect(page).to have_text("#{address1.postal_code}　#{address1.address1}　#{address1.address2}を削除しました。")
         expect(Address.where(id: address1.id).size).to eq(0)
-        end
       end
+    end
 
     context 'delete member' do
       it 'deletes member' do

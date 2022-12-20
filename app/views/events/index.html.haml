@@ -20,12 +20,12 @@
         %td #{rec.event_name}
         %td #{rec.event_date}
         %td.text-end #{rec.fee.to_fs(:delimited)}
-        %td #{rec.note}
+        %td.whitespace-normal #{rec.note}
         %td
-          .flex.flex-wrap.gap-4
+          .flex.flex-nowrap.gap-4
             %div
               = link_to '詳細', event_path(rec), class: 'btn btn-sm btn-info'
-            - if @roles[:board] || @roles[:admin]
+            - if @roles[:board]
               %div
                 = link_to '編集', edit_event_path(rec), class: 'btn btn-sm btn-warning'
               %div

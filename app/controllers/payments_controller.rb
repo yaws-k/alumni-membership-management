@@ -40,8 +40,13 @@ class PaymentsController < ApplicationController
 
   def destroy
     @payment = Event.find(params[:id])
-    @payment.destroy
-    redirect_to(payments_path, notice: "#{@payment.event_name}を削除しました。")
+
+    if @payment.attendances.blank?
+      @payment.destroy
+      redirect_to(payments_path, notice: "#{@payment.event_name}を削除しました。")
+    else
+      redirect_to(payments_path, alert: "関連する支払いがあるため、#{@payment.event_name}を削除できませんでした。")
+    end
   end
 
   private
@@ -62,6 +67,6 @@ class PaymentsController < ApplicationController
     return true if @roles[:admin] || @roles[:board]
 
     # Access denied
-    redirect_to(members_path)
+    redirect_to(members_path, alert: 'Access denied')
   end
 end
