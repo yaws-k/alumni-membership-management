@@ -11,8 +11,8 @@
       %th 編集・削除
   %tbody
     - @years.each do |y|
-      %tr.hover
-        %td #{y.graduate_year}
+      %tr.hover{id: dom_id(y)}
+        %td #{y.graduate_year}回卒
         %td #{y.anno_domini}年3月
         %td #{y.japanese_calendar}年3月
         %td

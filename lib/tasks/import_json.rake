@@ -39,7 +39,7 @@ namespace :import_json do
 
       # Year
       year = Year.create!(
-        graduate_year: json['year'],
+        graduate_year: json['year'].sub('回卒', ''),
         anno_domini: json['anno_domini'][0, 4],
         japanese_calendar: json['japanese_calendar'].match(/(昭和|平成|令和)(\d+|元)/)
       )
