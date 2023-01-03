@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
   resources :events
   resources :payments
+  resources :payment_histories, except: %i[show]
   resources :attendances, only: %i[edit update]
 
   # Defines the root path route ("/")

@@ -1,0 +1,7 @@
+%h1 会費および寄付履歴編集
+
+%p
+  = link_to '戻る', member_path(@member_id)
+
+= form_with(model: @attendance, url: payment_histories_path) do |f|
+  = render 'form', f: f
