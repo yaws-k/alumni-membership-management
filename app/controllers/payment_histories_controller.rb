@@ -24,7 +24,7 @@ class PaymentHistoriesController < ApplicationController
       render 'new', status: :unprocessable_entity
       return
     end
-    redirect_to member_path(@attendance.member_id)
+    redirect_to member_path(@attendance.member_id, anchor: 'payment')
   end
 
   def edit
@@ -35,6 +35,23 @@ class PaymentHistoriesController < ApplicationController
   end
 
   def update
+    @attendance = Attendance.find(params[:id])
+    @member_id = @attendance.member_id
+
+    unless @attendance.update(attendance_params)
+      @payments = payment_select
+      render 'edit', status: :unprocessable_entity
+      return
+    end
+
+    # Amount and Payment Date must be filled
+    if @attendance.amount.zero? || @attendance.payment_date.blank?
+      @payments = payment_select
+      render 'edit', status: :unprocessable_entity
+      return
+    end
+
+    redirect_to member_path(@attendance.member_id, anchor: 'payment')
   end
 
   def destroy
