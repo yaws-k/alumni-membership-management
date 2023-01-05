@@ -189,7 +189,7 @@ RSpec.describe 'Payments', type: :request do
   end
 
   # Board
-  context 'lead' do
+  context 'board' do
     before do
       member.update(roles: %w[board])
       sign_in user

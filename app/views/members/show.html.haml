@@ -87,7 +87,7 @@
             %div
               = button_to '削除', member_address_path(@member, a), method: :delete, form: { data: { turbo_confirm: '削除しますか？' } }, class: 'btn btn-sm btn-error'
     %tr
-      %td{cols: 5}
+      %td{colspan: 5}
         = link_to '住所登録', new_member_address_path(@member)
 
 %h2 会費および寄付履歴
@@ -97,18 +97,31 @@
     %tr.text-center
       %th 種別
       %th 締日
-      %th 支払日
+      %th 入金日
       %th 金額
       %th 備考
+      - if @roles[:board] || @roles[:admin]
+        %th 操作
   %tbody
     - @payments.each do |rec|
       - next if @payment_dates[rec.id].blank?
-      %tr.hover{id: dom_id(rec)}
+      %tr.hover{id: dom_id(@payment_dates[rec.id])}
         %td #{rec.event_name}
         %td #{rec.event_date}
         %td #{@payment_dates[rec.id].payment_date}
-        %td #{rec.fee.to_fs(:delimited)}
+        %td #{@payment_dates[rec.id].amount.to_fs(:delimited)}
         %td #{@payment_dates[rec.id].note}
+        - if @roles[:board] || @roles[:admin]
+          %td
+            .flex.flex-row.gap-8
+              %div
+                = link_to '編集', edit_payment_history_path(@payment_dates[rec.id]), class: 'btn btn-sm btn-warning'
+              %div
+                = button_to '削除', payment_history_path(@payment_dates[rec.id]), method: :delete, form: { data: { turbo_confirm: '削除しますか？' } }, class: 'btn btn-sm btn-error'
+    - if @roles[:board] || @roles[:admin]
+      %tr
+        %td{colspan: 6}
+          = link_to '履歴登録', new_payment_history_path(member_id: @member.id)
 
 %h2 イベント参加申し込み・履歴
 

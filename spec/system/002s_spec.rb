@@ -95,7 +95,7 @@ RSpec.describe '002s', type: :system do
           expect(page).to have_text(payment.event_name)
           expect(page).to have_text(payment.event_date)
           expect(page).to have_text(attendance.payment_date)
-          expect(page).to have_text(payment.fee.to_fs(:delimited))
+          expect(page).to have_text(attendance.amount.to_fs(:delimited))
           expect(page).to have_text(attendance.note)
         end
       end
