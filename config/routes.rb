@@ -8,6 +8,8 @@ Rails.application.routes.draw do
     resources :users, except: %i[index show], controller: 'members/users'
   end
 
+  resources :mails, only: %i[index]
+
   resources :events
   resources :payments
   resources :payment_histories, except: %i[show]

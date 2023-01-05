@@ -2,7 +2,10 @@
 
 %p
   = link_to 'メンバー追加', new_member_path
-  - if @roles[:board]
+  - if @roles[:lead] || @roles[:board] || @roles[:admin]
+    &emsp;
+    = link_to 'メールアドレス一覧（カンマ区切り）', mails_path
+  - if @roles[:board] || @roles[:admin]
     &emsp;
     = link_to '支払い一覧', payments_path
   - if @roles[:admin]
