@@ -105,7 +105,7 @@
   %tbody
     - @payments.each do |rec|
       - next if @payment_dates[rec.id].blank?
-      %tr.hover{id: dom_id(rec)}
+      %tr.hover{id: dom_id(@payment_dates[rec.id])}
         %td #{rec.event_name}
         %td #{rec.event_date}
         %td #{@payment_dates[rec.id].payment_date}

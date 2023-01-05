@@ -3,6 +3,11 @@ FactoryBot.define do
     member
     event
 
+    trait :payment do
+      payment_date { Date.today - 3 }
+      amount { 3000 }
+    end
+
     trait :full_fields do
       application { true }
       presence { false }
