@@ -35,7 +35,7 @@ RSpec.describe '029s', type: :system do
       attendance = Attendance.last
 
       expect(current_path).to eq(member_path(member))
-      within(id: dom_id(payment)) do
+      within(id: dom_id(attendance)) do
         expect(page).to have_text(payment.event_name)
         expect(page).to have_text(payment.event_date)
         expect(page).to have_text(attendance.payment_date)

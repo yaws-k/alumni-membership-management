@@ -59,7 +59,7 @@ class PaymentHistoriesController < ApplicationController
     member_id = @attendance.member_id
     @attendance.destroy
 
-    redirect_to(member_path(member_id), anchor: 'payment', notice: "#{@attendance.event.event_name}を削除しました。")
+    redirect_to(member_path(member_id, anchor: 'payment'), notice: "#{@attendance.event.event_name}を削除しました。")
   end
 
   private
