@@ -15,8 +15,8 @@
       %th メール
   %tbody
     - @stats.each do |rec|
-      %tr
-        %td #{rec[0]}
+      %tr{id: dom_id(rec[0])}
+        %td #{rec[0].graduate_year}回卒
         %td.text-end #{rec[1]}
         %td.text-end #{rec[2]}
         %td

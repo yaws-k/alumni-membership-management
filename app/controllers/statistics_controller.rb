@@ -23,7 +23,7 @@ class StatisticsController < ApplicationController
     array = []
     Year.order(anno_domini: :desc).each do |y|
       tmp = []
-      tmp << y.graduate_year
+      tmp << y
       tmp << member_counts.fetch(y.id, 0)
       tmp << annual_fee_paid_counts.fetch(y.id, 0)
 
