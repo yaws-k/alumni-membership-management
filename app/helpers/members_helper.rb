@@ -1,7 +1,7 @@
 module MembersHelper
   def communication(status)
     case status
-    when '通常'
+    when 'メール'
       'text-success'
     when '郵便'
       'text-warning'

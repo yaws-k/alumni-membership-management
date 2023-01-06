@@ -134,9 +134,12 @@ namespace :import_json do
       end
     end
 
+    # Convert field data
+    Member.where(communication: '通常').update_all(communication: 'メール')
+
     # Make test users
     if Rails.env.development?
-      members = Member.where(communication: '通常').limit(3)
+      members = Member.where(communication: 'メール').limit(3)
       members[0].update(family_name: '管理者', family_name_phonetic: 'かんりしゃ', roles: %w[admin])
       members[0].users.first.update(email: 'admin@example.com', password: args[:password], password_confirmation: args[:password])
 
