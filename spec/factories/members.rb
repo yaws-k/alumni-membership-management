@@ -6,7 +6,7 @@ FactoryBot.define do
     first_name_phonetic { Faker::Name.first_name }
     family_name { Faker::Name.last_name }
     first_name { Faker::Name.first_name }
-    communication { '通常' }
+    communication { 'メール' }
 
     trait :full_fields do
       maiden_name_phonetic { Faker::Name.last_name }

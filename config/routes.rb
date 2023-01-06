@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     resources :users, except: %i[index show], controller: 'members/users'
   end
 
+  get 'statistics/members'
   resources :mails, only: %i[index]
 
   resources :events
