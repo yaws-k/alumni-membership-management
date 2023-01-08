@@ -32,11 +32,21 @@ RSpec.describe 'Statistics', type: :request do
       get '/statistics/incomes'
       expect(response).to redirect_to(destination)
     end
+
+    it 'returns http redirect' do
+      get '/statistics/annual_fees'
+      expect(response).to redirect_to(destination)
+    end
   end
 
   RSpec.shared_examples 'statistics incomes success' do
     it 'returns http success' do
       get '/statistics/incomes'
+      expect(response).to have_http_status(:success)
+    end
+
+    it 'returns http success' do
+      get '/statistics/annual_fees'
       expect(response).to have_http_status(:success)
     end
   end

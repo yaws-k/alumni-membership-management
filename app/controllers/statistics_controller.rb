@@ -30,6 +30,11 @@ class StatisticsController < ApplicationController
   end
 
   def annual_fees
+    if @roles[:admin] || @roles[:board]
+      @annual_fees, @counts = list_annual_fees
+    else
+      redirect_to(members_path, alert: 'Access denied')
+    end
   end
 
   def donations
@@ -96,31 +101,9 @@ class StatisticsController < ApplicationController
   end
 
   #
-  # incomes
+  # common methods for incomes/annual_fees/donations
   #
-  def list_incomes
-    incomes = {}
-    counts = {}
-    all_incomes.each do |income|
-      fiscal_year = fiscal_year(income[:payment_date])
-      yymm = income[:payment_date].strftime('%Y-%m')
-      incomes[fiscal_year] ||= {}
-      incomes[fiscal_year][yymm] ||= []
-      incomes[fiscal_year][yymm] << income
-
-      counts[fiscal_year] ||= { count: 0, amount: 0 }
-      counts[fiscal_year][:count] += 1
-      counts[fiscal_year][:amount] += income[:amount]
-
-      counts[yymm] ||= { count: 0, amount: 0 }
-      counts[yymm][:count] += 1
-      counts[yymm][:amount] += income[:amount]
-    end
-    [incomes, counts]
-  end
-
-  def all_incomes
-    payments = Event.sorted(payment_only: true)
+  def related_docs(payments: nil)
     payment_name = payments.pluck(:id, :event_name).to_h
     attendances = Attendance.in(event_id: payments.pluck(:id)).where(:payment_date.gte => Date.new(2019, 7, 26)).sort(payment_date: :desc)
     graduate_years = Year.pluck(:id, :graduate_year).to_h
@@ -144,11 +127,63 @@ class StatisticsController < ApplicationController
     array
   end
 
+  #
+  # incomes
+  #
+  def list_incomes
+    incomes = {}
+    counts = {}
+    payments = Event.sorted(payment_only: true)
+
+    related_docs(payments:).each do |income|
+      fiscal_year = fiscal_year(income[:payment_date])
+      yymm = income[:payment_date].strftime('%Y/%m')
+      incomes[fiscal_year] ||= {}
+      incomes[fiscal_year][yymm] ||= []
+      incomes[fiscal_year][yymm] << income
+
+      counts[fiscal_year] ||= { count: 0, amount: 0 }
+      counts[fiscal_year][:count] += 1
+      counts[fiscal_year][:amount] += income[:amount]
+
+      counts[yymm] ||= { count: 0, amount: 0 }
+      counts[yymm][:count] += 1
+      counts[yymm][:amount] += income[:amount]
+    end
+    [incomes, counts]
+  end
+
   def fiscal_year(date)
     if date.month <= 8
       "#{date.year - 1}/09/01-#{date.year}/08/31"
     else
       "#{date.year}/09/01-#{date.year + 1}/08/31"
     end
+  end
+
+  #
+  # annual_fees
+  #
+  def list_annual_fees
+    annual_fees = {}
+    counts = {}
+    payments = Event.where(payment_only: true, annual_fee: true).sort(event_date: :desc)
+
+    related_docs(payments:).each do |income|
+      annual_fee_period = income[:event_name]
+      yymm = income[:payment_date].strftime('%Y/%m')
+      annual_fees[annual_fee_period] ||= {}
+      annual_fees[annual_fee_period][yymm] ||= []
+      annual_fees[annual_fee_period][yymm] << income
+
+      counts[annual_fee_period] ||= { count: 0, amount: 0 }
+      counts[annual_fee_period][:count] += 1
+      counts[annual_fee_period][:amount] += income[:amount]
+
+      counts[yymm] ||= { count: 0, amount: 0 }
+      counts[yymm][:count] += 1
+      counts[yymm][:amount] += income[:amount]
+    end
+    [annual_fees, counts]
   end
 end
