@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   end
 
   get 'statistics/members'
+  get 'exports/members'
   resources :mails, only: %i[index]
 
   resources :events
