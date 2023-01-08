@@ -22,6 +22,16 @@
     &emsp;
     = link_to '年次情報管理', years_path
 
+.flex.flex-row.mb-3
+  .mr-4
+    = form_with(url: searches_name_path, method: 'get') do
+      = text_field_tag(:search, nil, placeholder: '氏名、よみがなの一部')
+      = submit_tag('氏名検索', class: 'btn btn-sm btn-primary')
+  .mx-4
+    = form_with(url: searches_email_path, method: 'get') do |f|
+      = text_field_tag(:search, nil, placeholder: 'メールアドレスの一部')
+      = submit_tag('メール検索', class: 'btn btn-sm btn-primary')
+
 - @members.each_value do |years|
   .collapse.collapse-arrow.border.border-base-300.rounded-box.mb-3{id: dom_id(years[:year])}
     %input{type: 'checkbox', class: 'peer', id: "#{dom_id(years[:year])}_collapse"}

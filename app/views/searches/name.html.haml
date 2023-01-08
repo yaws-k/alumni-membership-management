@@ -1,0 +1,31 @@
+%h1 氏名検索
+
+.flex.flex-row.mb-3
+  .mr-4
+    = form_with(url: searches_name_path, method: 'get') do |f|
+      = text_field_tag(:search, @search, placeholder: '氏名、よみがなの一部')
+      = submit_tag('氏名検索', class: 'btn btn-sm btn-primary')
+  .mx-4
+    = form_with(url: searches_email_path, method: 'get') do |f|
+      = text_field_tag(:search, nil, placeholder: 'メールアドレスの一部')
+      = submit_tag('メール検索', class: 'btn btn-sm btn-primary')
+
+%p 該当：#{@members.size.to_fs(:delimited)}件
+
+%table.table.w-auto
+  %thead
+    %tr.text-center
+      %th 氏名（旧姓）
+      %th よみがな
+      %th 連絡方法
+      %th 年会費
+      %th 詳細
+  %tbody
+    - @members.each do |m|
+      %tr.hover{id: dom_id(m)}
+        %td #{full_name(m)[0]}
+        %td #{full_name(m)[1]}
+        %td.text-center{class: communication(m.communication)} #{m.communication}
+        %td.text-center{class: payment(@payments[m.id])} #{@payments[m.id]}
+        %td
+          = link_to '詳細', member_path(m), class: 'btn btn-sm btn-info'

@@ -15,6 +15,9 @@ Rails.application.routes.draw do
   get 'exports/members'
   resources :mails, only: %i[index]
 
+  get 'searches/name'
+  get 'searches/email'
+
   resources :events
   resources :payments
   resources :payment_histories, except: %i[show]
