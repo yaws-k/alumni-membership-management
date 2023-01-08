@@ -12,15 +12,21 @@
   - if @roles[:board] || @roles[:admin]
     &emsp;
     = link_to '支払い一覧', payments_path
+    &emsp;
+    = link_to '入金一覧', statistics_incomes_path
+    &emsp;
+    = link_to '年会費一覧', statistics_annual_fees_path
+    &emsp;
+    = link_to '寄付金一覧', statistics_donations_path
   - if @roles[:admin]
     &emsp;
     = link_to '年次情報管理', years_path
 
 - @members.each_value do |years|
-  .collapse.collapse-arrow.border.border-base-300.rounded-box.mb-3{id: dom_id(years[:year])}
-    %input{type: 'checkbox'}
-    .collapse-title.bg-secondary #{years[:year].graduate_year}（#{years[:year].anno_domini}年／#{years[:year].japanese_calendar}年3月卒）　#{years[:count]}人
-    .collapse-content
+  .collapse.collapse-arrow.border.border-base-300.rounded-box.mb-3
+    %input{type: 'checkbox', class: 'peer', id: dom_id(years[:year])}
+    %label.collapse-title.bg-secondary.text-secondary-content.peer-checked:bg-primary.peer-checked:text-primary-content{for: dom_id(years[:year])} #{years[:year].graduate_year}（#{years[:year].anno_domini}年／#{years[:year].japanese_calendar}年3月卒）　#{years[:count]}人
+    .collapse-content.bg-secondary
       %table.table.w-auto
         %thead
           %tr.text-center

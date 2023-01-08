@@ -1,0 +1,49 @@
+%h1 年会費一覧
+
+%p 当システムに登録されている年会費入金の一覧です。
+
+%p
+  入金関連一覧：
+  = link_to '入金一覧', statistics_incomes_path
+  &emsp;
+  = link_to '年会費一覧', statistics_annual_fees_path
+  &emsp;
+  = link_to '寄付金一覧', statistics_donations_path
+
+- @annual_fees.each_key do |annual_fee_period|
+  %h2 #{annual_fee_period}
+
+  %p #{@counts[annual_fee_period][:count].to_fs(:delimited)}件　#{@counts[annual_fee_period][:amount].to_fs(:delimited)}円
+
+  - @annual_fees[annual_fee_period].each do |key, annual_fees|
+    .collapse.collapse-arrow.border.border-base-300.rounded-box.mb-3
+      %input{type: 'checkbox', class: 'peer', id: key}
+      %label.collapse-title.bg-secondary.text-secondary-content.peer-checked:bg-primary.peer-checked:text-primary-content{for: key} #{key}　#{@counts[key][:count].to_fs(:delimited)}件　#{@counts[key][:amount].to_fs(:delimited)}円
+      .collapse-content.bg-secondary
+        %table.table.table-zebra.w-auto
+          %thead
+            %tr.text-center
+              %th 入金日
+              %th 年次
+              %th 氏名
+              %th 入金額
+              %th 区分
+          %tbody
+            - annual_fees.each do |annual_fee|
+              %tr{id: annual_fee[:attendance_domid]}
+                %td #{annual_fee[:payment_date]}
+                %td #{annual_fee[:graduate_year]}
+                %td
+                  = link_to member_path(annual_fee[:member_id], anchor: 'payment') do
+                    %ruby
+                      %rb #{annual_fee[:family_name]}
+                      %rp （
+                      %rt #{annual_fee[:family_name_phonetic]}
+                      %rp ）
+                    %ruby
+                      %rb #{annual_fee[:first_name]}
+                      %rp （
+                      %rt #{annual_fee[:first_name_phonetic]}
+                      %rp ）
+                %td.text-end #{annual_fee[:amount].to_fs(:delimited)}
+                %td.text-end #{annual_fee[:event_name]}
