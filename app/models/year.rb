@@ -22,7 +22,7 @@ class Year
     # Scopes
     def accessible_years(roles: {}, current_user: nil)
       if roles[:admin] || roles[:board]
-        all
+        all.sort(anno_domini: :desc)
       elsif roles[:lead]
         where(id: current_user.member.year_id)
       else

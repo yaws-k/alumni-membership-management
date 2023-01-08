@@ -110,12 +110,7 @@ class MembersController < ApplicationController
   end
 
   def list_members
-    years =
-      if @roles[:admin] || @roles[:board]
-        Year.all.order(anno_domini: :desc)
-      else
-        Year.where(id: current_user.member.year_id)
-      end
+    years = Year.accessible_years(roles: @roles, current_user:)
 
     members = {}
     years.each do |year|
@@ -134,12 +129,7 @@ class MembersController < ApplicationController
   end
 
   def prepare_options
-    @years =
-      if @roles[:board] || @roles[:admin]
-        Year.all.sort(anno_domini: :desc).pluck(:graduate_year, :id).to_h
-      else
-        Year.where(id: @current_member.year_id).pluck(:graduate_year, :id).to_h
-      end
+    @years = Year.accessible_years(roles: @roles, current_user:).pluck(:graduate_year, :id).to_h
     @communications = %w[メール 郵便 退会 逝去]
     @role_options = [
       %w[lead 同学年全員の情報へアクセス可能],
