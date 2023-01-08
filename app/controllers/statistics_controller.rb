@@ -1,4 +1,6 @@
 class StatisticsController < ApplicationController
+  before_action :check_roles_incomes, only: %i[incomes annual_fees donations]
+
   def members
     if @roles[:lead] || @roles[:admin] || @roles[:board]
       @stats = count_members
@@ -22,22 +24,15 @@ class StatisticsController < ApplicationController
     #   '2022/12' => { count: 3, amount: 7000 },
     #   '2022/11' => { ... }
     # }
-    if @roles[:admin] || @roles[:board]
-      @incomes, @counts = list_incomes
-    else
-      redirect_to(members_path, alert: 'Access denied')
-    end
+    @incomes, @counts = list_incomes
   end
 
   def annual_fees
-    if @roles[:admin] || @roles[:board]
-      @annual_fees, @counts = list_annual_fees
-    else
-      redirect_to(members_path, alert: 'Access denied')
-    end
+    @annual_fees, @counts = list_annual_fees
   end
 
   def donations
+    @donations, @counts = list_donations
   end
 
   private
@@ -103,6 +98,22 @@ class StatisticsController < ApplicationController
   #
   # common methods for incomes/annual_fees/donations
   #
+  def check_roles_incomes
+    # Admin and Board member can access anywhere
+    return true if @roles[:admin] || @roles[:board]
+
+    # Access denied
+    redirect_to(members_path, alert: 'Access denied')
+  end
+
+  def fiscal_year(date)
+    if date.month <= 8
+      "#{date.year - 1}/09/01-#{date.year}/08/31"
+    else
+      "#{date.year}/09/01-#{date.year + 1}/08/31"
+    end
+  end
+
   def related_docs(payments: nil)
     payment_name = payments.pluck(:id, :event_name).to_h
     attendances = Attendance.in(event_id: payments.pluck(:id)).where(:payment_date.gte => Date.new(2019, 7, 26)).sort(payment_date: :desc)
@@ -153,14 +164,6 @@ class StatisticsController < ApplicationController
     [incomes, counts]
   end
 
-  def fiscal_year(date)
-    if date.month <= 8
-      "#{date.year - 1}/09/01-#{date.year}/08/31"
-    else
-      "#{date.year}/09/01-#{date.year + 1}/08/31"
-    end
-  end
-
   #
   # annual_fees
   #
@@ -185,5 +188,31 @@ class StatisticsController < ApplicationController
       counts[yymm][:amount] += income[:amount]
     end
     [annual_fees, counts]
+  end
+
+  #
+  # donations
+  #
+  def list_donations
+    donations = {}
+    counts = {}
+    payments = Event.where(payment_only: true, annual_fee: false).sort(event_date: :desc)
+
+    related_docs(payments:).each do |income|
+      fiscal_year = fiscal_year(income[:payment_date])
+      yymm = income[:payment_date].strftime('%Y/%m')
+      donations[fiscal_year] ||= {}
+      donations[fiscal_year][yymm] ||= []
+      donations[fiscal_year][yymm] << income
+
+      counts[fiscal_year] ||= { count: 0, amount: 0 }
+      counts[fiscal_year][:count] += 1
+      counts[fiscal_year][:amount] += income[:amount]
+
+      counts[yymm] ||= { count: 0, amount: 0 }
+      counts[yymm][:count] += 1
+      counts[yymm][:amount] += income[:amount]
+    end
+    [donations, counts]
   end
 end
