@@ -1,0 +1,49 @@
+%h1 入金一覧
+
+%p 当システムに登録されている入金情報を日付順に並べたものです。（年会費と寄付金の両方を含みます。）
+
+%p
+  入金関連一覧：
+  = link_to '入金一覧', statistics_incomes_path
+  &emsp;
+  = link_to '年会費一覧', statistics_annual_fees_path
+  &emsp;
+  = link_to '寄付金一覧', statistics_donations_path
+
+- @incomes.each_key do |fiscal_year|
+  %h2 #{fiscal_year}
+
+  %p #{@counts[fiscal_year][:count].to_fs(:delimited)}件　#{@counts[fiscal_year][:amount].to_fs(:delimited)}円
+
+  - @incomes[fiscal_year].each do |key, incomes|
+    .collapse.collapse-arrow.border.border-base-300.rounded-box.mb-3
+      %input{type: 'checkbox', class: 'peer', id: key}
+      %label.collapse-title.bg-secondary.text-secondary-content.peer-checked:bg-primary.peer-checked:text-primary-content{for: key} #{key}　#{@counts[key][:count].to_fs(:delimited)}件　#{@counts[key][:amount].to_fs(:delimited)}円
+      .collapse-content.bg-secondary
+        %table.table.table-zebra.w-auto
+          %thead
+            %tr.text-center
+              %th 入金日
+              %th 年次
+              %th 氏名
+              %th 入金額
+              %th 区分
+          %tbody
+            - incomes.each do |income|
+              %tr{id: income[:attendance_domid]}
+                %td #{income[:payment_date]}
+                %td #{income[:graduate_year]}
+                %td
+                  = link_to member_path(income[:member_id], anchor: 'payment') do
+                    %ruby
+                      %rb #{income[:family_name]}
+                      %rp （
+                      %rt #{income[:family_name_phonetic]}
+                      %rp ）
+                    %ruby
+                      %rb #{income[:first_name]}
+                      %rp （
+                      %rt #{income[:first_name_phonetic]}
+                      %rp ）
+                %td.text-end #{income[:amount].to_fs(:delimited)}
+                %td.text-end #{income[:event_name]}

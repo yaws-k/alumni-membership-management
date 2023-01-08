@@ -1,20 +1,45 @@
 class StatisticsController < ApplicationController
-  before_action :check_roles_statistics
-
   def members
-    @stats = count_members
+    if @roles[:lead] || @roles[:admin] || @roles[:board]
+      @stats = count_members
+    else
+      redirect_to(members_path, alert: 'Access denied')
+    end
+  end
+
+  def incomes
+    # @incomes = {
+    #   '2022/09/01-2023/08/31' => {
+    #     '2022/12' => [
+    #       { attendance_domid: ..., payment_date: ... },
+    #       { ... }
+    #     ],
+    #     '2022-11' => { ... },
+    #   }
+    #
+    # @counts = {
+    #   '2022/09/01-2023/08/31' =>  count: 123, amount: 456789 },
+    #   '2022/12' => { count: 3, amount: 7000 },
+    #   '2022/11' => { ... }
+    # }
+    if @roles[:admin] || @roles[:board]
+      @incomes, @counts = list_incomes
+    else
+      redirect_to(members_path, alert: 'Access denied')
+    end
+  end
+
+  def annual_fees
+  end
+
+  def donations
   end
 
   private
 
-  def check_roles_statistics
-    # More than lead role required
-    return true if @roles[:lead] || @roles[:admin] || @roles[:board]
-
-    # Access denied
-    redirect_to(members_path, alert: 'Access denied')
-  end
-
+  #
+  # members
+  #
   def count_members
     member_counts = Member.in(communication: %w[メール 郵便]).tally(:year_id)
     annual_fee_paid_counts = annual_fee_paid
@@ -68,5 +93,62 @@ class StatisticsController < ApplicationController
       list[m.year_id][:emails] << users[m.id].join(', ')
     end
     list
+  end
+
+  #
+  # incomes
+  #
+  def list_incomes
+    incomes = {}
+    counts = {}
+    all_incomes.each do |income|
+      fiscal_year = fiscal_year(income[:payment_date])
+      yymm = income[:payment_date].strftime('%Y-%m')
+      incomes[fiscal_year] ||= {}
+      incomes[fiscal_year][yymm] ||= []
+      incomes[fiscal_year][yymm] << income
+
+      counts[fiscal_year] ||= { count: 0, amount: 0 }
+      counts[fiscal_year][:count] += 1
+      counts[fiscal_year][:amount] += income[:amount]
+
+      counts[yymm] ||= { count: 0, amount: 0 }
+      counts[yymm][:count] += 1
+      counts[yymm][:amount] += income[:amount]
+    end
+    [incomes, counts]
+  end
+
+  def all_incomes
+    payments = Event.sorted(payment_only: true)
+    payment_name = payments.pluck(:id, :event_name).to_h
+    attendances = Attendance.in(event_id: payments.pluck(:id)).where(:payment_date.gte => Date.new(2019, 7, 26)).sort(payment_date: :desc)
+    graduate_years = Year.pluck(:id, :graduate_year).to_h
+    members = Member.in(id: attendances.pluck(:member_id)).index_by(&:id)
+
+    array = []
+    attendances.each do |a|
+      array << {
+        attendance_domid: "attendance_#{a.id}",
+        payment_date: a.payment_date,
+        graduate_year: "#{graduate_years[members[a.member_id].year_id]}回卒",
+        member_id: members[a.member_id].id,
+        family_name: members[a.member_id].family_name,
+        family_name_phonetic: members[a.member_id].family_name_phonetic,
+        first_name: members[a.member_id].first_name,
+        first_name_phonetic: members[a.member_id].first_name_phonetic,
+        amount: a.amount,
+        event_name: payment_name[a.event_id]
+      }
+    end
+    array
+  end
+
+  def fiscal_year(date)
+    if date.month <= 8
+      "#{date.year - 1}/09/01-#{date.year}/08/31"
+    else
+      "#{date.year}/09/01-#{date.year + 1}/08/31"
+    end
   end
 end
