@@ -40,13 +40,7 @@ class MailsController < ApplicationController
   end
 
   def list_members
-    years =
-      if @roles[:admin] || @roles[:board]
-        Year.all
-      else
-        Year.where(id: current_user.member.year_id)
-      end
-
+    years = Year.accessible_years(roles: @roles, current_user:)
     Member.in(year_id: years.pluck(:id)).order(search_key: :asc)
   end
 end
