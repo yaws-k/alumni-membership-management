@@ -1,6 +1,16 @@
 class ExportsController < ApplicationController
   before_action :check_roles_exports
 
+  def emails
+    names = member_names
+    @emails = []
+    list_emails(names.keys).each do |member_id, mails|
+      mails.each do |mail|
+        @emails << "#{names[member_id]}<#{mail}>"
+      end
+    end
+  end
+
   def members
     years = Year.accessible_years(roles: @roles, current_user:).pluck(:id, :graduate_year).to_h
     members = Member.in(year_id: years.keys).order(search_key: :asc)
@@ -40,6 +50,30 @@ class ExportsController < ApplicationController
     redirect_to(members_path)
   end
 
+  #
+  # emails
+  #
+  def list_emails(member_id)
+    emails = {}
+    member_id.each { |m| emails[m] = [] }
+    User.where(unreachable: false).in(member_id:).each do |u|
+      emails[u.member_id] << u.email
+    end
+    emails
+  end
+
+  def member_names
+    names = {}
+    years = Year.accessible_years(roles: @roles, current_user:)
+    Member.in(year_id: years.pluck(:id)).order(search_key: :asc).each do |m|
+      names[m.id] = "#{m.family_name} #{m.first_name}"
+    end
+    names
+  end
+
+  #
+  # members
+  #
   def convert_roles(roles)
     tmp = []
     roles.each do |role|

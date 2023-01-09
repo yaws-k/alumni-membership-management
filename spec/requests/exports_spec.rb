@@ -8,6 +8,20 @@ RSpec.describe 'Exports', type: :request do
   let!(:member2) { create(:member) }
   let!(:payment) { create(:event, :annual_fee, event_name: '年会費') }
 
+  RSpec.shared_examples 'exports/emails reject' do
+    it 'returns http redirect' do
+      get '/exports/emails'
+      expect(response).to redirect_to(destination)
+    end
+  end
+
+  RSpec.shared_examples 'exports/emails accept' do
+    it 'returns http redirect' do
+      get '/exports/emails'
+      expect(response).to have_http_status(:success)
+    end
+  end
+
   RSpec.shared_examples 'exports/members reject' do
     it 'returns http redirect' do
       get '/exports/members'
@@ -26,6 +40,7 @@ RSpec.describe 'Exports', type: :request do
   context 'not logged in' do
     let(:destination) { new_user_session_path }
 
+    it_behaves_like 'exports/emails reject'
     it_behaves_like 'exports/members reject'
   end
 
@@ -34,6 +49,7 @@ RSpec.describe 'Exports', type: :request do
     before { sign_in user }
     let(:destination) { members_path }
 
+    it_behaves_like 'exports/emails reject'
     it_behaves_like 'exports/members reject'
   end
 
@@ -44,6 +60,7 @@ RSpec.describe 'Exports', type: :request do
       sign_in user
     end
 
+    it_behaves_like 'exports/emails accept'
     it_behaves_like 'exports/members accept'
   end
 
@@ -54,6 +71,7 @@ RSpec.describe 'Exports', type: :request do
       sign_in user
     end
 
+    it_behaves_like 'exports/emails accept'
     it_behaves_like 'exports/members accept'
   end
 
@@ -64,6 +82,7 @@ RSpec.describe 'Exports', type: :request do
       sign_in user
     end
 
+    it_behaves_like 'exports/emails accept'
     it_behaves_like 'exports/members accept'
   end
 end
