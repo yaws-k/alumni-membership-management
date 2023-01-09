@@ -12,8 +12,8 @@ Rails.application.routes.draw do
   get 'statistics/incomes'
   get 'statistics/annual_fees'
   get 'statistics/donations'
+  get 'exports/emails'
   get 'exports/members'
-  resources :mails, only: %i[index]
 
   get 'searches/name'
   get 'searches/email'

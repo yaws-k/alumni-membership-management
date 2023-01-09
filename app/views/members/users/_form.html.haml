@@ -1,22 +1,25 @@
-= render 'layouts/form_errors', model: f.object
-.mb-4
-  メールアドレス
-  %br
-  = f.text_field(:email, placeholder: 'メールアドレス')
-.flex.flex-wrap.gap-2
-  %div
-    パスワード
+= form_with(model: [@member, @user]) do |f|
+  = render 'layouts/form_errors', model: f.object
+  .mb-4
+    メールアドレス
     %br
-    = f.password_field(:password, placeholder: '6文字以上')
-  %div
-    再入力
-    %br
-    = f.password_field(:password_confirmation, placeholder: '確認のため再入力')
-  %div
-    %ul.leading-none
-      %li 変更しない場合は空欄のままにする
-      %li 変更する場合は6文字以上のものにする
-.mb-4
-  = f.check_box :unreachable, class: 'checkbox'
-  = f.label :unreachable, 'メール不達の場合はチェック'
-= f.submit '送信', class: 'btn btn-primary'
+    = f.text_field(:email, placeholder: 'メールアドレス', class: 'input')
+  .flex.flex-wrap.gap-2
+    %div
+      パスワード
+      %br
+      = f.password_field(:password, placeholder: '6文字以上', class: 'input')
+    %div
+      再入力
+      %br
+      = f.password_field(:password_confirmation, placeholder: '確認のため再入力', class: 'input')
+    %div
+      %ul.leading-none
+        %li 変更しない場合は空欄のままにする
+        %li 変更する場合は6文字以上のものにする
+  .flex.flex-wrap.mb-4
+    .form-control
+      %label.label.cursor-pointer
+        = f.check_box :unreachable, class: 'checkbox'
+        %span.label-text メール不達の場合はチェック
+  = f.submit '送信', class: 'btn btn-primary'

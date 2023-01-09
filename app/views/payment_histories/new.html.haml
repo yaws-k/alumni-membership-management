@@ -3,4 +3,6 @@
 %p
   = link_to '戻る', member_path(@member_id)
 
-= render 'form', path: payment_histories_path
+.card.bg-base-300
+  .card-body
+    = render 'form', path: payment_histories_path

@@ -47,8 +47,8 @@ RSpec.describe '014s', type: :system do
         expect(page).to have_text(member.first_name)
         expect(page).to have_text(member.family_name_phonetic)
         expect(page).to have_text(member.first_name_phonetic)
-        expect(page).to have_selector('td.text-success', text: member.communication)
-        expect(page).to have_selector('td.text-warning', text: '未済')
+        expect(page).to have_selector('div.badge.badge-success', text: member.communication)
+        expect(page).to have_selector('div.badge.badge-warning', text: '未済')
         expect(page).to have_link('詳細', href: member_path(member))
       end
 
@@ -59,8 +59,8 @@ RSpec.describe '014s', type: :system do
         expect(page).to have_text(member1.family_name_phonetic)
         expect(page).to have_text(member1.first_name_phonetic)
         expect(page).to have_text(member1.maiden_name_phonetic)
-        expect(page).to have_selector('td.text-success', text: member1.communication)
-        expect(page).to have_selector('td.text-warning', text: '未済')
+        expect(page).to have_selector('div.badge.badge-success', text: member1.communication)
+        expect(page).to have_selector('div.badge.badge-warning', text: '未済')
         expect(page).to have_link('詳細', href: member_path(member1))
       end
     end

@@ -1,15 +1,18 @@
 = form_with(model: @year) do |f|
   = render 'layouts/form_errors', model: f.object
-  .mb-2
+  .mb-4
     卒年（中高の別と数字だけ入れてください）
-    = f.text_field(:graduate_year, placeholder: '高xx')
+    %br
+    = f.text_field(:graduate_year, placeholder: '高xx', class: 'input')
     回卒
-  .mb-2
+  .mb-4
     西暦（数字だけ入れてください）
-    = f.text_field(:anno_domini, placeholder: '20xx')
+    %br
+    = f.text_field(:anno_domini, placeholder: '20xx', class: 'input')
     年3月卒
-  .mb-2
+  .mb-4
     和暦（年号＋数字だけ入れてください）
-    = f.text_field(:japanese_calendar, placeholder: '令和xx')
+    %br
+    = f.text_field(:japanese_calendar, placeholder: '令和xx', class: 'input')
     年3月卒
   = f.submit '送信', class: 'btn btn-primary'

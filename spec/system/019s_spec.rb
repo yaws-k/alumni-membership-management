@@ -14,12 +14,12 @@ RSpec.describe '019s', type: :system do
 
   RSpec.shared_examples '019 mail list' do
     it 'shows the link to mail address' do
-      expect(page).to have_link('メールアドレス一覧', href: mails_path)
+      expect(page).to have_link('メールアドレス一覧', href: exports_emails_path)
     end
 
     it 'is possible to access mail list page' do
-      click_link('メールアドレス一覧', href: mails_path)
-      expect(current_path).to eq(mails_path)
+      click_link('メールアドレス一覧', href: exports_emails_path)
+      expect(current_path).to eq(exports_emails_path)
     end
   end
 
@@ -27,7 +27,7 @@ RSpec.describe '019s', type: :system do
     include_context 'login'
 
     it 'rejects access to email list page' do
-      visit mails_path
+      visit exports_emails_path
       expect(current_path).to eq(member_path(member))
     end
   end
@@ -38,7 +38,7 @@ RSpec.describe '019s', type: :system do
     it_behaves_like '019 mail list'
 
     it 'shows list of same year member mails' do
-      click_link('メールアドレス一覧', href: mails_path)
+      click_link('メールアドレス一覧', href: exports_emails_path)
       expect(page).to have_text("#{member1.family_name} #{member1.first_name}")
       expect(page).to have_text(user1.email)
       expect(page).to_not have_text("#{member2.family_name} #{member2.first_name}")

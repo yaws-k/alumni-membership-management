@@ -7,7 +7,7 @@
   = link_to '支払い追加', new_payment_path
 
 %table.table.w-auto
-  %thead
+  %thead.sticky.top-0
     %tr.text-center
       %th 支払い区分
       %th 年会費
@@ -19,7 +19,7 @@
     - @payments.each do |rec|
       %tr.hover{id: dom_id(rec)}
         %td #{rec.event_name}
-        %td #{true_check(rec.annual_fee)}
+        %td.text-center #{true_check(rec.annual_fee)}
         %td #{rec.event_date}
         %td.text-end #{rec.fee.to_fs(:delimited)}
         %td #{rec.note}

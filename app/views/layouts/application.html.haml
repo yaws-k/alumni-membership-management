@@ -2,24 +2,63 @@
 %html{data: {theme: 'garden'}}
   %head
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
-    %title Sendai1TokyoMembership
+    %title Almni Membership
     %meta{:content => "width=device-width,initial-scale=1", :name => "viewport"}/
     = csrf_meta_tags
     = csp_meta_tag
     = stylesheet_link_tag "application", "data-turbo-track": "reload"
     = javascript_importmap_tags
+    - if Rails.env.production? && Rails.application.credentials.matomo.present?
+      / Matomo
+      :javascript
+        var _paq = window._paq = window._paq || [];
+        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+        _paq.push(['setUserId', '#{current_user.blank? ? 'nologin' : current_user.email}']);
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+        (function() {
+          var u="//#{Rails.application.credentials.matomo[:site]}/";
+          _paq.push(['setTrackerUrl', u+'matomo.php']);
+          _paq.push(['setSiteId', '#{Rails.application.credentials.matomo[:siteid]}']);
+          var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+          g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+        })();
+      / End Matomo Code
   %body
-    .prose.prose-lg.m-3.max-w-screen-xl
-      - if notice
-        %p.alert.alert-info #{notice}
-      - if alert
-        %p.alert.alert-error #{alert}
-      - if current_user.present?
-        .grid.grid-flow-col.auto-cols-auto.mb-3
-          %div
-            = link_to 'top', members_path
-          %div
-            = link_to 'イベント一覧', events_path
-          %div.text-right
-            = button_to 'Logout', destroy_user_session_path, method: :delete, data: {turbo: false}, class: 'link'
-      = yield
+    .container.mx-auto.my-4
+      .prose.prose-lg.max-w-full
+        - if notice
+          %p.alert.alert-info #{notice}
+        - if alert
+          %p.alert.alert-error #{alert}
+        - if current_user.present?
+          .grid.grid-flow-col.auto-cols-auto.mb-3
+            %div
+              = link_to 'top', members_path
+              &emsp;
+              = link_to 'イベント一覧', events_path
+              &emsp;
+              = link_to 'メンバー追加', new_member_path
+              - if @roles[:lead] || @roles[:board] || @roles[:admin]
+                &emsp;
+                = link_to '年次別統計', statistics_members_path
+                &emsp;
+                = link_to 'メールアドレス一覧', exports_emails_path
+                &emsp;
+                = link_to 'Excelダウンロード', exports_members_path
+              - if @roles[:board] || @roles[:admin]
+                &emsp;
+                = link_to '支払い一覧', payments_path
+                &emsp;
+                = link_to '入金一覧', statistics_incomes_path
+                &emsp;
+                = link_to '年会費一覧', statistics_annual_fees_path
+                &emsp;
+                = link_to '寄付金一覧', statistics_donations_path
+              - if @roles[:admin]
+                &emsp;
+                = link_to '年次情報管理', years_path
+
+            %div.text-right
+              = button_to('Logout', destroy_user_session_path, method: :delete, data: {turbo: false}, class: 'btn btn-outline btn-error')
+        = yield
