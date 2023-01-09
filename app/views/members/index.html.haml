@@ -1,27 +1,5 @@
 %h1 #{Rails.application.credentials.almni}同窓会　名簿管理
 
-%p
-  = link_to 'メンバー追加', new_member_path
-  - if @roles[:lead] || @roles[:board] || @roles[:admin]
-    &emsp;
-    = link_to '年次別統計', statistics_members_path
-    &emsp;
-    = link_to 'メールアドレス一覧', mails_path
-    &emsp;
-    = link_to 'Excelダウンロード', exports_members_path
-  - if @roles[:board] || @roles[:admin]
-    &emsp;
-    = link_to '支払い一覧', payments_path
-    &emsp;
-    = link_to '入金一覧', statistics_incomes_path
-    &emsp;
-    = link_to '年会費一覧', statistics_annual_fees_path
-    &emsp;
-    = link_to '寄付金一覧', statistics_donations_path
-  - if @roles[:admin]
-    &emsp;
-    = link_to '年次情報管理', years_path
-
 .card.bg-base-200.w-min.mb-3
   .card-body
     .flex.flex-row
