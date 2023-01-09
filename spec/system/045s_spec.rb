@@ -8,8 +8,7 @@ RSpec.describe '045s', type: :system do
   include_context 'base user'
   let!(:event) { create(:event) }
 
-  context 'board' do
-    include_context 'login as board'
+  RSpec.shared_examples '045 update event' do
     before { click_link('イベント一覧', href: events_path) }
 
     it 'is possible to access edit screen' do
@@ -37,5 +36,17 @@ RSpec.describe '045s', type: :system do
         expect(page).to have_text('123,456')
       end
     end
+  end
+
+  context 'board' do
+    include_context 'login as board'
+
+    it_behaves_like '045 update event'
+  end
+
+  context 'admin' do
+    include_context 'login as admin'
+
+    it_behaves_like '045 update event'
   end
 end
