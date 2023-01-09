@@ -1,14 +1,20 @@
 %h1 メール検索
 
-.flex.flex-row.mb-3
-  .mr-4
-    = form_with(url: searches_name_path, method: 'get') do |f|
-      = text_field_tag(:name_search, nil, placeholder: '氏名、よみがなの一部')
-      = submit_tag('氏名検索', class: 'btn btn-sm btn-primary')
-  .mx-4
-    = form_with(url: searches_email_path, method: 'get') do |f|
-      = text_field_tag(:email_search, @search, placeholder: 'メールアドレスの一部')
-      = submit_tag('メール検索', class: 'btn btn-sm btn-primary')
+.card.bg-base-200.w-min
+  .card-body
+    .flex.flex-row
+      .mr-4
+        = form_with(url: searches_name_path, method: 'get') do |f|
+          .form-control
+            .input-group
+              = text_field_tag(:name_search, nil, placeholder: '氏名、よみがなの一部', class: 'input input-bordered')
+              = submit_tag('氏名検索', class: 'btn btn-primary')
+      .mx-4
+        = form_with(url: searches_email_path, method: 'get') do |f|
+          .form-control
+            .input-group
+              = text_field_tag(:email_search, @search, placeholder: 'メールアドレスの一部', class: 'input input-bordered')
+              = submit_tag('メール検索', class: 'btn btn-primary')
 
 %p 該当：#{@members.size.to_fs(:delimited)}件
 
