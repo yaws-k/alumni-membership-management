@@ -86,14 +86,13 @@ RSpec.describe '005s', type: :system do
 
     it_behaves_like '005 event list'
 
-    # Admin will have Board role
-    it 'is not possible to edit events' do
+    it 'is possible to edit events' do
       visit member_path(member)
       click_link('イベント一覧', href: events_path)
 
       within(id: dom_id(event)) do
-        expect(page).to_not have_link('編集', href: edit_event_path(event))
-        expect(page).to_not have_button('削除')
+        expect(page).to have_link('編集', href: edit_event_path(event))
+        expect(page).to have_button('削除')
       end
     end
   end

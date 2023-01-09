@@ -14,16 +14,16 @@ RSpec.describe '026s', type: :system do
 
   RSpec.shared_examples '026 mail list' do
     it 'shows the link to mail address' do
-      expect(page).to have_link('メールアドレス一覧', href: mails_path)
+      expect(page).to have_link('メールアドレス一覧', href: exports_emails_path)
     end
 
     it 'is possible to access mail list page' do
-      click_link('メールアドレス一覧', href: mails_path)
-      expect(current_path).to eq(mails_path)
+      click_link('メールアドレス一覧', href: exports_emails_path)
+      expect(current_path).to eq(exports_emails_path)
     end
 
     it 'shows list of all mails' do
-      click_link('メールアドレス一覧', href: mails_path)
+      click_link('メールアドレス一覧', href: exports_emails_path)
       expect(page).to have_text("#{member1.family_name} #{member1.first_name}")
       expect(page).to have_text(user1.email)
       expect(page).to have_text("#{member2.family_name} #{member2.first_name}")
