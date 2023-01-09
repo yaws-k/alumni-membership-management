@@ -1,43 +1,43 @@
 = form_with(model: @member) do |f|
-  = render "layouts/form_errors", model: f.object
+  = render 'layouts/form_errors', model: f.object
   %p
     卒年
-    = f.select(:year_id, @years)
+    = f.select(:year_id, @years, {}, class: 'select')
   %div.mb-2
     よみ
     .flex.flex-wrap.gap-4
       %div
-        = f.text_field(:family_name_phonetic, placeholder: 'みょうじ')
+        = f.text_field(:family_name_phonetic, placeholder: 'みょうじ', class: 'input')
       %div
-        = f.text_field(:first_name_phonetic, placeholder: 'なまえ')
+        = f.text_field(:first_name_phonetic, placeholder: 'なまえ', class: 'input')
       %div
-        = f.text_field(:maiden_name_phonetic, placeholder: 'きゅうせい')
+        = f.text_field(:maiden_name_phonetic, placeholder: 'きゅうせい', class: 'input')
     %span.text-sm 読み方が不明な場合は「？」を入れてください。
   %div.mb-4
     氏名
     .flex.flex-wrap.gap-4
       %div
-        = f.text_field(:family_name, placeholder: '名字')
+        = f.text_field(:family_name, placeholder: '名字', class: 'input')
       %div
-        = f.text_field(:first_name, placeholder: '名前')
+        = f.text_field(:first_name, placeholder: '名前', class: 'input')
       %div
-        = f.text_field(:maiden_name, placeholder: '旧姓')
+        = f.text_field(:maiden_name, placeholder: '旧姓', class: 'input')
     %span.text-sm 漢字が不明な場合は「？」を入れてください。
   %div.mb-4
     .flex.flex-wrap.gap-4
       %div
         連絡
-        = f.select(:communication, @communications)
+        = f.select(:communication, @communications, {}, class: 'select')
       %div
         退会理由
-        = f.text_field(:quit_reason, placeholder: '退会理由の補足')
+        = f.text_field(:quit_reason, placeholder: '退会理由の補足', class: 'input')
       %div
         所属
-        = f.text_field(:occupation, placeholder: '学校や職場等')
+        = f.text_field(:occupation, placeholder: '学校や職場等', class: 'input')
   %p
     備考
     %br
-    = f.text_area(:note, placeholder: 'その他補足', class: 'w-full max-w-xl')
+    = f.text_area(:note, placeholder: 'その他補足', cols: 80, class: 'textarea')
   - if @roles[:admin]
     %table.table.w-auto#roles
       %thead
