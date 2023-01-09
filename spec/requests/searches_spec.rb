@@ -4,20 +4,28 @@ RSpec.describe 'Searches', type: :request do
   let!(:user) { create(:user) }
   let!(:member) { user.member }
 
-  let!(:member1) { create(:member, year_id: member.year_id) }
-  let!(:member2) { create(:member) }
   let!(:payment) { create(:event, :annual_fee, event_name: '年会費') }
 
-  RSpec.shared_examples 'searches/name reject' do
+  RSpec.shared_examples 'searches reject' do
     it 'returns http redirect' do
       get '/searches/name?search=dummy&commit=%E6%B0%8F%E5%90%8D%E6%A4%9C%E7%B4%A2'
       expect(response).to redirect_to(destination)
     end
+
+    it 'returns http redirect' do
+      get '/searches/name?search=dummy&commit=%E3%83%A1%E3%83%BC%E3%83%AB%E6%A4%9C%E7%B4%A2'
+      expect(response).to redirect_to(destination)
+    end
   end
 
-  RSpec.shared_examples 'searches/name accept' do
+  RSpec.shared_examples 'searches accept' do
     it 'returns http redirect' do
       get '/searches/name?search=dummy&commit=%E6%B0%8F%E5%90%8D%E6%A4%9C%E7%B4%A2'
+      expect(response).to have_http_status(:success)
+    end
+
+    it 'returns http redirect' do
+      get '/searches/name?search=dummy&commit=%E3%83%A1%E3%83%BC%E3%83%AB%E6%A4%9C%E7%B4%A2'
       expect(response).to have_http_status(:success)
     end
   end
@@ -26,7 +34,7 @@ RSpec.describe 'Searches', type: :request do
   context 'not logged in' do
     let(:destination) { new_user_session_path }
 
-    it_behaves_like 'searches/name reject'
+    it_behaves_like 'searches reject'
   end
 
   # Normal user
@@ -34,7 +42,7 @@ RSpec.describe 'Searches', type: :request do
     before { sign_in user }
     let(:destination) { members_path }
 
-    it_behaves_like 'searches/name reject'
+    it_behaves_like 'searches reject'
   end
 
   # Lead
@@ -44,7 +52,7 @@ RSpec.describe 'Searches', type: :request do
       sign_in user
     end
 
-    it_behaves_like 'searches/name accept'
+    it_behaves_like 'searches accept'
   end
 
   # Board
@@ -54,7 +62,7 @@ RSpec.describe 'Searches', type: :request do
       sign_in user
     end
 
-    it_behaves_like 'searches/name accept'
+    it_behaves_like 'searches accept'
   end
 
   # Admin
@@ -64,6 +72,6 @@ RSpec.describe 'Searches', type: :request do
       sign_in user
     end
 
-    it_behaves_like 'searches/name accept'
+    it_behaves_like 'searches accept'
   end
 end
