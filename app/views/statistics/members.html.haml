@@ -1,0 +1,25 @@
+%h1 年次別統計
+
+%ul.leading-none
+  %li 当システムに登録されている情報を年次別で集計したものです
+  %li 登録数は現時点の連絡すべき方を数えるため、逝去者、退会者を含みません
+  %li 会費納入者は、逝去者、退会者を含みます（会費納入後に退会された場合など）
+
+%table.table.table-zebra.w-auto
+  %thead.sticky.top-0
+    %tr.text-center
+      %th 年次
+      %th 登録数
+      %th 会費済
+      %th 世話役
+      %th メール
+  %tbody
+    - @stats.each do |rec|
+      %tr{id: dom_id(rec[0])}
+        %td #{rec[0].graduate_year}回卒
+        %td.text-end #{rec[1]}
+        %td.text-end #{rec[2]}
+        %td
+          = simple_format(rec[3], {}, wrapper_tag: 'div')
+        %td
+          = simple_format(rec[4], {}, wrapper_tag: 'div')

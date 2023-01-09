@@ -4,4 +4,8 @@ module ApplicationHelper
 
     '<div class="badge badge-success">有効</div>'.html_safe
   end
+
+  def true_check(flag)
+    return '✔' if flag
+  end
 end

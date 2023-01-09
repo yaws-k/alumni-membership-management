@@ -1,7 +1,8 @@
 %h1 メールアドレス登録
 
 %p
-  = link_to '戻る', member_path(@current_member)
+  = link_to '戻る', member_path(@member)
 
-= form_with(model: [@current_member, @user]) do |f|
-  = render 'form', {f: f}
+.card.bg-base-300
+  .card-body
+    = render 'form'

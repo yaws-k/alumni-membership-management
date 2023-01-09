@@ -25,6 +25,7 @@ namespace :import_json do
           event_date: e['event_date'],
           fee: e['fee'],
           payment_only: e['payment_only'],
+          annual_fee: e['event_name'].end_with?('年会費') ? true : false,
           note: e['note']
         )
         logger.info { "#{event.event_date}: #{event.event_name}" }
@@ -38,7 +39,7 @@ namespace :import_json do
 
       # Year
       year = Year.create!(
-        graduate_year: json['year'],
+        graduate_year: json['year'].sub('回卒', ''),
         anno_domini: json['anno_domini'][0, 4],
         japanese_calendar: json['japanese_calendar'].match(/(昭和|平成|令和)(\d+|元)/)
       )
@@ -133,9 +134,12 @@ namespace :import_json do
       end
     end
 
+    # Convert field data
+    Member.where(communication: '通常').update_all(communication: 'メール')
+
     # Make test users
     if Rails.env.development?
-      members = Member.where(communication: '通常').limit(3)
+      members = Member.where(communication: 'メール').limit(3)
       members[0].update(family_name: '管理者', family_name_phonetic: 'かんりしゃ', roles: %w[admin])
       members[0].users.first.update(email: 'admin@example.com', password: args[:password], password_confirmation: args[:password])
 

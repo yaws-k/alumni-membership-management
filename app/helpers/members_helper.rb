@@ -1,4 +1,15 @@
 module MembersHelper
+  def communication(status)
+    case status
+    when 'メール'
+      'badge-success'
+    when '郵便'
+      'badge-warning'
+    when '退会'
+      'badge-error-content'
+    end
+  end
+
   def event_presence(presence)
     case presence
     when true
@@ -22,10 +33,19 @@ module MembersHelper
     [name, phonetic]
   end
 
+  def payment(status)
+    case status
+    when '未済'
+      'badge badge-warning'
+    when '-'
+      ''
+    else
+      'text-success-content'
+    end
+  end
+
   def role_name(role)
     case role
-    when 'normal'
-      '一般'
     when 'lead'
       '世話役'
     when 'board'

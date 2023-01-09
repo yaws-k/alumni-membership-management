@@ -4,8 +4,7 @@ class User
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   #devise :database_authenticatable, :registerable,
   #       :recoverable, :rememberable, :validatable
-  devise :database_authenticatable, :recoverable, :validatable, :lockable, :timeoutable, :trackable,
-         :registerable
+  devise :database_authenticatable, :recoverable, :validatable, :lockable, :timeoutable, :trackable
 
   ## Database authenticatable
   field :email,              type: String, default: ''

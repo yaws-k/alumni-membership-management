@@ -7,7 +7,7 @@
   = link_to 'イベント追加', new_event_path
 
 %table.table.w-auto
-  %thead
+  %thead.sticky.top-0
     %tr.text-center
       %th イベント名
       %th 開催日
@@ -16,16 +16,17 @@
       %th 操作
   %tbody
     - @events.each do |rec|
-      %tr.hover
+      %tr.hover{id: dom_id(rec)}
         %td #{rec.event_name}
         %td #{rec.event_date}
         %td.text-end #{rec.fee.to_fs(:delimited)}
-        %td #{rec.note}
+        %td.whitespace-normal #{simple_format(rec.note, {}, wrapper_tag: 'span')}
         %td
-          .flex.flex-wrap.gap-4
+          .flex.flex-nowrap.gap-4
             %div
               = link_to '詳細', event_path(rec), class: 'btn btn-sm btn-info'
-            %div
-              = link_to '編集', edit_event_path(rec), class: 'btn btn-sm btn-warning'
-            %div
-              = button_to '削除', rec, method: :delete, form: { data: { turbo_confirm: '削除しますか？' } }, class: 'btn btn-sm btn-error'
+            - if @roles[:board] || @roles[:admin]
+              %div
+                = link_to '編集', edit_event_path(rec), class: 'btn btn-sm btn-warning'
+              %div
+                = button_to '削除', rec, method: :delete, form: { data: { turbo_confirm: '削除しますか？' } }, class: 'btn btn-sm btn-error'

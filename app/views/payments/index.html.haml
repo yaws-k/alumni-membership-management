@@ -7,22 +7,24 @@
   = link_to '支払い追加', new_payment_path
 
 %table.table.w-auto
-  %thead
+  %thead.sticky.top-0
     %tr.text-center
       %th 支払い区分
+      %th 年会費
       %th 締め日
       %th 費用
       %th 補足
       %th 操作
   %tbody
     - @payments.each do |rec|
-      %tr.hover
+      %tr.hover{id: dom_id(rec)}
         %td #{rec.event_name}
+        %td.text-center #{true_check(rec.annual_fee)}
         %td #{rec.event_date}
         %td.text-end #{rec.fee.to_fs(:delimited)}
         %td #{rec.note}
         %td
-          .flex.flex-wrap.gap-4
+          .flex.flex-nowrap.gap-4
             %div
               = link_to '詳細', payment_path(rec), class: 'btn btn-sm btn-info'
             %div

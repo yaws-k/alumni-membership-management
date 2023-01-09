@@ -1,0 +1,8 @@
+%h1 会費および寄付履歴追加
+
+%p
+  = link_to '戻る', member_path(@member_id)
+
+.card.bg-base-300
+  .card-body
+    = render 'form', path: payment_histories_path

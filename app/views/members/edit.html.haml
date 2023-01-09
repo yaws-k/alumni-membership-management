@@ -3,9 +3,9 @@
 %p
   = link_to '戻る', member_path(@member)
 
-= render 'form'
-
-%hr
+.card.bg-base-300
+  .card-body
+    = render 'form'
 
 %p
   削除は、基本的に誤作成した場合などのみに利用します。

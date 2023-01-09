@@ -5,6 +5,7 @@ class MembersController < ApplicationController
   def index
     if @roles[:admin] || @roles[:board] || @roles[:lead]
       @members = list_members
+      @payments = Member.payment_status
     else
       redirect_to member_path(current_user.member)
     end
@@ -14,8 +15,9 @@ class MembersController < ApplicationController
     @member = Member.find(params[:id])
     @users = @member.users
     @addresses = @member.addresses
-    @events = Event.sorted(false)
-    @payments = Event.sorted(true)
+    @payments = Event.sorted(payment_only: true)
+    @payment_dates = Attendance.in(event_id: @payments.pluck(:id), member_id: @member.id).index_by(&:event_id)
+    @events = Event.sorted(payment_only: false)
     @attendances = Attendance.in(event_id: @events.pluck(:id)).index_by(&:event_id)
     @events.each do |event|
       @attendances[event.id] = @member.attendances.create(event_id: event.id) if @attendances[event.id].blank?
@@ -63,7 +65,7 @@ class MembersController < ApplicationController
   private
 
   def member_params
-    params[:member][:roles] = params[:member][:roles].reject(&:blank?)
+    params[:member][:roles] = params[:member][:roles].reject(&:blank?) if params[:member][:roles].present?
     params.require(:member).permit(
       :year_id,
       :family_name_phonetic,
@@ -108,12 +110,7 @@ class MembersController < ApplicationController
   end
 
   def list_members
-    years =
-      if @roles[:admin] || @roles[:board]
-        Year.all.order(anno_domini: :desc)
-      else
-        Year.where(id: current_user.member.year_id)
-      end
+    years = Year.accessible_years(roles: @roles, current_user:)
 
     members = {}
     years.each do |year|
@@ -132,7 +129,7 @@ class MembersController < ApplicationController
   end
 
   def prepare_options
-    @years = Year.all.sort(anno_domini: :desc).pluck(:graduate_year, :id).to_h
+    @years = Year.accessible_years(roles: @roles, current_user:).pluck(:graduate_year, :id).to_h
     @communications = %w[メール 郵便 退会 逝去]
     @role_options = [
       %w[lead 同学年全員の情報へアクセス可能],

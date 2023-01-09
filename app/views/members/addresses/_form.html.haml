@@ -1,19 +1,21 @@
-= render 'layouts/form_errors', model: f.object
-= f.hidden_field :member_id
-.mb-4
-  郵便番号
-  %br
-  = f.text_field(:postal_code, placeholder: '123-4567')
-.flex.flex-wrap.gap-2.mb-4
-  %div
-    住所（必須）
+= form_with(model: [@member, @address]) do |f|
+  = render 'layouts/form_errors', model: f.object
+  .mb-4
+    郵便番号
     %br
-    = f.text_field(:address1, placeholder: '東京都千代田区丸の内1-1-1', size: 50)
-  %div
-    建物名等（任意）
-    %br
-    = f.text_field(:address2, placeholder: '東京駅マンション101', size: 40)
-.mb-4
-  = f.check_box :unreachable, class: 'checkbox'
-  = f.label :unreachable, '郵便不達の場合はチェック'
-= f.submit '送信', class: 'btn btn-primary'
+    = f.text_field(:postal_code, placeholder: '123-4567', class: 'input')
+  .flex.flex-wrap.gap-2.mb-4
+    %div
+      住所（必須）
+      %br
+      = f.text_field(:address1, placeholder: '東京都千代田区丸の内1-1-1', size: 50, class: 'input')
+    %div
+      建物名等（任意）
+      %br
+      = f.text_field(:address2, placeholder: '東京駅マンション101', size: 40, class: 'input')
+  .flex.flex-wrap.mb-4
+    .form-control
+      %label.label.cursor-pointer
+        = f.check_box :unreachable, class: 'checkbox'
+        %span.label-text 郵便不達の場合はチェック
+  = f.submit '送信', class: 'btn btn-primary'

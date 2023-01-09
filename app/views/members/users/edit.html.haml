@@ -1,7 +1,8 @@
 %h1 メールアドレス関連情報更新
 
 %p
-  = link_to '戻る', member_path(@user.member_id)
+  = link_to '戻る', member_path(@member)
 
-= form_with(model: [@current_member, @user]) do |f|
-  = render 'form', {f: f}
+.card.bg-base-300
+  .card-body
+    = render 'form'

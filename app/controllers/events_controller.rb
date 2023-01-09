@@ -8,8 +8,8 @@ class EventsController < ApplicationController
   def show
     @event = Event.find(params[:id])
     @attendances = @event.attendances.index_by(&:member_id)
-    @members = Member.in(id: @attendances.keys)
-    @years = Year.all.index_by(&:id)
+    @members = Member.year_sort(id: @attendances.keys, order: :asc)
+    @years = Year.order(anno_domini: :desc).index_by(&:id)
   end
 
   def new
@@ -40,8 +40,13 @@ class EventsController < ApplicationController
 
   def destroy
     @event = Event.find(params[:id])
-    @event.destroy
-    redirect_to(events_path, notice: "#{@event.event_name}を削除しました。")
+
+    if @event.attendances.blank?
+      @event.destroy
+      redirect_to(events_path, notice: "#{@event.event_name}を削除しました。")
+    else
+      redirect_to(events_path, alert: "参加者がいるため、#{@event.event_name}を削除できませんでした。")
+    end
   end
 
   private

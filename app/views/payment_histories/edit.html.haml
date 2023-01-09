@@ -1,0 +1,8 @@
+%h1 会費および寄付履歴編集
+
+%p
+  = link_to '戻る', member_path(@member_id)
+
+.card.bg-base-300
+  .card-body
+    = render 'form', path: payment_history_path(@attendance)

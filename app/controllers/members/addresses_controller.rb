@@ -1,5 +1,6 @@
 class Members::AddressesController < ApplicationController
   before_action :check_roles
+  before_action :consistency_check, except: %i[new create]
 
   def new
     @member = Member.find(params[:member_id])
@@ -8,6 +9,7 @@ class Members::AddressesController < ApplicationController
 
   def create
     @address = Address.new(address_params)
+    @address.member_id = params[:member_id]
     unless @address.save
       render 'new', status: :unprocessable_entity
       return
@@ -17,17 +19,10 @@ class Members::AddressesController < ApplicationController
   end
 
   def edit
-    @address = Address.find(params[:id])
-    redirect_to(members_path) if @address.member_id.to_s != params[:member_id]
+    # Variables are set in before_action
   end
 
   def update
-    @address = Address.find(params[:id])
-    if @address.member_id.to_s != params[:member_id]
-      redirect_to(members_path)
-      return
-    end
-
     unless @address.update(address_params)
       render 'edit', status: :unprocessable_entity
       return
@@ -37,12 +32,6 @@ class Members::AddressesController < ApplicationController
   end
 
   def destroy
-    @address = Address.find(params[:id])
-    if @address.member_id.to_s != params[:member_id]
-      redirect_to(members_path)
-      return
-    end
-
     @address.destroy
     redirect_to(member_path(@address.member_id), notice: "#{@address.postal_code}　#{@address.address1}　#{@address.address2}を削除しました。")
   end
@@ -50,13 +39,17 @@ class Members::AddressesController < ApplicationController
   private
 
   def address_params
-    params[:address][:member_id] = params[:member_id]
     params.require(:address).permit(
       :postal_code,
       :address1,
       :address2,
-      :unreachable,
-      :member_id
+      :unreachable
     )
+  end
+
+  def consistency_check
+    @member = Member.find(params[:member_id])
+    @address = Address.find(params[:id])
+    redirect_to(members_path) if @member.id != @address.member.id
   end
 end

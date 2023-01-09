@@ -1,20 +1,25 @@
-= render 'layouts/form_errors', model: f.object
-= f.hidden_field :payment_only
-.mb-4
-  支払い区分
-  %br
-  = f.text_field(:event_name, placeholder: '2022-2025年会費', size: 40)
-.mb-4
-  締め日
-  %br
-  = f.date_field(:event_date)
-.mb-4
-  費用
-  %br
-  = f.text_field(:fee)
-.mb-4
-  補足
-  %br
-  = f.text_area(:note, cols: 60)
-.mb-4
-= f.submit '送信', class: 'btn btn-primary'
+= form_with(model: @payment, url: path) do |f|
+  = render 'layouts/form_errors', model: f.object
+  = f.hidden_field :payment_only
+  .mb-4
+    支払い区分
+    %br
+    = f.text_field(:event_name, placeholder: '2022-2025年会費', class: 'input')
+  .flex.flex-wrap.mb-4
+    .form-control
+      %label.label.cursor-pointer
+        = f.check_box :annual_fee, class: 'checkbox'
+        %span.label-text 年会費の場合はチェック
+  .mb-4
+    締め日
+    %br
+    = f.date_field(:event_date, class: 'input')
+  .mb-4
+    費用
+    %br
+    = f.text_field(:fee, class: 'input')
+  .mb-4
+    補足
+    %br
+    = f.text_area(:note, cols: 80, class: 'textarea')
+  = f.submit '送信', class: 'btn btn-primary'

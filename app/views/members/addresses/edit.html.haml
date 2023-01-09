@@ -1,7 +1,8 @@
 %h1 住所編集
 
 %p
-  = link_to '戻る', member_path(@address.member_id)
+  = link_to '戻る', member_path(@member)
 
-= form_with(model: [@current_member, @address]) do |f|
-  = render 'form', {f: f}
+.card.bg-base-300
+  .card-body
+    = render 'form'
