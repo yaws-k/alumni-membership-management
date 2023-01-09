@@ -3,7 +3,7 @@ class SearchesController < ApplicationController
 
   def name
     # keyword
-    @search = normalized_search_key
+    @search = normalized_search_key(params[:name_search])
 
     # Accessible year hash and members
     @year, members = accessible_years_members
@@ -17,7 +17,7 @@ class SearchesController < ApplicationController
 
   def email
     # keyword
-    @search = normalized_search_key
+    @search = normalized_search_key(params[:email_search])
 
     # Accessible year hash and members
     @year, members = accessible_years_members
@@ -52,8 +52,10 @@ class SearchesController < ApplicationController
     [year_h, members]
   end
 
-  def normalized_search_key
-    params[:search].strip.unicode_normalize(:nfkc).tr('ァ-ン', 'ぁ-ん')
+  def normalized_search_key(keyword)
+    return '' if keyword.blank?
+
+    keyword.strip.unicode_normalize(:nfkc).tr('ァ-ン', 'ぁ-ん')
   end
 
   def search(array: [], keyword: nil)
