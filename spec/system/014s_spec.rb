@@ -36,9 +36,9 @@ RSpec.describe '014s', type: :system do
     end
 
     it 'shows same year members' do
+      expect(page).to have_text("#{member1.year.graduate_year}（#{member1.year.anno_domini}年／#{member1.year.japanese_calendar}年3月卒）　2人")
       within(id: dom_id(member)) { expect(page).to have_text(member.family_name) }
       within(id: dom_id(member1)) { expect(page).to have_text(member1.family_name) }
-      expect(page).to_not have_text(member2.family_name)
     end
 
     it 'shows names and links to their details' do
