@@ -1,0 +1,19 @@
+%table.table.w-auto
+  %thead
+    %tr.text-center
+      %th 氏名（旧姓）
+      %th よみがな
+      %th 連絡方法
+      %th 年会費
+      %th 詳細
+  %tbody
+    - members.each do |m|
+      %tr.hover{id: dom_id(m)}
+        %td #{full_name(m)[0]}
+        %td #{full_name(m)[1]}
+        %td.text-center
+          .badge{class: communication(m.communication)} #{m.communication}
+        %td.text-center
+          %div{class: payment(@payments[m.id])} #{@payments[m.id]}
+        %td
+          = link_to '詳細', member_path(m), class: 'btn btn-sm btn-info'

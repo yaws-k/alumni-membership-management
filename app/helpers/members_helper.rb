@@ -2,11 +2,11 @@ module MembersHelper
   def communication(status)
     case status
     when 'メール'
-      'text-success'
+      'badge-success'
     when '郵便'
-      'text-warning'
+      'badge-warning'
     when '退会'
-      'text-error-content'
+      'badge-error-content'
     end
   end
 
@@ -36,11 +36,11 @@ module MembersHelper
   def payment(status)
     case status
     when '未済'
-      'text-warning'
+      'badge badge-warning'
     when '-'
       ''
     else
-      'text-success'
+      'text-success-content'
     end
   end
 

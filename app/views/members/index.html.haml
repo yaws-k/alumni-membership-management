@@ -43,20 +43,4 @@
     %input{type: 'checkbox', class: 'peer', id: "#{dom_id(years[:year])}_collapse"}
     %label.collapse-title.bg-secondary.text-secondary-content.peer-checked:bg-primary.peer-checked:text-primary-content{for: "#{dom_id(years[:year])}_collapse"} #{years[:year].graduate_year}（#{years[:year].anno_domini}年／#{years[:year].japanese_calendar}年3月卒）　#{years[:count]}人
     .collapse-content.bg-secondary
-      %table.table.w-auto
-        %thead
-          %tr.text-center
-            %th 氏名（旧姓）
-            %th よみがな
-            %th 連絡方法
-            %th 年会費
-            %th 詳細
-        %tbody
-          - years[:members].each do |m|
-            %tr.hover{id: dom_id(m)}
-              %td #{full_name(m)[0]}
-              %td #{full_name(m)[1]}
-              %td.text-center{class: communication(m.communication)} #{m.communication}
-              %td.text-center{class: payment(@payments[m.id])} #{@payments[m.id]}
-              %td
-                = link_to '詳細', member_path(m), class: 'btn btn-sm btn-info'
+      = render('member_list', { members: years[:members] })
