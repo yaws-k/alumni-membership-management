@@ -4,18 +4,18 @@
   .mb-4
     イベント名
     %br
-    = f.text_field(:event_name, placeholder: 'イベント名', size: 40)
+    = f.text_field(:event_name, placeholder: 'イベント名', size: 40, class: 'input')
   .mb-4
     開催日
     %br
-    = f.date_field(:event_date)
+    = f.date_field(:event_date, class: 'input')
   .mb-4
     参加費
     %br
-    = f.text_field(:fee)
+    = f.text_field(:fee, class: 'input')
   .mb-4
     備考
     %br
-    = f.text_area(:note, cols: 60)
+    = f.text_area(:note, cols: 80, class: 'textarea')
   .mb-4
   = f.submit '送信', class: 'btn btn-primary'
