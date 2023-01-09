@@ -45,7 +45,7 @@ gem "bootsnap", require: false
 # Added gems
 gem 'cssbundling-rails'
 gem 'devise'
-gem 'hamlit-rails'
+gem 'haml'
 gem 'mongoid'
 gem 'rubyXL'
 

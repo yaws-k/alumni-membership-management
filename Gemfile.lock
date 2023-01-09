@@ -117,15 +117,6 @@ GEM
       temple (>= 0.8.2)
       thor
       tilt
-    hamlit (3.0.3)
-      temple (>= 0.8.2)
-      thor
-      tilt
-    hamlit-rails (0.2.3)
-      actionpack (>= 4.0.1)
-      activesupport (>= 4.0.1)
-      hamlit (>= 1.2.0)
-      railties (>= 4.0.1)
     html2haml (2.3.0)
       erubis (~> 2.7.0)
       haml (>= 4.0)
@@ -288,7 +279,7 @@ DEPENDENCIES
   devise
   factory_bot_rails
   faker
-  hamlit-rails
+  haml
   html2haml
   importmap-rails
   jbuilder
