@@ -1,7 +1,7 @@
 namespace :init_db do
   desc 'Initialize DB'
 
-  task :do, %w[password] => :environment do |_task, args|
+  task do: :environment do
     # Refresh DB
     Event.collection.drop
     Attendance.collection.drop
@@ -18,12 +18,7 @@ namespace :init_db do
     Year.create_indexes
 
     # Set password
-    password =
-      if args[:password].blank?
-        Faker::Alphanumeric.alphanumeric(number: 20)
-      else
-        args[:password]
-      end
+    password = SecureRandom.hex(20)
 
     # Create documents
     year = Year.create!(
