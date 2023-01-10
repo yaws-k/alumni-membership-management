@@ -20,7 +20,7 @@ namespace :init_db do
     # Set password
     password =
       if args[:password].blank?
-        Faker::Alphanumeric.alphanumeric(number: 20)
+        SecureRandom.hex(20)
       else
         args[:password]
       end
