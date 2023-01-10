@@ -37,6 +37,10 @@ If you try using an RDB with ActiveRecord, critical logic will not work.
 It uses rubyXL to export data to Excel (.xlsx) file.
 You might think CSV should be enough, but there are complicated Kanji and Japanese Excel file encoding issues...
 
+### sd_notify
+
+This gem is required to connect puma and Rails via the unix socket.
+
 ## Configuration
 
 credentials.yml looks like as below.
@@ -89,8 +93,8 @@ If these parameters are specified, Matomo tracking javascript will be activated 
 
 ## Database initialization
 
-It must have at least one admin to start. There will be an initializing script... maybe.
-(This system is version 3, which started by importing the existing data from version 2.)
+It must have at least one admin to start. Run `bin/rails init_db:do` to create the first user.
+This Rake task will show you the email and randomly generated initial password. Use these credentials and start from updating this users information.
 
 ## Test suite
 
