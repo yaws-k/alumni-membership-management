@@ -156,7 +156,7 @@ namespace :import_json do
       members[2].update(family_name: '世話役', family_name_phonetic: 'せわやく', roles: %w[lead])
       members[2].users.first.update(email: 'lead@example.com', password: args[:password], password_confirmation: args[:password])
 
-      members[3].update(family_name: '一般', family_name_phonetic: 'いっぱん', roles: %w[lead])
+      members[3].update(family_name: '一般', family_name_phonetic: 'いっぱん', roles: [])
       members[3].users.first.update(email: 'member@example.com', password: args[:password], password_confirmation: args[:password])
     end
   end
