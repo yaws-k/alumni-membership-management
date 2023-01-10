@@ -5,13 +5,20 @@ namespace :import_json do
   task :do, %w[password] => :environment do |_task, args|
     logger = Logger.new($stdout)
 
-    # Drop all data
+    # Refresh DB
     Event.collection.drop
     Attendance.collection.drop
     Address.collection.drop
     User.collection.drop
     Member.collection.drop
     Year.collection.drop
+
+    Event.create_indexes
+    Attendance.create_indexes
+    Address.create_indexes
+    User.create_indexes
+    Member.create_indexes
+    Year.create_indexes
 
     # json directory
     json_dir = Rails.root.join('tmp/export')
@@ -139,7 +146,7 @@ namespace :import_json do
 
     # Make test users
     if Rails.env.development?
-      members = Member.where(communication: 'メール').limit(3)
+      members = Member.where(communication: 'メール').limit(4)
       members[0].update(family_name: '管理者', family_name_phonetic: 'かんりしゃ', roles: %w[admin])
       members[0].users.first.update(email: 'admin@example.com', password: args[:password], password_confirmation: args[:password])
 
@@ -148,6 +155,9 @@ namespace :import_json do
 
       members[2].update(family_name: '世話役', family_name_phonetic: 'せわやく', roles: %w[lead])
       members[2].users.first.update(email: 'lead@example.com', password: args[:password], password_confirmation: args[:password])
+
+      members[3].update(family_name: '一般', family_name_phonetic: 'いっぱん', roles: %w[lead])
+      members[3].users.first.update(email: 'member@example.com', password: args[:password], password_confirmation: args[:password])
     end
   end
 end

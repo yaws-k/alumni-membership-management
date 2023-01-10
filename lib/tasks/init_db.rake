@@ -2,7 +2,7 @@ namespace :init_db do
   desc 'Initialize DB'
 
   task :do, %w[password] => :environment do |_task, args|
-    # Drop all data
+    # Refresh DB
     Event.collection.drop
     Attendance.collection.drop
     Address.collection.drop
