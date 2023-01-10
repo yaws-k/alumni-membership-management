@@ -60,6 +60,7 @@ mongodb:
 
 host:
   mail: mail.server.fqdn
+  sender: admin@example.com
   production: production.fqdn.name
 
 alumni: alumni name displayed on the main page
@@ -69,16 +70,21 @@ matomo:
   siteid: siteID number
 ```
 ### mongodb:
+
 MongoDB database name, username, and password will be specified here.
 
 ### host:
+
 The mail server is specified in config/environment.rb
+The mail sender is specified in config/config/initializers/devise.rb
 The production FQDN is specified in config/environments/production.rb
 
 ### alumni:
+
 This is the alumni's name to display on the main page (members/index).
 
 ### matomo:
+
 If these parameters are specified, Matomo tracking javascript will be activated in app/views/layouts/application.html.haml
 
 ## Database initialization
@@ -89,4 +95,4 @@ It must have at least one admin to start. There will be an initializing script..
 ## Test suite
 
 Run `bin/rspec`. This system uses RSpec.
-This repository has [GitHub Actions configuration](https://github.com/yaws-k/almni-membership-management/blob/main/.github/workflows/rspec.yml) and [mongoid.yml for this action](https://github.com/yaws-k/almni-membership-management/blob/main/config/mongoid.yml.ci)
+This repository has [GitHub Actions configuration](https://github.com/yaws-k/alumni-membership-management/blob/main/.github/workflows/rspec.yml) and [mongoid.yml for this action](https://github.com/yaws-k/alumni-membership-management/blob/main/config/mongoid.yml.ci)
