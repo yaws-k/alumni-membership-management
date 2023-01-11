@@ -15,6 +15,10 @@ RSpec.describe '017s', type: :system do
   context 'normal user' do
     include_context 'login'
 
+    it 'does not show new member create link' do
+      expect(page).to_not have_link('メンバー追加', href: new_member_path)
+    end
+
     it 'rejects access to new member page' do
       visit new_member_path
       expect(current_path).to eq(member_path(member))

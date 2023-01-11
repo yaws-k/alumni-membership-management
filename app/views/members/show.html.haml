@@ -134,7 +134,7 @@
       %th 支払日
       %th 出欠予定
       %th 備考
-      %th 編集
+      %th 出欠
   %tbody
     - @events.each do |rec|
       %tr.hover{id: dom_id(@attendances[rec.id])}
@@ -142,10 +142,10 @@
         %td #{rec.event_date}
         %td #{rec.fee.to_fs(:delimited)}
         %td #{@attendances[rec.id].payment_date}
-        %td.text-center
+        %td.text-center#presence
           = event_presence(@attendances[rec.id].application)
         %td #{@attendances[rec.id].note}
-        %td.text-center
+        %td.text-center#application
           - if rec.event_date > Date.today
             .flex.flex-wrap.gap-4
               %div
