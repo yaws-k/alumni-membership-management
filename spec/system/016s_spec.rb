@@ -10,9 +10,12 @@ RSpec.describe '016s', type: :system do
   let!(:member1) { create(:member, :full_fields, year_id: member.year_id) }
   let!(:user1) { create(:user, member_id: member1.id) }
   let!(:address1) { create(:address, member_id: member1.id) }
+
   let!(:member2) { create(:member) }
   let!(:user2) { create(:user, member_id: member2.id) }
   let!(:address2) { create(:address, member_id: member2.id) }
+
+  let!(:event) { create(:event, event_date: (Date.today + 1))}
 
   context 'normal user' do
     include_context 'login'
@@ -115,6 +118,43 @@ RSpec.describe '016s', type: :system do
               expect(page).to have_text('不達')
               expect(page).to have_text('100-0006')
             end
+          end
+        end
+      end
+
+      context 'events' do
+        let(:attendance1) { Attendance.find_by(member_id: member1.id, event_id: event.id) }
+
+        it 'is possible to update event application' do
+          within(id: dom_id(attendance1)) do
+            within(id: 'presence') do
+              expect(page).to have_text('未回答')
+            end
+
+            click_button('出席')
+
+            within(id: 'presence') do
+              expect(page).to have_text('出席')
+            end
+          end
+        end
+
+        it 'is possible to add attendance notes' do
+          within(id: dom_id(attendance1)) do
+            click_link('備考', href: edit_attendance_path(attendance1))
+          end
+          expect(current_path).to eq(edit_attendance_path(attendance1))
+
+          choose('欠席')
+          fill_in('attendance_note', with: 'Additional comments')
+          click_button('送信')
+
+          expect(current_path).to eq(member_path(member1))
+          within(id: dom_id(attendance1)) do
+            within(id: 'presence') do
+              expect(page).to have_text('欠席')
+            end
+            expect(page).to have_text('Additional comments')
           end
         end
       end

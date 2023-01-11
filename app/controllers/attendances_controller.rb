@@ -15,7 +15,7 @@ class AttendancesController < ApplicationController
     return if performed?
 
     attendance.update!(attendance_params)
-    redirect_to member_path(attendance.member_id, anchor: attendance.id)
+    redirect_to member_path(attendance.member_id, anchor: helpers.dom_id(attendance))
   end
 
   private
@@ -26,7 +26,9 @@ class AttendancesController < ApplicationController
       :presence,
       :payment_date,
       :amount,
-      :note
+      :note,
+      :member_id,
+      :event_id
     )
   end
 end

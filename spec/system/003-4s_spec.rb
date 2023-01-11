@@ -73,7 +73,7 @@ RSpec.describe '003-4s', type: :system do
 
       it 'is possible to add comments' do
         expect(current_path).to eq(edit_attendance_path(attendance1))
-        choose('attendance_application_false')
+        choose('欠席')
         fill_in('attendance_note', with: 'Additional comments')
         click_button('送信')
 
