@@ -3,8 +3,9 @@
 %p
   = link_to '戻る', root_path
 
-%p
-  = link_to 'イベント追加', new_event_path
+- if @roles[:board] || @roles[:admin]
+  %p
+    = link_to 'イベント追加', new_event_path
 
 %table.table.w-auto
   %thead.sticky.top-0
