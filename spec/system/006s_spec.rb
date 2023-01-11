@@ -36,6 +36,12 @@ RSpec.describe '006s', type: :system do
           expect(page).to have_text(member.first_name_phonetic)
           expect(page).to have_text(member.family_name)
           expect(page).to have_text(member.first_name)
+
+          if with_detail
+            expect(page).to have_link('詳細', href: member_path(member))
+          else
+            expect(page).to_not have_link('詳細', href: member_path(member))
+          end
         end
       end
     end
@@ -56,24 +62,28 @@ RSpec.describe '006s', type: :system do
 
   context 'normal user' do
     include_context 'login'
+    let(:with_detail) { false }
 
     it_behaves_like '006 event detail'
   end
 
   context 'lead' do
     include_context 'login as lead'
+    let(:with_detail) { false }
 
     it_behaves_like '006 event detail'
   end
 
   context 'board' do
     include_context 'login as board'
+    let(:with_detail) { true }
 
     it_behaves_like '006 event detail'
   end
 
   context 'admin' do
     include_context 'login as admin'
+    let(:with_detail) { true }
 
     it_behaves_like '006 event detail'
   end
