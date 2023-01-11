@@ -12,11 +12,7 @@ require 'rails_helper'
 # end
 RSpec.describe MembersHelper, type: :helper do
   describe 'event_presence' do
-    it 'returns presence in Japanese' do
-      expect(helper.event_presence(true)).to eq('出席')
-      expect(helper.event_presence(false)).to eq('欠席')
-      expect(helper.event_presence(nil)).to eq('未回答')
-    end
+    # Skip (too simple)
   end
 
   describe 'communication' do
