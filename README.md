@@ -10,6 +10,8 @@ I will fix only critical issues and security updates for this project till the e
 
 You can see user stories [on Airtable (written in Japanese)](https://airtable.com/shrNm3h6yWEVP3G0u)
 
+The user manual is on [this repository's Wiki](https://github.com/yaws-k/alumni-membership-management/wiki)
+
 ## Requirements
 
 - Ruby version 3.2.x
