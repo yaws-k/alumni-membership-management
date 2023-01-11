@@ -13,11 +13,11 @@ module MembersHelper
   def event_presence(presence)
     case presence
     when true
-      '出席'
+      '<div class="badge badge-primary">出席</div>'.html_safe
     when false
-      '欠席'
+      '<div class="badge badge-accent">欠席</div>'.html_safe
     when nil
-      '未回答'
+      '<div class="badge">未回答</div>'.html_safe
     end
   end
 

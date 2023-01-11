@@ -3,8 +3,9 @@
 %p
   = link_to '戻る', root_path
 
-%p
-  = link_to 'イベント追加', new_event_path
+- if @roles[:board] || @roles[:admin]
+  %p
+    = link_to 'イベント追加', new_event_path
 
 %table.table.w-auto
   %thead.sticky.top-0
@@ -13,7 +14,7 @@
       %th 開催日
       %th 会費
       %th 補足
-      %th 操作
+      %th 詳細
   %tbody
     - @events.each do |rec|
       %tr.hover{id: dom_id(rec)}

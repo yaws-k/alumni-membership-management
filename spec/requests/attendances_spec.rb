@@ -18,6 +18,8 @@ RSpec.describe 'Attendances', type: :request do
     }
   end
 
+  include ActionView::RecordIdentifier
+
   # Not logged in
   context 'not logged in' do
     describe '#edit' do
@@ -65,7 +67,7 @@ RSpec.describe 'Attendances', type: :request do
         patch "/attendances/#{attendance.id}", params: {
           attendance: edit_attendance_param
         }
-        expect(response).to redirect_to(member_path(member, anchor: attendance.id))
+        expect(response).to redirect_to(member_path(member, anchor: dom_id(attendance)))
       end
 
       it "returns http redirect (reject) to same year member's data" do
@@ -113,14 +115,14 @@ RSpec.describe 'Attendances', type: :request do
         patch "/attendances/#{attendance.id}", params: {
           attendance: edit_attendance_param
         }
-        expect(response).to redirect_to(member_path(member, anchor: attendance.id))
+        expect(response).to redirect_to(member_path(member, anchor: dom_id(attendance)))
       end
 
       it "returns http redirect (success) to same year member's data" do
         patch "/attendances/#{attendance2.id}", params: {
           attendance: edit_attendance_param
         }
-        expect(response).to redirect_to(member_path(member2, anchor: attendance2.id))
+        expect(response).to redirect_to(member_path(member2, anchor: dom_id(attendance2)))
       end
 
       it "returns http redirect (reject) to other member's data" do
@@ -161,21 +163,21 @@ RSpec.describe 'Attendances', type: :request do
         patch "/attendances/#{attendance.id}", params: {
           attendance: edit_attendance_param
         }
-        expect(response).to redirect_to(member_path(member, anchor: attendance.id))
+        expect(response).to redirect_to(member_path(member, anchor: dom_id(attendance)))
       end
 
       it "returns http redirect (success) to same year member's data" do
         patch "/attendances/#{attendance2.id}", params: {
           attendance: edit_attendance_param
         }
-        expect(response).to redirect_to(member_path(member2, anchor: attendance2.id))
+        expect(response).to redirect_to(member_path(member2, anchor: dom_id(attendance2)))
       end
 
       it "returns http redirect (reject) to other member's data" do
         patch "/attendances/#{attendance3.id}", params: {
           attendance: edit_attendance_param
         }
-        expect(response).to redirect_to(member_path(member3, anchor: attendance3.id))
+        expect(response).to redirect_to(member_path(member3, anchor: dom_id(attendance3)))
       end
     end
   end

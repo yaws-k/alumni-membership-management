@@ -13,13 +13,14 @@
 %h2 参加者一覧
 
 %table.table.w-auto
-  %thead
+  %thead.sticky.top-0
     %tr.text-center
       %th 卒年
       %th 氏名（旧姓）
       %th 備考
       %th 支払い
-      %th 詳細
+      - if @roles[:board] || @roles[:admin]
+        %th 詳細
   %tbody
     - @members.each do |rec|
       %tr.hover{id: dom_id(rec)}
@@ -28,7 +29,8 @@
           #{full_name(rec)[1]}
           %br
           #{full_name(rec)[0]}
-        %td #{@attendances[rec.id].note}
+        %td #{simple_format(@attendances[rec.id].note, {}, wrapper_tag: 'span')}
         %td #{@attendances[rec.id].payment_date}
-        %td
-          = link_to '詳細', member_path(rec), class: 'btn btn-sm btn-info'
+        - if @roles[:board] || @roles[:admin]
+          %td
+            = link_to '詳細', member_path(rec), class: 'btn btn-sm btn-info'

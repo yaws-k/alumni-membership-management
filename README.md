@@ -10,6 +10,8 @@ I will fix only critical issues and security updates for this project till the e
 
 You can see user stories [on Airtable (written in Japanese)](https://airtable.com/shrNm3h6yWEVP3G0u)
 
+The user manual is on [this repository's Wiki](https://github.com/yaws-k/alumni-membership-management/wiki)
+
 ## Requirements
 
 - Ruby version 3.2.x
@@ -18,22 +20,28 @@ You can see user stories [on Airtable (written in Japanese)](https://airtable.co
 Additional explanations for the added gems in Gemfile
 
 ### MongoDB
+
 Unlike other Ruby on Rails projects, it uses MongoDB instead of the usual RDBs. Please install MongoDB if you want to run this service on your site.
 
 ### cssbundling-rails for Tailwind CSS
+
 RoR 7 offers Tailwind CSS easy installer, but this mechanism doesn't accept any plugins. To use daisyUI and Prose plugin, this project uses cssbundling-rails.
 
 ### Devise
+
 For user authentication, this project uses Devise. As of December 2022, Devise doesn't like Turbo for RoR 7. To avoid issues with turbo, custom views to use "data: { turbo: false}" are generated under app/views/devise.
 
 ### haml
+
 Instead of erb, this project uses haml. Better performance and less codes, but sometimes more complicated...
 
 ### Mongoid
+
 Instead of ActiveRecord, this project requires Mongoid to work with MongoDB. It almost works the same as ActiveRecord, but some queries look different.
 If you try using an RDB with ActiveRecord, critical logic will not work.
 
 ### rubyXL
+
 It uses rubyXL to export data to Excel (.xlsx) file.
 You might think CSV should be enough, but there are complicated Kanji and Japanese Excel file encoding issues...
 
@@ -73,21 +81,22 @@ matomo:
   site: you-matomo.site.name
   siteid: siteID number
 ```
-### mongodb:
+
+### mongodb
 
 MongoDB database name, username, and password will be specified here.
 
-### host:
+### host
 
 The mail server is specified in config/environment.rb
 The mail sender is specified in config/config/initializers/devise.rb
 The production FQDN is specified in config/environments/production.rb
 
-### alumni:
+### alumni
 
 This is the alumni's name to display on the main page (members/index).
 
-### matomo:
+### matomo
 
 If these parameters are specified, Matomo tracking javascript will be activated in app/views/layouts/application.html.haml
 
