@@ -7,11 +7,12 @@
   .card-body
     = render 'form'
 
-%p
-  削除は、基本的に誤作成した場合などのみに利用します。
-  %br
-  退会は、不要な個人情報を削除し、年次、名前、退会理由を残します。
-  %br
-  こうすることで、本人の希望や逝去により退会した方を、後の担当者が誤って連絡して不快な思いをさせることを防止しています。
+- if @roles[:lead] || @roles[:board] || @roles[:admin]
+  %p
+    削除は、基本的に誤作成した場合などのみに利用します。
+    %br
+    退会は、不要な個人情報を削除し、年次、名前、退会理由を残します。
+    %br
+    こうすることで、本人の希望や逝去により退会した方を、後の担当者が誤って連絡して不快な思いをさせることを防止しています。
 
-= button_to '削除', @member, method: :delete, form: { data: { turbo_confirm: '削除しますか？' } }, class: 'btn btn-error'
+  = button_to '削除', @member, method: :delete, form: { data: { turbo_confirm: '削除しますか？' } }, class: 'btn btn-error'
