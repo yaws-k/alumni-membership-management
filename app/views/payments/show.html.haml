@@ -24,10 +24,7 @@
     - @members.each do |rec|
       %tr.hover
         %td #{@years[rec.year_id].graduate_year}
-        %td
-          #{full_name(rec)[1]}
-          %br
-          #{full_name(rec)[0]}
+        %td #{full_name_tooltip(rec)}
         %td #{@attendances[rec.id].note}
         %td #{@attendances[rec.id].payment_date}
         %td
