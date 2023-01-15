@@ -34,16 +34,7 @@
                 %td #{annual_fee[:payment_date]}
                 %td #{annual_fee[:graduate_year]}
                 %td
-                  = link_to member_path(annual_fee[:member_id], anchor: 'payment') do
-                    %ruby
-                      %rb #{annual_fee[:family_name]}
-                      %rp （
-                      %rt #{annual_fee[:family_name_phonetic]}
-                      %rp ）
-                    %ruby
-                      %rb #{annual_fee[:first_name]}
-                      %rp （
-                      %rt #{annual_fee[:first_name_phonetic]}
-                      %rp ）
+                  = link_to member_path(annual_fee[:member], anchor: 'payment') do
+                    #{full_name_tooltip(annual_fee[:member])}
                 %td.text-end #{annual_fee[:amount].to_fs(:delimited)}
                 %td.text-end #{annual_fee[:event_name]}

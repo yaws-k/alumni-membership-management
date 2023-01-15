@@ -12,7 +12,9 @@
 
 %h2 参加者一覧
 
-%table.table.w-auto
+%p 参加申込者数：#{@members.size.to_fs(:delimited)}
+
+%table.table.w-auto#applicants
   %thead.sticky.top-0
     %tr.text-center
       %th 卒年
@@ -25,10 +27,7 @@
     - @members.each do |rec|
       %tr.hover{id: dom_id(rec)}
         %td #{@years[rec.year_id].graduate_year}
-        %td
-          #{full_name(rec)[1]}
-          %br
-          #{full_name(rec)[0]}
+        %td #{full_name_tooltip(rec)}
         %td #{simple_format(@attendances[rec.id].note, {}, wrapper_tag: 'span')}
         %td #{@attendances[rec.id].payment_date}
         - if @roles[:board] || @roles[:admin]

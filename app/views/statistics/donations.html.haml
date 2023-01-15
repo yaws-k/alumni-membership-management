@@ -34,16 +34,7 @@
                 %td #{donation[:payment_date]}
                 %td #{donation[:graduate_year]}
                 %td
-                  = link_to member_path(donation[:member_id], anchor: 'payment') do
-                    %ruby
-                      %rb #{donation[:family_name]}
-                      %rp （
-                      %rt #{donation[:family_name_phonetic]}
-                      %rp ）
-                    %ruby
-                      %rb #{donation[:first_name]}
-                      %rp （
-                      %rt #{donation[:first_name_phonetic]}
-                      %rp ）
+                  = link_to member_path(donation[:member], anchor: 'payment') do
+                    #{full_name_tooltip(donation[:member])}
                 %td.text-end #{donation[:amount].to_fs(:delimited)}
                 %td.text-end #{donation[:event_name]}

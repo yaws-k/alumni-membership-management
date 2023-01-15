@@ -7,7 +7,7 @@ class EventsController < ApplicationController
 
   def show
     @event = Event.find(params[:id])
-    @attendances = @event.attendances.index_by(&:member_id)
+    @attendances = @event.attendances.where(application: true).index_by(&:member_id)
     @members = Member.year_sort(id: @attendances.keys, order: :asc)
     @years = Year.order(anno_domini: :desc).index_by(&:id)
   end

@@ -34,16 +34,7 @@
                 %td #{income[:payment_date]}
                 %td #{income[:graduate_year]}
                 %td
-                  = link_to member_path(income[:member_id], anchor: 'payment') do
-                    %ruby
-                      %rb #{income[:family_name]}
-                      %rp （
-                      %rt #{income[:family_name_phonetic]}
-                      %rp ）
-                    %ruby
-                      %rb #{income[:first_name]}
-                      %rp （
-                      %rt #{income[:first_name_phonetic]}
-                      %rp ）
+                  = link_to member_path(income[:member], anchor: 'payment') do
+                    #{full_name_tooltip(income[:member])}
                 %td.text-end #{income[:amount].to_fs(:delimited)}
                 %td.text-end #{income[:event_name]}
