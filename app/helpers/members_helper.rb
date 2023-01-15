@@ -33,6 +33,11 @@ module MembersHelper
     [name, phonetic]
   end
 
+  def full_name_tooltip(member)
+    name, phonetic = full_name(member)
+    "<div class='tooltip' data-tip='#{phonetic}'>#{name}</div>".html_safe
+  end
+
   def payment(status)
     case status
     when '未済'

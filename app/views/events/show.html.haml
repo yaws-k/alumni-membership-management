@@ -27,7 +27,7 @@
     - @members.each do |rec|
       %tr.hover{id: dom_id(rec)}
         %td #{@years[rec.year_id].graduate_year}
-        %td #{full_name_ruby(rec)}
+        %td #{full_name_tooltip(rec)}
         %td #{simple_format(@attendances[rec.id].note, {}, wrapper_tag: 'span')}
         %td #{@attendances[rec.id].payment_date}
         - if @roles[:board] || @roles[:admin]

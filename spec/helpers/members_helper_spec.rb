@@ -63,6 +63,38 @@ RSpec.describe MembersHelper, type: :helper do
     end
   end
 
+  describe 'full_name_tooltip' do
+    let(:rec) do
+      create(
+        :member,
+        family_name: '名字',
+        family_name_phonetic: 'みょうじ',
+        first_name: '名前',
+        first_name_phonetic: 'なまえ'
+      )
+    end
+
+    context 'with maiden name' do
+      it 'returns full name' do
+        rec.update(
+          maiden_name: 'ミドル',
+          maiden_name_phonetic: 'みどる'
+        )
+        expect(helper.full_name_tooltip(rec)).to eq("<div class='tooltip' data-tip='みょうじ（みどる）なまえ'>名字（ミドル）名前</div>")
+      end
+    end
+
+    context 'without maiden name' do
+      it 'returns full name' do
+        rec.update(
+          maiden_name: '',
+          maiden_name_phonetic: ''
+        )
+        expect(helper.full_name_tooltip(rec)).to eq("<div class='tooltip' data-tip='みょうじ なまえ'>名字 名前</div>")
+      end
+    end
+  end
+
   describe 'role_name' do
     it 'returns translated name' do
       expect(helper.role_name('lead')).to eq('世話役')
