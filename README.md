@@ -1,3 +1,7 @@
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/yaws-k/alumni-membership-management)
+[![Run RSpec](https://github.com/yaws-k/alumni-membership-management/actions/workflows/rspec.yml/badge.svg)](https://github.com/yaws-k/alumni-membership-management/actions/workflows/rspec.yml)
+![GitHub](https://img.shields.io/github/license/yaws-k/alumni-membership-management)
+
 # Alumni Membership Management
 
 ## TL;DR
