@@ -1,9 +1,9 @@
 = form_with(model: @member) do |f|
   = render 'layouts/form_errors', model: f.object
-  %p
+  .mb-4
     卒年
     = f.select(:year_id, @years, {}, class: 'select')
-  %div.mb-2
+  .mb-2
     よみ
     .flex.flex-wrap.gap-4
       %div
@@ -13,7 +13,7 @@
       %div
         = f.text_field(:maiden_name_phonetic, placeholder: 'きゅうせい', class: 'input')
     %span.text-sm 読み方が不明な場合は「？」を入れてください。
-  %div.mb-4
+  .mb-4
     氏名
     .flex.flex-wrap.gap-4
       %div
@@ -23,7 +23,7 @@
       %div
         = f.text_field(:maiden_name, placeholder: '旧姓', class: 'input')
     %span.text-sm 漢字が不明な場合は「？」を入れてください。
-  %div.mb-4
+  .mb-4
     .flex.flex-wrap.gap-4
       %div
         連絡
@@ -34,7 +34,7 @@
       %div
         所属
         = f.text_field(:occupation, placeholder: '学校や職場等', class: 'input')
-  %p
+  .mb-4
     備考
     %br
     = f.text_area(:note, placeholder: 'その他補足', cols: 80, class: 'textarea')
@@ -48,7 +48,7 @@
         = f.collection_check_boxes :roles, @role_options, :first, :last do |b|
           %tr
             %td
-              = b.check_box
+              = b.check_box(class: 'checkbox')
               = b.label { role_name(b.value) }
             %td
               = b.label

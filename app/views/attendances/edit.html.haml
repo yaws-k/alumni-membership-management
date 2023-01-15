@@ -7,10 +7,10 @@
   .card-body
     = form_with(model: @attendance, data: { turbo: false }) do |f|
       = render "layouts/form_errors", model: f.object
-      %p
+      .mb-4
         - @application.each do |label, value|
-          = f.radio_button(:application, value, checked: (@attendance.application == value ? true : false))
+          = f.radio_button(:application, value, checked: (@attendance.application == value ? true : false), class: 'radio')
           = f.label("application_#{value}", label)
-      %p
-        = f.text_area(:note, placeholder: 'コメントがあれば入力', cols: 40)
+      .mb-4
+        = f.text_area(:note, placeholder: 'コメントがあれば入力', cols: 40, class: 'textarea')
       = f.submit '送信', class: 'btn btn-primary'
