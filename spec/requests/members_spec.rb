@@ -287,12 +287,12 @@ RSpec.describe 'Members', type: :request do
     end
 
     describe '#destroy' do
-      it 'retuns http redirect (reject) to own data' do
+      it 'retuns http redirect (success) to own data' do
         delete "/members/#{member.id}"
         expect(response).to redirect_to(members_path)
       end
 
-      it "returns http redirect (reject) to same year member's data" do
+      it "returns http redirect (success) to same year member's data" do
         delete "/members/#{member2.id}"
         expect(response).to redirect_to(members_path)
       end

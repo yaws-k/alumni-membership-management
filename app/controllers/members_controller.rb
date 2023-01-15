@@ -1,5 +1,5 @@
 class MembersController < ApplicationController
-  before_action :reject_normal_members, only: %i[new create destroy]
+  before_action :reject_normal_members, only: %i[new create destroy destroy]
   before_action :check_roles_members, only: %i[show create edit update destroy]
 
   def index
