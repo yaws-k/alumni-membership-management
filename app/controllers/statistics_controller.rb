@@ -126,11 +126,7 @@ class StatisticsController < ApplicationController
         attendance_domid: "attendance_#{a.id}",
         payment_date: a.payment_date,
         graduate_year: "#{graduate_years[members[a.member_id].year_id]}回卒",
-        member_id: members[a.member_id].id,
-        family_name: members[a.member_id].family_name,
-        family_name_phonetic: members[a.member_id].family_name_phonetic,
-        first_name: members[a.member_id].first_name,
-        first_name_phonetic: members[a.member_id].first_name_phonetic,
+        member: members[a.member_id],
         amount: a.amount,
         event_name: payment_name[a.event_id]
       }
