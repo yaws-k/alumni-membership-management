@@ -12,7 +12,9 @@
 
 %h2 参加者一覧
 
-%table.table.w-auto
+%p 参加申込者数：#{@members.size.to_fs(:delimited)}
+
+%table.table.w-auto#applicants
   %thead.sticky.top-0
     %tr.text-center
       %th 卒年

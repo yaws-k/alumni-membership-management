@@ -10,10 +10,12 @@ RSpec.describe '006s', type: :system do
   let!(:attendance1) { create(:attendance, event_id: event.id, application: true) }
   let!(:attendance2) { create(:attendance, event_id: event.id, application: true) }
   let!(:attendance3) { create(:attendance, event_id: event.id, application: true) }
+  let!(:attendance4) { create(:attendance, event_id: event.id, application: false) }
 
   let(:member1) { attendance1.member }
   let(:member2) { attendance2.member }
   let(:member3) { attendance3.member }
+  let(:member4) { attendance4.member }
 
   RSpec.shared_examples '006 event detail' do
     before do
@@ -27,8 +29,12 @@ RSpec.describe '006s', type: :system do
       expect(page).to have_text(event.fee.to_fs(:delimited))
     end
 
-    it 'is possible to see participants' do
-      Attendance.all.each do |attendance|
+    it 'is possible to see the number of applicants' do
+      expect(page).to have_text('参加申込者数：3')
+    end
+
+    it 'is possible to see applicants' do
+      Attendance.where(application: true).each do |attendance|
         member = attendance.member
         within(id: dom_id(member)) do
           expect(page).to have_text(member.year.graduate_year)
@@ -43,6 +49,13 @@ RSpec.describe '006s', type: :system do
             expect(page).to_not have_link('詳細', href: member_path(member))
           end
         end
+      end
+    end
+
+    it 'does not show applicants declared absence' do
+      within(id: 'applicants') do
+        expect(page).to_not have_text((member4.family_name))
+        expect(page).to_not have_text((member4.first_name))
       end
     end
 
