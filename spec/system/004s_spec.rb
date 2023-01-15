@@ -44,6 +44,11 @@ RSpec.describe '004s', type: :system do
 
     it_behaves_like '004 delete user'
     it_behaves_like '004 delete address'
+
+    it 'does not show member delete button' do
+      click_link('基本情報編集・削除', href: edit_member_path(member))
+      expect(page).to_not have_button('削除')
+    end
   end
 
   context 'lead' do
