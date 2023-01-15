@@ -43,7 +43,7 @@ class Member
   field :note, type: String
 
   field :search_key, type: String
-  index({ search_key: 1 }, { sparse: false, unique: true })
+  index({ search_key: 1 }, { sparse: false, unique: false })
 
   field :roles, type: Array, default: []
 
