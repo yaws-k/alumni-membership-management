@@ -38,10 +38,9 @@ RSpec.describe '006s', type: :system do
         member = attendance.member
         within(id: dom_id(member)) do
           expect(page).to have_text(member.year.graduate_year)
-          expect(page).to have_text(member.family_name_phonetic)
-          expect(page).to have_text(member.first_name_phonetic)
           expect(page).to have_text(member.family_name)
           expect(page).to have_text(member.first_name)
+          expect(page).to have_selector("div[class='tooltip'][data-tip='#{member.family_name_phonetic} #{member.first_name_phonetic}']")
 
           if with_detail
             expect(page).to have_link('詳細', href: member_path(member))
