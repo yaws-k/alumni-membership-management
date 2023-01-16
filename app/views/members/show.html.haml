@@ -133,6 +133,7 @@
       %th 会費
       %th 支払日
       %th 出欠予定
+      %th 実績
       %th 備考
       %th 出欠
   %tbody
@@ -142,8 +143,10 @@
         %td #{rec.event_date}
         %td #{rec.fee.to_fs(:delimited)}
         %td #{@attendances[rec.id].payment_date}
-        %td.text-center#presence
+        %td.text-center#schedule
           = event_presence(@attendances[rec.id].application)
+        %td.text-center
+          = event_presence(@attendances[rec.id].presence)
         %td #{@attendances[rec.id].note}
         %td.text-center#application
           - if rec.event_date > Date.today

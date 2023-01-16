@@ -17,7 +17,7 @@ module MembersHelper
     when false
       '<div class="badge badge-accent">欠席</div>'.html_safe
     when nil
-      '<div class="badge">未回答</div>'.html_safe
+      '<div class="badge">未入力</div>'.html_safe
     end
   end
 
