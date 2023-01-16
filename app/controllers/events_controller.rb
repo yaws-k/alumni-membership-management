@@ -7,9 +7,15 @@ class EventsController < ApplicationController
 
   def show
     @event = Event.find(params[:id])
-    @attendances = @event.attendances.where(application: true).index_by(&:member_id)
+    applied = @event.attendances.where(application: true).pluck(:id)
+    present = @event.attendances.where(presence: true).pluck(:id)
+    @attendances = Attendance.in(id: (applied + present)).index_by(&:member_id)
     @members = Member.year_sort(id: @attendances.keys, order: :asc)
     @years = Year.order(anno_domini: :desc).index_by(&:id)
+    @counts = {
+      application: @event.attendances.where(application: true).size,
+      presence: @event.attendances.where(presence: true).size
+    }
   end
 
   def new

@@ -12,13 +12,18 @@
 
 %h2 参加者一覧
 
-%p 参加申込者数：#{@members.size.to_fs(:delimited)}
+%p
+  参加申込数：#{@counts[:application].to_fs(:delimited)}人
+  %br
+  実参加者数：#{@counts[:presence].to_fs(:delimited)}人
 
 %table.table.w-auto#applicants
   %thead.sticky.top-0
     %tr.text-center
       %th 卒年
       %th 氏名（旧姓）
+      %th 申込
+      %th 実績
       %th 備考
       %th 支払い
       - if @roles[:board] || @roles[:admin]
@@ -28,6 +33,10 @@
       %tr.hover{id: dom_id(rec)}
         %td #{@years[rec.year_id].graduate_year}
         %td #{full_name_tooltip(rec)}
+        %td.text-center#schedule
+          = event_presence(@attendances[rec.id].application)
+        %td.text-center
+          = event_presence(@attendances[rec.id].presence)
         %td #{simple_format(@attendances[rec.id].note, {}, wrapper_tag: 'span')}
         %td #{@attendances[rec.id].payment_date}
         - if @roles[:board] || @roles[:admin]
