@@ -171,27 +171,7 @@
                   = link_to '備考', edit_attendance_path(@attendances[rec.id]), class: 'btn btn-sm btn-info'
           - else
             \-
-        %td.tex-center#actual
-          - if (rec.event_date <= Date.today) && (@roles[:board] || @roles[:admin])
-            .flex.flex-wrap.gap-4
-              %div
-                = form_with(model: @attendances[rec.id], data: { turbo: false }) do |f|
-                  = f.hidden_field :presence, value: true
-                  = f.hidden_field :member_id, value: @member.id
-                  = f.hidden_field :event_id, value: rec.id
-                  = f.submit '出席', class: 'btn btn-sm btn-primary'
-              %div
-                = form_with(model: @attendances[rec.id], data: { turbo: false }) do |f|
-                  = f.hidden_field :presence, value: false
-                  = f.hidden_field :member_id, value: @member.id
-                  = f.hidden_field :event_id, value: rec.id
-                  = f.submit '欠席', class: 'btn btn-sm btn-accent'
-              %div
-                = form_with(model: @attendances[rec.id], data: { turbo: false }) do |f|
-                  = f.hidden_field :presence, value: nil
-                  = f.hidden_field :member_id, value: @member.id
-                  = f.hidden_field :event_id, value: rec.id
-                  = f.submit '削除', class: 'btn btn-sm'
-              - unless @attendances[rec.id].nil?
-                %div
-                  = link_to '備考', edit_attendance_path(@attendances[rec.id]), class: 'btn btn-sm btn-info'
+        - if @roles[:board] || @roles[:admin]
+          %td.tex-center#actual
+            - if rec.event_date <= Date.today
+              = link_to '編集', edit_attendance_path(@attendances[rec.id]), class: 'btn btn-sm btn-info'

@@ -18,7 +18,7 @@
   実参加者数：#{@counts[:presence].to_fs(:delimited)}人
 
 %table.table.w-auto#applicants
-  %thead.sticky.top-0
+  %thead
     %tr.text-center
       %th 卒年
       %th 氏名（旧姓）
@@ -27,12 +27,13 @@
       %th 備考
       %th 支払い
       - if @roles[:board] || @roles[:admin]
-        %th 詳細
+        %th 参加実績
   %tbody
     - @members.each do |rec|
       %tr.hover{id: dom_id(rec)}
         %td #{@years[rec.year_id].graduate_year}
-        %td #{full_name_tooltip(rec)}
+        %td
+          =link_to full_name_tooltip(rec), rec
         %td.text-center#schedule
           = event_presence(@attendances[rec.id].application)
         %td.text-center
@@ -40,5 +41,6 @@
         %td #{simple_format(@attendances[rec.id].note, {}, wrapper_tag: 'span')}
         %td #{@attendances[rec.id].payment_date}
         - if @roles[:board] || @roles[:admin]
-          %td
-            = link_to '詳細', member_path(rec), class: 'btn btn-sm btn-info'
+          %td.tex-center#actual
+            - if @event.event_date <= Date.today
+              = link_to '編集', edit_attendance_path(@attendances[rec.id], return_path: request.path_info), class: 'btn btn-sm btn-info'

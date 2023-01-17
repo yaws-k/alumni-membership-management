@@ -7,10 +7,18 @@
   .card-body
     = form_with(model: @attendance, data: { turbo: false }) do |f|
       = render "layouts/form_errors", model: f.object
+      = hidden_field_tag :return_path, params[:return_path]
       .mb-4
+        出欠申込：
         - @application.each do |label, value|
           = f.radio_button(:application, value, checked: (@attendance.application == value ? true : false), class: 'radio')
           = f.label("application_#{value}", label)
+      - if (@roles[:board] || @roles[:admin]) && (@event.event_date <= Date.today)
+        .mb-4
+          出欠実績：
+          - @application.each do |label, value|
+            = f.radio_button(:presence, value, checked: (@attendance.presence == value ? true : false), class: 'radio')
+            = f.label("presence_#{value}", label)
       .mb-4
         = f.text_area(:note, placeholder: 'コメントがあれば入力', cols: 40, class: 'textarea')
       = f.submit '送信', class: 'btn btn-primary'
