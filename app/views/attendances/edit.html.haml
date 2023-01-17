@@ -1,7 +1,19 @@
 %h1 出欠に関するコメント
 
 %p
-  = link_to '戻る', member_path(@attendance.member_id, anchor: @attendance.id)
+  - if params[:return_path].present?
+    = link_to '戻る', params[:return_path]
+  - else
+    = link_to '戻る', member_path(@attendance.member_id, anchor: @attendance.id)
+
+%p
+  イベント：#{@event.event_name}
+  %br
+  開催日：#{@event.event_date}
+  %br
+  会費　：#{@event.fee.to_fs(:delimited)}
+
+%p #{full_name_tooltip(@member)}
 
 .card.bg-base-300
   .card-body

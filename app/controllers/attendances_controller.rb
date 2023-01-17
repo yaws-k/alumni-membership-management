@@ -2,6 +2,7 @@ class AttendancesController < ApplicationController
   def edit
     @attendance = Attendance.find(params[:id])
     @event = @attendance.event
+    @member = @attendance.member
 
     check_roles(member_id: @attendance.member_id)
     return if performed?

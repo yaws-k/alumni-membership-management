@@ -33,7 +33,7 @@
       %tr.hover{id: dom_id(rec)}
         %td #{@years[rec.year_id].graduate_year}
         %td
-          =link_to full_name_tooltip(rec), rec
+          = link_to full_name_tooltip(rec), rec
         %td.text-center#schedule
           = event_presence(@attendances[rec.id].application)
         %td.text-center
