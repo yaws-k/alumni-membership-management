@@ -126,7 +126,7 @@ RSpec.describe '002s', type: :system do
               end
             end
           end
-          within(id: dom_id(attendance1)) { expect(page).to have_text('未回答') }
+          within(id: dom_id(attendance1)) { expect(page).to have_text('未入力') }
           within(id: dom_id(attendance2)) do
             expect(page).to have_text(attendance2.payment_date)
             expect(page).to have_text('出席')

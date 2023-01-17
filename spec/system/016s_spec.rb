@@ -127,13 +127,13 @@ RSpec.describe '016s', type: :system do
 
         it 'is possible to update event application' do
           within(id: dom_id(attendance1)) do
-            within(id: 'presence') do
-              expect(page).to have_text('未回答')
+            within(id: 'schedule') do
+              expect(page).to have_text('未入力')
             end
 
             click_button('出席')
 
-            within(id: 'presence') do
+            within(id: 'schedule') do
               expect(page).to have_text('出席')
             end
           end
@@ -151,7 +151,7 @@ RSpec.describe '016s', type: :system do
 
           expect(current_path).to eq(member_path(member1))
           within(id: dom_id(attendance1)) do
-            within(id: 'presence') do
+            within(id: 'schedule') do
               expect(page).to have_text('欠席')
             end
             expect(page).to have_text('Additional comments')

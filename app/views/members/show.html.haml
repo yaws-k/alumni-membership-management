@@ -133,17 +133,23 @@
       %th 会費
       %th 支払日
       %th 出欠予定
+      %th 実績
       %th 備考
       %th 出欠
+      - if @roles[:board] || @roles[:admin]
+        %th 参加実績
   %tbody
     - @events.each do |rec|
       %tr.hover{id: dom_id(@attendances[rec.id])}
-        %td #{rec.event_name}
+        %td
+          = link_to rec.event_name, rec
         %td #{rec.event_date}
         %td #{rec.fee.to_fs(:delimited)}
         %td #{@attendances[rec.id].payment_date}
-        %td.text-center#presence
+        %td.text-center#schedule
           = event_presence(@attendances[rec.id].application)
+        %td.text-center#presence
+          = event_presence(@attendances[rec.id].presence)
         %td #{@attendances[rec.id].note}
         %td.text-center#application
           - if rec.event_date > Date.today
@@ -165,3 +171,7 @@
                   = link_to '備考', edit_attendance_path(@attendances[rec.id]), class: 'btn btn-sm btn-info'
           - else
             \-
+        - if @roles[:board] || @roles[:admin]
+          %td.tex-center#actual
+            - if rec.event_date <= Date.today
+              = link_to '編集', edit_attendance_path(@attendances[rec.id]), class: 'btn btn-sm btn-info'
