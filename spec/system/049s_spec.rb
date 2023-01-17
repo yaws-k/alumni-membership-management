@@ -178,4 +178,11 @@ RSpec.describe '049s', type: :system do
     it_behaves_like 'with edit button'
     it_behaves_like 'possible to update presence'
   end
+
+  context 'admin' do
+    include_context 'login as admin'
+
+    it_behaves_like 'with edit button'
+    it_behaves_like 'possible to update presence'
+  end
 end

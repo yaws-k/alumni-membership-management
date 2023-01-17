@@ -44,7 +44,7 @@ RSpec.describe '006s', type: :system do
           expect(page).to have_selector("div[class='tooltip'][data-tip='#{member.family_name_phonetic} #{member.first_name_phonetic}']")
 
           if with_detail
-            expect(page).to have_link('詳細', href: member_path(member))
+            expect(page).to have_link("#{member.family_name} #{member.first_name}", href: member_path(member))
           else
             expect(page).to_not have_link('詳細', href: member_path(member))
           end
