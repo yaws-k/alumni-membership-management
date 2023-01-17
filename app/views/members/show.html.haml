@@ -148,7 +148,7 @@
         %td #{@attendances[rec.id].payment_date}
         %td.text-center#schedule
           = event_presence(@attendances[rec.id].application)
-        %td.text-center
+        %td.text-center#presence
           = event_presence(@attendances[rec.id].presence)
         %td #{@attendances[rec.id].note}
         %td.text-center#application

@@ -4,7 +4,7 @@
   - if params[:return_path].present?
     = link_to '戻る', params[:return_path]
   - else
-    = link_to '戻る', member_path(@attendance.member_id, anchor: @attendance.id)
+    = link_to '戻る', member_path(@attendance.member_id, anchor: dom_id(@attendance))
 
 %p
   イベント：#{@event.event_name}

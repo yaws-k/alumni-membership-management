@@ -36,7 +36,7 @@
           = link_to full_name_tooltip(rec), rec
         %td.text-center#schedule
           = event_presence(@attendances[rec.id].application)
-        %td.text-center
+        %td.text-center#presence
           = event_presence(@attendances[rec.id].presence)
         %td #{simple_format(@attendances[rec.id].note, {}, wrapper_tag: 'span')}
         %td #{@attendances[rec.id].payment_date}
