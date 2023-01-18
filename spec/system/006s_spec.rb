@@ -7,13 +7,15 @@ RSpec.describe '006s', type: :system do
 
   include_context 'base user'
   let!(:event) { create(:event, :full_fields) }
-  let!(:attendance1) { create(:attendance, event_id: event.id, application: true) }
-  let!(:attendance2) { create(:attendance, event_id: event.id, application: true) }
-  let!(:attendance3) { create(:attendance, event_id: event.id, application: true) }
+  let!(:attendance1) { create(:attendance, event_id: event.id, application: true, presence: true) }
+  let!(:attendance2) { create(:attendance, event_id: event.id, application: true, presence: true) }
+  let!(:attendance3) { create(:attendance, event_id: event.id, application: true, presence: false) }
+  let!(:attendance4) { create(:attendance, event_id: event.id, application: false) }
 
   let(:member1) { attendance1.member }
   let(:member2) { attendance2.member }
   let(:member3) { attendance3.member }
+  let(:member4) { attendance4.member }
 
   RSpec.shared_examples '006 event detail' do
     before do
@@ -27,22 +29,33 @@ RSpec.describe '006s', type: :system do
       expect(page).to have_text(event.fee.to_fs(:delimited))
     end
 
-    it 'is possible to see participants' do
-      Attendance.all.each do |attendance|
+    it 'is possible to see the number of applicants' do
+      expect(page).to have_text('参加申込数：3人')
+      expect(page).to have_text('実参加者数：2人')
+    end
+
+    it 'is possible to see applicants' do
+      Attendance.where(application: true).each do |attendance|
         member = attendance.member
         within(id: dom_id(member)) do
           expect(page).to have_text(member.year.graduate_year)
-          expect(page).to have_text(member.family_name_phonetic)
-          expect(page).to have_text(member.first_name_phonetic)
           expect(page).to have_text(member.family_name)
           expect(page).to have_text(member.first_name)
+          expect(page).to have_selector("div[class='tooltip'][data-tip='#{member.family_name_phonetic} #{member.first_name_phonetic}']")
 
           if with_detail
-            expect(page).to have_link('詳細', href: member_path(member))
+            expect(page).to have_link("#{member.family_name} #{member.first_name}", href: member_path(member))
           else
             expect(page).to_not have_link('詳細', href: member_path(member))
           end
         end
+      end
+    end
+
+    it 'does not show applicants declared absence' do
+      within(id: 'applicants') do
+        expect(page).to_not have_text((member4.family_name))
+        expect(page).to_not have_text((member4.first_name))
       end
     end
 

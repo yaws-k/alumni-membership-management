@@ -39,13 +39,13 @@ RSpec.describe '003-4s', type: :system do
     context 'application' do
       it 'is possible to apply as present' do
         within(id: dom_id(attendance1)) do
-          within(id: 'presence') do
-            expect(page).to have_text('未回答')
+          within(id: 'schedule') do
+            expect(page).to have_text('未入力')
           end
 
           click_button('出席')
 
-          within(id: 'presence') do
+          within(id: 'schedule') do
             expect(page).to have_text('出席')
           end
         end
@@ -53,13 +53,13 @@ RSpec.describe '003-4s', type: :system do
 
       it 'is possible to apply as NOT present' do
         within(id: dom_id(attendance1)) do
-          within(id: 'presence') do
-            expect(page).to have_text('未回答')
+          within(id: 'schedule') do
+            expect(page).to have_text('未入力')
           end
 
           click_button('欠席')
 
-          within(id: 'presence') do
+          within(id: 'schedule') do
             expect(page).to have_text('欠席')
           end
         end
@@ -78,7 +78,7 @@ RSpec.describe '003-4s', type: :system do
         click_button('送信')
 
         within(id: dom_id(attendance1)) do
-          within(id: 'presence') do
+          within(id: 'schedule') do
             expect(page).to have_text('欠席')
           end
           expect(page).to have_text('Additional comments')
