@@ -76,7 +76,10 @@ mongodb:
     password: production_password
 
 host:
-  mail: mail.server.fqdn
+  mail:
+    server: mail.server.fqdn
+    user: user_name
+    password: password
   sender: admin@example.com
   production: production.fqdn.name
 
