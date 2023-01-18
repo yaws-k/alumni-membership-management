@@ -114,16 +114,18 @@ class ExportsController < ApplicationController
     workbook[0].add_cell(4, 1, docs[:counts][:application])
     workbook[0].add_cell(5, 1, docs[:counts][:presence])
 
-    workbook[0].add_cell(7, 4, Time.now.localtime.strftime('%F %T'))
+    workbook[0].add_cell(7, 2, "As of: #{Time.now.localtime.strftime('%F %T')}")
 
     row = 9
     docs[:members].each do |member|
-      workbook[0].add_cell(row, 0, docs[:years][member.year_id].graduate_year)
-      workbook[0].add_cell(row, 1, ApplicationController.helpers.full_name(member)[0])
-      workbook[0].add_cell(row, 2, event_presence(docs[:attendances][member.id].application))
-      workbook[0].add_cell(row, 3, event_presence(docs[:attendances][member.id].presence))
-      workbook[0].add_cell(row, 4, docs[:attendances][member.id].note)
-      workbook[0].add_cell(row, 5, docs[:attendances][member.id].payment_date.to_s.tr('-', '/'))
+      workbook[0].add_cell(row, 0, docs[:years][member.year_id].anno_domini)
+      workbook[0].add_cell(row, 1, docs[:years][member.year_id].graduate_year)
+      workbook[0].add_cell(row, 2, ApplicationController.helpers.full_name(member)[0])
+      workbook[0].add_cell(row, 3, ApplicationController.helpers.full_name(member)[1])
+      workbook[0].add_cell(row, 4, event_presence(docs[:attendances][member.id].application))
+      workbook[0].add_cell(row, 5, event_presence(docs[:attendances][member.id].presence))
+      workbook[0].add_cell(row, 6, docs[:attendances][member.id].note)
+      workbook[0].add_cell(row, 7, docs[:attendances][member.id].payment_date.to_s.tr('-', '/'))
       row += 1
     end
   end
