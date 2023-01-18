@@ -12,7 +12,9 @@ Rails.application.routes.draw do
   get 'statistics/incomes'
   get 'statistics/annual_fees'
   get 'statistics/donations'
+
   get 'exports/emails'
+  get 'exports/event_participants'
   get 'exports/members'
 
   get 'searches/name'
