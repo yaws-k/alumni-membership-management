@@ -17,6 +17,10 @@
   %br
   実参加者数：#{@counts[:presence].to_fs(:delimited)}人
 
+- if @roles[:lead] || @roles[:board] || @roles[:admin]
+  %p
+    = link_to '参加者一覧をExcelでダウンロード', exports_event_participants_path(event_id: @event.id)
+
 %table.table.w-auto#applicants
   %thead
     %tr.text-center
