@@ -13,7 +13,7 @@ class User
 
   ## Recoverable
   field :reset_password_token,   type: String
-  index({ reset_password_token: 1 }, { sparse: true, unique: true })
+  index({ reset_password_token: 1 }, { sparse: true, unique: false })
   field :reset_password_sent_at, type: Time
 
   ## Rememberable
@@ -35,7 +35,7 @@ class User
   ## Lockable
   field :failed_attempts, type: Integer, default: 0 # Only if lock strategy is :failed_attempts
   field :unlock_token,    type: String # Only if unlock strategy is :email or :both
-  index({ unlock_token: 1 }, { sparse: true, unique: true })
+  index({ unlock_token: 1 }, { sparse: true, unique: false })
   field :locked_at,       type: Time
   include Mongoid::Timestamps
 
