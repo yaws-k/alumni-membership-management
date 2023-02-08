@@ -115,7 +115,7 @@ class ExportsController < ApplicationController
 
   def export_attendance
     path = Rails.root.join('tmp/export/attendance.csv')
-    headers = %w[id application presence payment amount note created_at updated_at]
+    headers = %w[id application presence payment_date amount note created_at updated_at]
     export_csv(path:, headers:, model: Attendance)
   end
 
