@@ -79,6 +79,7 @@ class ExportsController < ApplicationController
   # all data
   #
   def export_all_collections
+    FileUtils.mkdir_p(Rails.root.join('tmp/export'))
     # csv/zip filepath
     csv = [export_address, export_attendance, export_event, export_member, export_user, export_year]
     zip = Rails.root.join('tmp/csv.zip')
