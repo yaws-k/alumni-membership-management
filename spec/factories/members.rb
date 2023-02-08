@@ -9,8 +9,8 @@ FactoryBot.define do
     communication { 'メール' }
 
     trait :full_fields do
-      maiden_name_phonetic { Faker::Name.last_name }
-      maiden_name { Faker::Name.last_name }
+      maiden_name_phonetic { Faker::Name.middle_name }
+      maiden_name { Faker::Name.middle_name }
       quit_reason { Faker::Alphanumeric.alphanumeric(number: 20) }
       occupation { Faker::Alphanumeric.alphanumeric(number: 20) }
       note { Faker::Alphanumeric.alphanumeric(number: 20) }
