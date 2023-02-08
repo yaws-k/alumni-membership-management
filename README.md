@@ -17,6 +17,8 @@ You can see user stories [on Airtable (written in Japanese)](https://airtable.co
 
 The user manual is on [this repository's Wiki](https://github.com/yaws-k/alumni-membership-management/wiki)
 
+A few additional explanation are available on [the wiki page](https://github.com/yaws-k/alumni-membership-management/wiki/developers)
+
 ## Requirements
 
 - Ruby version 3.2.x
