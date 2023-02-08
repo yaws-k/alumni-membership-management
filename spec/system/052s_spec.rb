@@ -6,6 +6,8 @@ RSpec.describe '052s', type: :system do
   end
 
   include_context 'base user'
+  let!(:address) { create(:address, member_id: member.id) }
+  let!(:attendance) { create(:attendance, event_id: payment.id, member_id: member.id) }
 
   RSpec.shared_examples 'exports/all_data reject' do
     it 'does not show the link to download DB data' do
