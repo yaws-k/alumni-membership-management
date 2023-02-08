@@ -56,8 +56,10 @@
                 &emsp;
                 = link_to '寄付金一覧', statistics_donations_path
               - if @roles[:admin]
-                &emsp;
+                %br
                 = link_to '年次情報管理', years_path
+                &emsp;
+                = link_to 'DBデータエクスポート', exports_all_data_path
 
             %div.text-right
               = button_to('Logout', destroy_user_session_path, method: :delete, data: {turbo: false}, class: 'btn btn-outline btn-error')

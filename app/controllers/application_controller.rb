@@ -34,4 +34,12 @@ class ApplicationController < ActionController::Base
       admin: @current_member.roles.include?('admin')
     }
   end
+
+  def admin_only
+    # Accept only admin
+    return true if @roles[:admin]
+
+    # Access denied
+    redirect_to(members_path)
+  end
 end
