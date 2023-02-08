@@ -80,7 +80,7 @@ RSpec.describe MembersHelper, type: :helper do
           maiden_name: 'ミドル',
           maiden_name_phonetic: 'みどる'
         )
-        expect(helper.full_name_tooltip(rec)).to eq("<div class='tooltip' data-tip='みょうじ（みどる）なまえ'>名字（ミドル）名前</div>")
+        expect(helper.full_name_tooltip(rec)).to eq("<div class='tooltip' data-tip=\"みょうじ（みどる）なまえ\">名字（ミドル）名前</div>")
       end
     end
 
@@ -90,7 +90,7 @@ RSpec.describe MembersHelper, type: :helper do
           maiden_name: '',
           maiden_name_phonetic: ''
         )
-        expect(helper.full_name_tooltip(rec)).to eq("<div class='tooltip' data-tip='みょうじ なまえ'>名字 名前</div>")
+        expect(helper.full_name_tooltip(rec)).to eq("<div class='tooltip' data-tip=\"みょうじ なまえ\">名字 名前</div>")
       end
     end
   end

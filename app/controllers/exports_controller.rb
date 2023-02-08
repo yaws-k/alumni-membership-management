@@ -1,5 +1,10 @@
 class ExportsController < ApplicationController
   before_action :check_roles_exports
+  before_action :admin_only, only: %i[all_data]
+
+  def all_data
+    send_data(File.read(export_all_collections), filename: "alumni_#{Date.today}.zip", type: 'text/csv')
+  end
 
   def emails
     names = member_names
@@ -68,6 +73,74 @@ class ExportsController < ApplicationController
 
     # Access denied
     redirect_to(members_path)
+  end
+
+  #
+  # all data
+  #
+  def export_all_collections
+    FileUtils.mkdir_p(Rails.root.join('tmp/export'))
+    # csv/zip filepath
+    csv = [export_address, export_attendance, export_event, export_member, export_user, export_year]
+    zip = Rails.root.join('tmp/csv.zip')
+
+    # Remove existing file (zip command will append data by default)
+    FileUtils.rm(zip) if FileTest.exist?(zip)
+
+    # q: quiet, j: delete absolute path, m: delete original csv files
+    system("zip -qjm #{zip} #{csv.join(' ')}")
+    zip
+  end
+
+  def export_csv(path: nil, headers: [], model: nil)
+    CSV.open(path, 'w') do |csv|
+      # First row
+      csv << headers
+      model.all.each do |doc|
+        tmp = []
+        headers.each { |field| tmp << doc[field] }
+        csv << tmp
+      end
+    end
+
+    # Return csv filepath for later compression
+    path
+  end
+
+  def export_address
+    path = Rails.root.join('tmp/export/address.csv')
+    headers = %w[id postal_code address1 address2 unreachable created_at updated_at]
+    export_csv(path:, headers:, model: Address)
+  end
+
+  def export_attendance
+    path = Rails.root.join('tmp/export/attendance.csv')
+    headers = %w[id application presence payment amount note created_at updated_at]
+    export_csv(path:, headers:, model: Attendance)
+  end
+
+  def export_event
+    path = Rails.root.join('tmp/export/event.csv')
+    headers = %w[id event_name event_date fee payment_only annual_fee note created_at updated_at]
+    export_csv(path:, headers:, model: Event)
+  end
+
+  def export_member
+    path = Rails.root.join('tmp/export/member.csv')
+    headers = %w[id family_name_phonetic maiden_name_phonetic first_name_phonetic family_name maiden_name first_name communication quit_reason occupation note roles created_at updated_at]
+    export_csv(path:, headers:, model: Member)
+  end
+
+  def export_user
+    path = Rails.root.join('tmp/export/user.csv')
+    headers = %w[id email sign_in_count last_sign_in_at last_sign_in_ip failed_attempts locked_at created_at updated_at]
+    export_csv(path:, headers:, model: User)
+  end
+
+  def export_year
+    path = Rails.root.join('tmp/export/year.csv')
+    headers = %w[id graduate_year anno_domini japanese_calendar created_at updated_at]
+    export_csv(path:, headers:, model: Year)
   end
 
   #
