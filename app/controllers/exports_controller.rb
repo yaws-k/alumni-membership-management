@@ -1,5 +1,6 @@
 class ExportsController < ApplicationController
   before_action :check_roles_exports
+  before_action :admin_only, only: %i[all_data]
 
   def all_data
     send_data(File.read(export_all_collections), filename: "alumni_#{Date.today}.zip", type: 'text/csv')
