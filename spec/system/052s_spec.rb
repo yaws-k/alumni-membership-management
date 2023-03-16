@@ -9,7 +9,7 @@ RSpec.describe '052s', type: :system do
   let!(:address) { create(:address, member_id: member.id) }
   let!(:attendance) { create(:attendance, event_id: payment.id, member_id: member.id) }
 
-  RSpec.shared_examples 'exports/all_data reject' do
+  RSpec.shared_examples '052 exports/all_data reject' do
     it 'does not show the link to download DB data' do
       expect(page).to_not have_link('DBデータエクスポート', href: exports_all_data_path)
     end
@@ -24,21 +24,21 @@ RSpec.describe '052s', type: :system do
     include_context 'login'
     let(:destination) { member_path(member) }
 
-    it_behaves_like 'exports/all_data reject'
+    it_behaves_like '052 exports/all_data reject'
   end
 
   context 'lead' do
     include_context 'login as lead'
     let(:destination) { members_path }
 
-    it_behaves_like 'exports/all_data reject'
+    it_behaves_like '052 exports/all_data reject'
   end
 
   context 'board' do
     include_context 'login as board'
     let(:destination) { members_path }
 
-    it_behaves_like 'exports/all_data reject'
+    it_behaves_like '052 exports/all_data reject'
   end
 
   context 'admin' do
