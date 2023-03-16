@@ -62,5 +62,5 @@
                 = link_to 'DBデータエクスポート', exports_all_data_path
 
             %div.text-right
-              = button_to('Logout', destroy_user_session_path, method: :delete, data: {turbo: false}, class: 'btn btn-outline btn-error')
+              = button_to('Logout', destroy_user_session_path, method: :delete, class: 'btn btn-outline btn-error')
         = yield
